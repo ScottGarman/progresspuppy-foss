@@ -1,0 +1,53 @@
+<div id="task_<%= editable_task.id %>_container">
+  <div id="editable_task_<%= editable_task.id %>" class="row flex-wrap editable-task">
+    <%= form_with model: editable_task, url: task_path(
+          editable_task,
+          category: params[:category],
+          page: params[:page],
+          search_terms: params[:search_terms],
+          tasks_filter: params[:tasks_filter],
+          task_category_filter: params[:task_category_filter]),
+          class: 'form-inline', local: true do |f| %>
+
+      <%= hidden_field_tag 'tasks_view', params[:tasks_view] %>
+
+      <div class="editable-task-delete">
+        <%= link_to image_tag('delete-icon.svg', class: "task-delete-icon"),
+          task_path(editable_task, tasks_view: params[:tasks_view]), method: :delete,
+          data: { confirm: 'Delete this task?' }, :class => 'action destroy' %>
+      </div>
+
+      <div class='editable-task-summary'>
+        <%= f.text_field :summary, placeholder: "Summary",
+          class: "form-control form-control-sm #{form_validity_class(editable_task, 'summary')}" %>
+        <%= raw validation_error_html(editable_task, 'summary', 'Summary') %>
+      </div>
+
+      <div class='editable-task-task-category'>
+        Category: <%= f.select :task_category_id, current_user.task_categories.map { |tc| [tc.name, tc.id] }, {},
+          { class: "form-control form-control-sm #{form_validity_class(editable_task, 'task_category_id')}" } %>
+        <%= raw validation_error_html(editable_task, 'task_category_id', 'Task Category') %>
+      </div>
+
+      <div class='editable-task-priority'>
+        Priority: <%= f.select :priority, [1, 2, 3], {},
+          { class: "form-control form-control-sm #{form_validity_class(editable_task, 'priority')}" } %>
+        <%= raw validation_error_html(editable_task, 'priority', 'Priority') %>
+      </div>
+
+      <div class='editable-task-due-on'>
+        Due on: <%= f.text_field :due_at,
+          class: "form-control form-control-sm date-picker-input #{form_validity_class(editable_task, 'due_at')}", id: "editable_task_#{ editable_task.id }_date_picker" %>
+        <%= raw validation_error_html(editable_task, 'due_at', 'Due Date') %>
+      </div>
+
+      <div class="editable-task-submit">
+        <%= f.submit "Update Task", class: "btn btn-sm btn-primary update-task-btn" %>
+      </div>
+
+      <div class="editable-task-cancel">
+        <span>or <%= link_to "Cancel", task_path(editable_task), remote: true %></span>
+      </div>
+    <% end %>
+  </div>
+</div>

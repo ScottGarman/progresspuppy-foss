@@ -1,0 +1,300 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+aaronpk_task1:
+  summary: 'Aaronpk task1'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'INCOMPLETE'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task2:
+  summary: 'Aaronpk task2'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'INCOMPLETE'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task3:
+  summary: 'Aaronpk task3'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'INCOMPLETE'
+  due_at: <%= (Time.zone.now + 3.days).to_date.to_s %>
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task4:
+  summary: 'Aaronpk task4'
+  task_category: tc_work_aaronpk
+  priority: 3
+  status: 'INCOMPLETE'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task5:
+  summary: 'Aaronpk task5'
+  task_category: tc_work_aaronpk
+  priority: 3
+  status: 'INCOMPLETE'
+  due_at: <%= (Time.zone.now + 3.days).to_date.to_s %>
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task6:
+  summary: 'Aaronpk task6'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task7:
+  summary: 'Aaronpk task7'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task8:
+  summary: 'Aaronpk task8'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task9:
+  summary: 'Aaronpk task9'
+  task_category: tc_work_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task10:
+  summary: 'Aaronpk task10'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task11:
+  summary: 'Aaronpk task11'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task12:
+  summary: 'Aaronpk task12'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task13:
+  summary: 'Aaronpk task13'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task14:
+  summary: 'Aaronpk task14'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task15:
+  summary: 'Aaronpk task15'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task16:
+  summary: 'Aaronpk task16'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task17:
+  summary: 'Aaronpk task17'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task18:
+  summary: 'Aaronpk task18'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task19:
+  summary: 'Aaronpk task19'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task20:
+  summary: 'Aaronpk task20'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task21:
+  summary: 'Aaronpk task21'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task22:
+  summary: 'Aaronpk task22'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task23:
+  summary: 'Aaronpk task23'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task24:
+  summary: 'Aaronpk task24'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'COMPLETED'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task25:
+  summary: 'Aaronpk task25'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'INCOMPLETE'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task26:
+  summary: 'Aaronpk task26 priority1'
+  task_category: tc_uncategorized_aaronpk
+  priority: 1
+  status: 'INCOMPLETE'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task27:
+  summary: 'Aaronpk task27 priority2'
+  task_category: tc_uncategorized_aaronpk
+  priority: 2
+  status: 'INCOMPLETE'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task28:
+  summary: 'Aaronpk task28 priority1'
+  task_category: tc_uncategorized_aaronpk
+  priority: 1
+  status: 'INCOMPLETE'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task29:
+  summary: 'Aaronpk task29 priority2'
+  task_category: tc_uncategorized_aaronpk
+  priority: 2
+  status: 'INCOMPLETE'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+aaronpk_task30:
+  summary: 'Aaronpk task30'
+  task_category: tc_uncategorized_aaronpk
+  priority: 3
+  status: 'INCOMPLETE'
+  due_at: nil
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>

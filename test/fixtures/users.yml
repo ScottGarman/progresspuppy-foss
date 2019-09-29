@@ -1,0 +1,57 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# These users are people I know in the pdxtech community, for fun I've
+# immortalized them as protagonists if ProgressPuppy's test stories. :)
+donpdonp:
+  first_name: Don
+  last_name: DonLN
+  email: donpdonp@example.com
+  password_digest: <%= User.digest('foobarbaz123') %>
+  time_zone: 'Pacific Time (US & Canada)'
+  accepted_tos_at: <%= Time.zone.now %>
+  admin: false
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+leofsiege:
+  first_name: Andrew
+  last_name: AndrewLN
+  email: leofsiege@example.com
+  password_digest: <%= User.digest('foobarbaz123') %>
+  time_zone: 'Pacific Time (US & Canada)'
+  accepted_tos_at: <%= Time.zone.now %>
+  admin: true
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+agj:
+  first_name: Anthony
+  last_name: AnthonyLN
+  email: agj@example.com
+  password_digest: <%= User.digest('foobarbaz123') %>
+  time_zone: 'Pacific Time (US & Canada)'
+  accepted_tos_at: <%= Time.zone.now %>
+  admin: false
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+onewheelskyward:
+  first_name: Andrew
+  last_name: AndrewLN
+  email: onewheelskyward@example.com
+  password_digest: <%= User.digest('foobarbaz123') %>
+  time_zone: 'Pacific Time (US & Canada)'
+  accepted_tos_at: <%= Time.zone.now %>
+  admin: false
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+aaronpk:
+  first_name: Aaron
+  last_name: AaronLN
+  email: aaronpk@example.com
+  password_digest: <%= User.digest('foobarbaz123') %>
+  time_zone: 'Pacific Time (US & Canada)'
+  accepted_tos_at: <%= Time.zone.now %>
+  admin: false
+  activated: true
+  activated_at: <%= Time.zone.now %>

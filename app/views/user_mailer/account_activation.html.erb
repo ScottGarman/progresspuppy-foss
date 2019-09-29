@@ -1,0 +1,5 @@
+<p>Hi <%= @user.first_name %>,</p>
+
+<p>Aww yiss! Thanks for signing up with ProgressPuppy - FOSS Edition! Click on the link below to activate your account, and unleash the unstoppable force of your new ProgressPuppy-enhanced focus:</p>
+
+<%= link_to "Activate My Account", edit_account_activation_url(@user.activation_token, email: @user.email) %>

@@ -1,0 +1,30 @@
+<div class="container">
+  <div id="awwyiss_container">
+    <%= render @awwyiss_modal %>
+  </div>
+
+  <%= render 'quote_container' %>
+
+  <h2 class="task-header">
+    New Task
+    <%= link_to image_tag('chevron-down.svg',
+      id: 'toggle_new_task_form_control', title: 'Show/hide the new task form') %>
+  </h2>
+  <hr />
+
+  <div id="new_task_container" class="<%= new_task_form_display_class %>">
+  <%= render 'new_task_form', new_task: @new_task, tasks_view: 'upcoming', current_user: @current_user %>
+  </div>
+
+  <%= render 'task_nav_tabs' %>
+
+  <div id="future_tasks_container">
+    <div id="task_category_filters_container">
+      <%= render 'task_category_filter_buttons', current_user: @current_user %>
+    </div>
+
+    <%= render 'display_tasks_paginated', task_list: @future_tasks,
+                                          task_list_type: 'upcoming' %>
+  </div>
+
+</div>

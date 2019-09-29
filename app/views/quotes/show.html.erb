@@ -1,0 +1,27 @@
+<% @page_title = "Show Quote" %>
+
+<%= link_to("<< Back to List", quotes_path, :class => 'back-link') %>
+
+<div class="container">
+  <h2 class="page-header">Show Quote</h2>
+
+  <table summary="Quote detail view">
+    <tr>
+      <th>Quotation</th>
+      <td><%= @quote.quotation %></td>
+    </tr>
+    <tr>
+      <th>Source</th>
+      <td><%= @quote.source %></td>
+    </tr>
+    <tr>
+      <th>Created</th>
+      <td><%= @quote.created_at %></td>
+    </tr>
+    <tr>
+      <th>Updated</th>
+      <td><%= @quote.updated_at %></td>
+    </tr>
+  </table>
+
+</div>

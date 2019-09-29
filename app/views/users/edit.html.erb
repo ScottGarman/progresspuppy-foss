@@ -1,0 +1,12 @@
+<% provide(:button_text, 'Save Changes') %>
+<h1>User Profile</h1>
+
+<div id="edit_user_profile_alerts_container" class="mx-auto">
+  <%= render 'layouts/flash_alerts_static' %>
+</div>
+
+<div id="edit_user_profile_form_container" class="container">
+  <div class="mx-auto">
+    <%= render 'form', user: @user %>
+  </div>
+</div>

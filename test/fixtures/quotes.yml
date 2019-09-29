@@ -1,0 +1,31 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+agj_quote1:
+  quotation: 'First Quote'
+  source: 'First'
+  user: agj
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+agj_quote2:
+  quotation: 'Second Quote'
+  source: 'Second'
+  user: agj
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+agj_quote3:
+  quotation: 'Third Quote'
+  source: 'Third'
+  user: agj
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+agj_quote4:
+  quotation: 'Fourth Quote'
+  source: 'Fourth'
+  user: agj
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+agj_quote5:
+  quotation: 'Fifth Quote'
+  source: 'Fifth'
+  user: agj
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>

@@ -1,0 +1,7 @@
+<div class="alert-flex-container">
+  <% flash.each do |message_type, message| %>
+    <%= content_tag :div, message.html_safe,
+      class: "alert alert-#{message_type} alert-compact",
+      data: { "fade-out": true } %>
+  <% end %>
+</div>

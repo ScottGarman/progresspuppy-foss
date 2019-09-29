@@ -1,0 +1,60 @@
+<div class="container">
+  <div id="awwyiss_container">
+    <%= render @awwyiss_modal %>
+  </div>
+
+  <%= render 'quote_container' %>
+
+  <div id="new_task_placeholder"></div>
+
+  <%= render 'task_nav_tabs' %>
+
+  <div id="task_search_form">
+    <%= form_tag search_tasks_path, method: :get do %>
+      <div id="text_search" class="d-flex flex-row">
+        <%= text_field_tag :search_terms, params[:search_terms], class: "no-margins form-control form-control-sm" %>
+        <%= submit_tag 'Search Tasks', name: nil, class: "no-margins btn btn-sm btn-primary" %>
+      </div>
+
+      <div class="d-flex flex-row">
+        <div class="form-check form-check-inline">
+          <%= radio_button_tag 'tasks_filter', 'all', true, class: "form-check-input" %>
+          <%= label_tag 'tasks_all', 'All Tasks', class: "form-check-label" %>
+        </div>
+        <div class="form-check form-check-inline">
+          <%= radio_button_tag 'tasks_filter', 'completed', false, class: "form-check-input" %>
+          <%= label_tag 'tasks_completed', 'Completed Tasks', class: "form-check-label" %>
+        </div>
+        <div class="form-check form-check-inline">
+          <%= radio_button_tag 'tasks_filter', 'incomplete', false, class: "form-check-input" %>
+          <%= label_tag 'tasks_incomplete', 'Incomplete Tasks', class: "form-check-label" %>
+        </div>
+
+        <div id="category_search" class="form-inline">
+          <%= label_tag :task_category_filter, "in Category:", class: "form-label" %>
+          <%= select_tag :task_category_filter, options_for_select(['All'] + @current_user.task_categories.map { |tc| [tc.name, tc.id] }), { class: "form-control form-control-sm" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div id="search_results_header" class="flex-header">
+    <h2 class="task-header">Search Results</h2>
+    <% unless @search_results.empty? %>
+      <%= render 'task_sort_selector' %>
+    <% end%>
+  </div>
+  <hr />
+
+  <div id="search_results_container">
+    <div id="search_results_task_list">
+      <% if @search_results.empty? %>
+        <p class="italic">There are no search results to display.</p>
+      <% else %>
+        <%= render partial: 'display_task', collection: @search_results, as: :display_task %>
+        <%= will_paginate @search_results %>
+      <% end %>
+    </div>
+  </div>
+
+</div>

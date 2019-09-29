@@ -1,0 +1,32 @@
+<div id="task_<%= display_task.id %>_container">
+  <div id="display_task_<%= display_task.id %>" class="row flex-nowrap highlight-on-hover display-task">
+
+    <div class="display-task-checkbox">
+      <%= check_box_tag dom_id(display_task, :checkbox),
+        "COMPLETED",
+        display_task.status_as_boolean,
+        data: { url: toggle_task_status_url(display_task.id), method: :post, remote: true } %>
+    </div>
+
+    <div>
+      <%= link_to image_tag('edit-pencil-icon.svg', title: "Click to Edit", class: "task-edit-icon"),
+        edit_task_path(
+          display_task,
+          tasks_view: action_name,
+          category: params[:category],
+          page: params[:page],
+          search_terms: params[:search_terms],
+          tasks_filter: params[:tasks_filter],
+          task_category_filter: params[:task_category_filter]),
+          remote: true %>
+    </div>
+
+    <div class="display-task-summary <%= task_status_class(display_task) %>">
+      <%= display_task.summary %>
+    </div>
+
+    <div class="display-task-due-on editable-due-date text-right" data-task-id="<%= display_task.id %>">
+      <%= relative_due_date(display_task.due_at, current_user.time_zone) %>
+    </div>
+  </div>
+</div>

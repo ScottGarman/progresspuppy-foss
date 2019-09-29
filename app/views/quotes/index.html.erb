@@ -1,0 +1,47 @@
+<div class="container">
+  <h1 class="page-header">Manage Quotes</h1>
+
+  <div class="flex-header">
+    <h2 class="text-left no-margins heading-with-alert">Quote Settings</h2>
+    <%= render partial: 'layouts/alerts_inline', locals: { message: "Settings Saved", message_type: "success" } %>
+  </div>
+  <hr />
+
+  <ul style="list-style-type: none; padding-left: 0;">
+    <li>
+      <%= check_box_tag 'display', value='1', checked=@display_quotes,
+        class: "checkbox inline", style: "width: 2%;",
+        data: {
+          remote: true,
+          url: settings_toggle_display_quotes_url,
+          method: "POST"
+        } %>
+      Display a random quote in the task view
+    </li>
+  </ul>
+
+  <hr />
+
+  <h2 class="text-left">Add a New Quote</h2>
+
+  <%= form_with model: @new_quote, local: true do |f| %>
+    <%= f.text_field :quotation, label: "Quotation:", placeholder: "Quotation", class: "form-control #{form_validity_class(@new_quote, 'quotation')}" %>
+    <%= raw validation_error_html(@new_quote, 'quotation', 'Quotation') %>
+    <%= f.text_field :source, label: "Source:", placeholder: "Quotation Source", class: "form-control input-quarter-width #{form_validity_class(@new_quote, 'source')}" %>
+    <%= raw validation_error_html(@new_quote, 'source', 'Quotation source') %>
+
+    <%= f.submit "Save", class: "btn btn-primary create-quote-btn" %>
+  <% end %>
+
+  <div class="flex-header">
+    <h2 class="text-left no-margins heading-with-alert">Your Quotes</h2>
+    <%= render 'layouts/flash_alerts_inline' %>
+  </div>
+  <hr />
+
+  <% if @current_user.quotes.empty? %>
+    <p class="italic">Your list of quotes is currently empty.</p>
+  <% else %>
+    <%= render partial: 'display_quote', collection: @current_user.quotes %>
+  <% end %>
+</div>

@@ -1,0 +1,617 @@
+@import "bootstrap";
+
+/* add an xxl container size for 1080p widescreens */
+
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1500px;
+  }
+}
+
+/* mixins, variables, etc. */
+
+$gray: #555555;
+$gray-darker: #222222;
+$gray-light: #777777;
+$gray-medium-light: #eaeaea;
+
+@mixin box_sizing {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
+
+/* universal */
+
+body {
+  padding-top: 85px;
+}
+
+section {
+  overflow: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.center {
+  text-align: center;
+
+  h1 {
+    margin-bottom: 10px;
+  }
+}
+
+.italic {
+  font-style: italic;
+}
+
+.no-margins {
+  margin: 0 0;
+}
+
+.inline {
+  display: inline;
+}
+
+.hide-by-default {
+  display: none;
+}
+
+/* typography */
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
+
+h1 {
+  font-size: 2.2em;
+  letter-spacing: -1px;
+  margin-top: 15px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.6em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: normal;
+  color: $gray-light;
+}
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+}
+
+/* header */
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: white;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  &:hover {
+    color: white;
+    text-decoration: none;
+  }
+}
+
+/* forms */
+
+label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input, textarea, select, .uneditable-input {
+  border: 1px solid #bbb;
+  width: 100%;
+  margin-bottom: 15px;
+  @include box_sizing;
+}
+
+.new-user-checkbox {
+  width: auto;
+}
+#accepted_tos_error_msg {
+  margin-top: 0;
+}
+
+.checkbox-inline {
+  margin: 0;
+}
+
+.select-inline {
+  display: inline;
+}
+
+.editable-due-date:hover {
+  cursor: pointer;
+}
+
+input {
+  height: auto !important;
+}
+
+.error-msg {
+  font-size: small;
+  color: red;
+  margin-top: -15px;
+  margin-bottom: 8px;
+  margin-left: 2px;
+}
+
+.input-quarter-width {
+  width: 25%;
+}
+
+.input-half-width {
+  width: 50%;
+}
+
+.date-picker-input {
+  display: inline;
+  width: 7rem;
+}
+
+.btn-tiny {
+  font-size: 80%;
+  padding: 0.25rem;
+}
+
+.create-task-btn {
+  display: block;
+  width: 7rem;
+  margin-bottom: 2rem;
+}
+
+.update-task-btn {
+  width: 8rem;
+  margin-bottom: 2rem;
+}
+
+.create-quote-btn {
+  display: block;
+  width: 5rem;
+  margin-bottom: 2rem;
+}
+
+.create-task-category-btn {
+  display: block;
+  width: 5rem;
+  margin-bottom: 2rem;
+}
+
+.help-block {
+  color: red;
+  font-size: 10px;
+}
+
+/* alerts */
+
+.alert-container {
+  width: 50%;
+  margin: 0 auto;
+}
+.alert-container-wide {
+  width: 80%;
+  margin: 0 auto;
+}
+.alert-flex-container {
+  display: flex;
+  width: 50%;
+  align-items: center;
+  margin-bottom: -5px;
+}
+.alert {
+  text-align: center;
+}
+.alert-compact {
+  width: 100%;
+  margin-bottom: 0;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+}
+.alert-notice {
+  background-color: green;
+}
+
+#landing_page_referral_alert {
+  p {
+    text-align: left;
+  }
+}
+
+/* footer */
+
+footer#page_footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid $gray-medium-light;
+  color: $gray-light;
+}
+
+/* miscellaneous */
+
+.flex-header {
+  display: flex;
+}
+.heading-with-alert {
+  margin-right: 1.5rem;
+}
+.highlight-on-hover:hover {
+  background: #f2f2f2;
+}
+
+/* quotes */
+
+#header_quote_container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+#header_quotation {
+  font-size: 1.0em;
+  font-style: italic;
+  padding: 0 50px;
+  margin-bottom: -8px;
+}
+#header_quotation_source {
+  font-size: small;
+  padding-left: 2.0em;
+}
+
+.quote-edit-icon {
+  width: 1.9rem;
+  padding-right: 0.5em;
+}
+
+.quote-delete-icon {
+  padding-right: 0.5em;
+}
+
+.display-quote {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.display-quote-quotation {
+  font-size: 1.0rem;
+  font-style: italic;
+  padding-right: 0.5rem;
+}
+
+.display-quote-source {
+  font-size: small;
+  padding-left: 0.5rem;
+}
+
+.editable-quote {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.editable-quote-quotation {
+  padding-right: 0.5rem;
+}
+
+.editable-quote-source {
+  padding-right: 0.5rem;
+}
+
+.editable-quote-submit {
+  padding-right: 0.5rem;
+}
+
+.editable-quote-cancel {
+  padding-top: 0.2rem;
+}
+
+/* tasks */
+
+#task_nav_tabs {
+  margin-bottom: 1rem;
+
+  .nav-item a {
+    font-size: 1.3em;
+  }
+}
+
+#new_task_container select#task_task_category_id {
+  width: auto;
+}
+#new_task_container select#task_priority {
+  width: auto;
+}
+
+#current_tasks_container {
+  margin-bottom: 50px;
+}
+#completed_tasks_container {
+  margin-bottom: 50px;
+}
+
+#task_search_form {
+  margin-bottom: 4em;
+
+  label {
+    white-space: nowrap;
+    font-weight: normal;
+  }
+
+  input {
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  select {
+    margin-bottom: 0;
+  }
+
+  #text_search {
+    margin-bottom: 1em;
+  }
+
+  input#search_terms {
+    width: 75%;
+  }
+  input[type=submit] {
+    margin-left: 1em;
+    width: 20%;
+  }
+
+  #category_search {
+    margin-left: 0.5em;
+
+    label {
+      margin-right: 0.5em;
+    }
+  }
+}
+
+.task-header {
+  text-align: left;
+  font-size: 1.3em;
+  margin-bottom: 0;
+}
+
+#new_task_placeholder {
+  margin-bottom: 4.95em;
+}
+
+#search_results_header {
+  justify-content: space-between;
+}
+
+.task-sort-selector-container {
+  margin-top: -5px;
+
+  select {
+    margin-left: 0.3em;
+    margin-bottom: 0;
+  }
+}
+
+.task-priority1 {
+  color: red;
+  font-weight: bold;
+}
+
+.task-priority2 {
+  font-weight: bold;
+}
+
+.task-completed {
+  color: $gray-light;
+  text-decoration: line-through;
+}
+
+.task-edit-icon {
+  width: 1.9rem;
+  padding-right: 0.5em;
+}
+
+.task-delete-icon {
+  padding-right: 0.5em;
+}
+
+.display-task {
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 5px;
+}
+
+.display-task-checkbox {
+  margin-right: 10px;
+
+  input {
+    margin-bottom: 0;
+  }
+}
+
+.display-task-priority {
+  margin-right: 10px;
+}
+
+.display-task-task-category {
+  white-space: nowrap;
+  margin-right: 10px;
+}
+
+.display-task-summary {
+  width: 100%;
+  margin-right: 10px;
+}
+
+.display-task-due-on {
+  width: 12rem;
+}
+
+.editable-task {
+  margin-left: 0;
+  margin-right: 0;
+
+  .form-inline {
+    width: 100%;
+  }
+}
+
+.editable-task-delete {
+  margin-bottom: 0.5em;
+}
+
+.editable-task-summary {
+  width: 90%;
+  margin-bottom: 0.5em;
+
+  input {
+    width: 100% !important;
+    margin-bottom: 0;
+  }
+}
+
+.editable-task-task-category {
+  padding-right: 0.5em;
+  margin-bottom: 0.5em;
+
+  select {
+    margin-bottom: 0;
+  }
+}
+
+.editable-task-priority {
+  padding-right: 0.5em;
+  margin-bottom: 0.5em;
+
+  select {
+    margin-bottom: 0;
+  }
+}
+
+.editable-task-due-on {
+  padding-right: 0.5em;
+  margin-bottom: 0.5em;
+
+  input {
+    margin-bottom: 0;
+  }
+}
+
+.editable-task-submit {
+  padding-right: 0.5em;
+  margin-bottom: 0.5em;
+
+  input {
+    margin-bottom: 0;
+  }
+}
+
+.editable-task-cancel {
+  padding-top: 0.2em;
+  margin-bottom: 0.5em;
+}
+
+/* task categories */
+
+.task-category-container {
+  margin-bottom: 0.5em;
+}
+
+.display-task-category {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.task-category-edit-icon {
+  width: 1.8rem;
+  padding-right: 0.5em;
+}
+
+.task-category-delete-icon {
+  padding-right: 0.5em;
+}
+
+.editable-task-category {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.editable-task-category-name {
+  padding-right: 0.5em;
+}
+
+.editable-task-category-submit {
+  padding-right: 0.5em;
+}
+
+.editable-task-category-cancel {
+  padding-top: 0.2em;
+}
+
+/* task category filters */
+
+#task_category_filters_container {
+  display: flex;
+  justify-content: space-between;
+}
+#advance_overdue_tasks_button_container {
+  width: 9.8rem;
+  padding-left: 0.2rem;
+}
+#advance_overdue_tasks_button_container input {
+  white-space: normal;
+}
+
+/* users */
+
+#edit_user_profile_alerts_container {
+  max-width: 800px;
+}
+
+#edit_user_profile_form_container {
+  max-width: 500px;
+}
+
+/* modals */
+
+.modal-content {
+  width: 120%;
+}
+.awwyiss-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* debugging */
+
+.debug-borders {
+  border: 1px solid black;
+}
+
+.debug-dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+  @include box_sizing;
+}
+
+/* webkit-specific */
+
+input[type=checkbox]:not(*:root) {
+  width: 10px;
+  margin-top: 2px;
+  zoom: 1.8;
+  -webkit-appearance: checkbox;
+}

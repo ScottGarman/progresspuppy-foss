@@ -1,0 +1,13 @@
+<% if current_user.setting.display_quotes? %>
+  <div id="header_quote_container">
+  <% if current_user.quotes.empty? %>
+    <blockquote id="header_quotation">"To add custom quotes to appear here - or disable the display of quotes altogether - manage your quotes from the <%= link_to 'Settings menu', quotes_path %>."
+      <footer id="header_quotation_source">-ProgressPuppy</footer>
+    </blockquote>
+  <% else %>
+    <blockquote id="header_quotation">"<%= @quote.quotation %>"
+      <footer id="header_quotation_source">-<%= @quote.source %></footer>
+    </blockquote>
+  <% end %>
+  </div>
+<% end %>

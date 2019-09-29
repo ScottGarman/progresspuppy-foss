@@ -1,0 +1,15 @@
+<h1>Can't Log In?</h1>
+
+<%= render 'layouts/flash_alerts_static' %>
+
+<div class="container">
+  <div class="col-md-6 col-md-offset-3 mx-auto">
+    <%= form_with url: password_resets_path, local: true do |f| %>
+      <%= f.label :email, "Email Address:" %>
+      <%= f.email_field :email, placeholder: "Email", class: 'form-control' %>
+      <%= f.submit "Send me password reset instructions", class: "btn btn-primary" %>
+    <% end %>
+
+    <small>Or you can just <%= link_to "return to the login page", login_path %></small>
+  </div>
+</div>

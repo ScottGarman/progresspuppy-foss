@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+settings_donpdonp:
+  display_quotes: true
+  burnination: false
+  user: donpdonp
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+settings_leofsiege:
+  display_quotes: true
+  burnination: false
+  user: leofsiege
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+settings_agj:
+  display_quotes: true
+  burnination: false
+  user: agj
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+settings_onewheelskyward:
+  display_quotes: true
+  burnination: false
+  user: onewheelskyward
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+settings_aaronpk:
+  display_quotes: false
+  burnination: true
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>

@@ -1,0 +1,5 @@
+<div class="alert-flex-container">
+  <%= content_tag :div, message.html_safe,
+      class: "alert alert-#{message_type} alert-compact hide-by-default",
+      data: { "fade-on-demand": true } %>
+</div>

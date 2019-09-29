@@ -1,0 +1,55 @@
+<div class="container">
+  <div id="awwyiss_container">
+    <%= render @awwyiss_modal %>
+  </div>
+
+  <%= render 'quote_container' %>
+
+  <h2 class="task-header">
+    New Task
+    <%= link_to image_tag('chevron-down.svg',
+                          id: 'toggle_new_task_form_control'),
+                          "/", id: 'toggle_new_task_form_control_link',
+                          'data-toggle': 'tooltip', 'data-placement': 'right',
+                          title: "Click this arrow to show/hide the new task form" %>
+  </h2>
+  <hr />
+
+  <div id="new_task_container" class="<%= new_task_form_display_class %>">
+  <%= render 'new_task_form', new_task: @new_task, tasks_view: 'index', current_user: @current_user %>
+  </div>
+
+  <%= render 'task_nav_tabs' %>
+
+  <div id="current_tasks_container">
+    <div id="task_category_filters_container">
+      <%= render 'task_category_filter_buttons', current_user: @current_user %>
+
+      <% if @overdue_tasks > 0 %>
+      <div id="advance_overdue_tasks_button_container">
+        <%= button_to "Advance Overdue Tasks", advance_overdue_tasks_path(page: params[:page]),
+          class: 'btn btn-sm btn-tiny btn-primary',
+          'data-toggle': 'tooltip', 'data-placement': 'top',
+          title: 'This button will update all tasks that are currently overdue to have a new due date of today' %>
+      </div>
+      <% end %>
+    </div>
+
+    <%= render 'display_tasks_paginated', task_list: @current_tasks,
+                                          task_list_type: 'current' %>
+  </div>
+
+  <h2 class="task-header">Today's Completed Tasks</h2>
+  <hr />
+
+  <div id="completed_tasks_container">
+    <div id="completed_task_list">
+      <% if @completed_tasks.empty? %>
+        <p class="italic">There are no completed tasks for today.<p>
+      <% else %>
+        <%= render partial: 'display_task', collection: @completed_tasks, as: :display_task %>
+      <% end %>
+    </div>
+  </div>
+
+</div>

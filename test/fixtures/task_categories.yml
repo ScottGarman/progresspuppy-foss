@@ -1,0 +1,36 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+tc_uncategorized_donpdonp:
+  name: Uncategorized
+  user: donpdonp
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+tc_uncategorized_leofsiege:
+  name: Uncategorized
+  user: leofsiege
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+tc_uncategorized_agj:
+  name: Uncategorized
+  user: agj
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+tc_uncategorized_onewheelskyward:
+  name: Uncategorized
+  user: onewheelskyward
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+tc_uncategorized_aaronpk:
+  name: Uncategorized
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
+
+tc_work_aaronpk:
+  name: Work
+  user: aaronpk
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>

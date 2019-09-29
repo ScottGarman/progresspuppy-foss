@@ -1,0 +1,9 @@
+<% if @task.status == "COMPLETED" %>
+$('#awwyiss_container').html("<%= j render @awwyiss_modal %>")
+$('#awwyiss_modal').modal('show')
+$('#current_task_list').html("<%= j render partial: 'display_task', collection: @current_tasks, as: :display_task %>")
+$('#completed_task_list').html("<%= j render partial: 'display_task', collection: @completed_tasks, as: :display_task %>")
+<% else %>
+$('#completed_task_list').html("<%= j render partial: 'display_task', collection: @completed_tasks, as: :display_task %>")
+$('#current_task_list').html("<%= j render partial: 'display_task', collection: @current_tasks, as: :display_task %>")
+<% end %>

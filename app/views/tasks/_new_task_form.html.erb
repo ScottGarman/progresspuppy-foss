@@ -1,0 +1,45 @@
+<%= form_with model: new_task, url: tasks_path(
+      category: params[:category],
+      page: params[:page],
+      search_terms: params[:search_terms],
+      tasks_filter: params[:tasks_filter],
+      task_category_filter: params[:task_category_filter]),
+      local: true do |f| %>
+
+  <%= hidden_field_tag 'tasks_view', tasks_view %>
+
+  <div class="form-row">
+    <div class="col-5">
+      <%= f.text_field :summary, placeholder: "Summary",
+        class: "form-control form-control-sm #{form_validity_class(new_task, 'summary')}" %>
+      <%= raw validation_error_html(new_task, 'summary', 'Summary') %>
+    </div>
+
+    <div class="col-auto">
+      Due at:
+      <%= f.text_field :due_at,
+        class: "form-control form-control-sm date-picker-input #{form_validity_class(new_task, 'due_at')}" %>
+      <%= raw validation_error_html(new_task, 'due_at', 'Due Date') %>
+    </div>
+
+    <div class="col-auto">
+      Category:
+      <%= f.select :task_category_id, current_user.task_categories.map { |tc| [tc.name, tc.id] }, {},
+        { class: "form-control form-control-sm select-inline #{form_validity_class(new_task, 'task_category_id')}" } %>
+      <%= raw validation_error_html(new_task, 'task_category_id', 'Task Category') %>
+    </div>
+
+    <div class="col-auto">
+      Priority:
+      <%= f.select :priority, [1, 2, 3], {},
+        { class: "form-control form-control-sm select-inline #{form_validity_class(new_task, 'priority')}" } %>
+      <%= raw validation_error_html(new_task, 'priority', 'Priority') %>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="col-auto">
+      <%= f.submit "Create Task", class: "btn btn-sm btn-primary create-task-btn" %>
+    </div>
+  </div>
+<% end %>

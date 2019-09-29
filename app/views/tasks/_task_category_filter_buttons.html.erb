@@ -1,0 +1,20 @@
+<div id="task_category_filters" style="margin-bottom: 1.0rem">
+  <% if params[:category].nil? %>
+    <%= link_to "All Categories", {}, :class => 'badge badge-primary' %>
+  <% else %>
+    <%= link_to "All Categories", {}, :class => 'badge badge-secondary',
+                'data-toggle': 'tooltip', 'data-placement': 'top',
+                title: 'Show tasks in all categories' %>
+  <% end %>
+  <% current_user.task_categories.sort_by(&:name).each do |tc| %>
+    <% if params[:category] == tc.name %>
+      <%= link_to tc.name, { :category => tc.name },
+                  :class => 'badge badge-primary' %>
+    <% else %>
+      <%= link_to tc.name, { :category => tc.name },
+                  :class => 'badge badge-secondary',
+                  'data-toggle': 'tooltip', 'data-placement': 'top',
+                  title: "Show only #{tc.name} tasks" %>
+    <% end %>
+  <% end %>
+</div>

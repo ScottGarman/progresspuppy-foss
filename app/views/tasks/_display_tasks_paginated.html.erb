@@ -1,0 +1,12 @@
+    <% if task_list.empty? %>
+      <% if params[:page] and params[:page].to_i > 1 %>
+        <p class="italic">There are no <%= task_list_type %> tasks to display for this page - maybe try going back one page?</p>
+      <% else %>
+        <p class="italic">There are no <%= task_list_type %> tasks <%= "in this category " unless params[:category].nil? %>to display.</p>
+      <% end %>
+    <% else %>
+      <div id="<%= task_list_type %>_task_list">
+      <%= render partial: 'display_task', collection: task_list, as: :display_task %>
+      <%= will_paginate task_list %>
+      </div>
+    <% end %>
