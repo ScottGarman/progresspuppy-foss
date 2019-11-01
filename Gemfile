@@ -45,20 +45,31 @@ gem 'bcrypt', '~> 3.1.13'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
-# Payment processing with Stripe
-gem 'stripe'
-
-# Static code analyzer for best coding practices
-gem 'rails_best_practices'
-
-# Static code analyzer for security issues
-gem 'brakeman'
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.5', require: false
 
-# Use simplecov for code coverage during testing
-gem 'simplecov', require: false, group: :test
+# Payment processing with Stripe
+gem 'stripe'
+
+# Static code analysis tools
+group :development do
+  # Static code analyzer for best coding practices
+  gem 'rails_best_practices'
+
+  # Static code analyzer for security issues
+  gem 'brakeman'
+end
+
+group :development do
+  # Access an IRB console on exception pages or by using <%= console %> anywhere
+  # in the code.
+  gem 'web-console', '>= 4.0.1'
+  gem 'listen', '>= 3.0.5', '< 3.2'
+  # Spring speeds up development by keeping your application running in the
+  # background. Read more: https://github.com/rails/spring
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.1'
+end
 
 group :development, :test do
   # Use SQLite as the database for non-production environments
@@ -77,16 +88,8 @@ group :development, :test do
   gem 'stripe-ruby-mock', require: 'stripe_mock'
 end
 
-group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere
-  # in the code.
-  gem 'web-console', '>= 4.0.1'
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  # Spring speeds up development by keeping your application running in the
-  # background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.1'
-end
+# Use simplecov for code coverage during testing
+gem 'simplecov', require: false, group: :test
 
 group :production do
   # For using MySQL DB in production
