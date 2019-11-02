@@ -95,6 +95,9 @@ group :development, :test do
   gem 'guard'
   gem 'guard-minitest'
   gem 'stripe-ruby-mock', require: 'stripe_mock'
+
+  # Check for N+1 queries and other anti-patterns
+  gem 'bullet'
 end
 
 # Use simplecov for code coverage metrics during testing
