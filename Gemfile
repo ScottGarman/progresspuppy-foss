@@ -51,13 +51,21 @@ gem 'bootsnap', '>= 1.4.5', require: false
 # Payment processing with Stripe
 gem 'stripe'
 
-# Static code analysis tools
+# Static code analysis and performance testing tools
 group :development do
   # Static code analyzer for best coding practices
   gem 'rails_best_practices'
 
   # Static code analyzer for security issues
   gem 'brakeman'
+
+  # Use derailed_benchmarks for memory usage stats
+  gem 'derailed_benchmarks'
+  gem 'stackprof'
+
+  # Performance profiling using Miniprofiler
+  gem 'rack-mini-profiler'
+  gem 'flamegraph'
 end
 
 group :development do
@@ -77,6 +85,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger
   # console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  # Fake data generation with faker
   gem 'faker'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.29'
@@ -88,7 +97,7 @@ group :development, :test do
   gem 'stripe-ruby-mock', require: 'stripe_mock'
 end
 
-# Use simplecov for code coverage during testing
+# Use simplecov for code coverage metrics during testing
 gem 'simplecov', require: false, group: :test
 
 group :production do
