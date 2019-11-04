@@ -12,6 +12,9 @@ gem 'uglifier', '>= 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
 
+# Use Haml for view templates
+gem 'haml'
+
 # Use jQuery
 gem 'jquery-rails', '~> 4.3.5'
 
