@@ -66,12 +66,10 @@ class PasswordResetsController < ApplicationController
 
   # Confirms a valid user.
   def valid_user
-    unless @user && @user.activated? &&
-           @user.authenticated?(:reset, params[:id])
-      flash[:warning] = 'That password reset link was invalid. Please try' \
-                        ' again.'
-      redirect_to new_password_reset_path
-    end
+    return if @user&.activated? && @user&.authenticated?(:reset, params[:id])
+
+    flash[:warning] = 'That password reset link was invalid. Please try again.'
+    redirect_to new_password_reset_path
   end
 
   # Checks expiration of reset token.
