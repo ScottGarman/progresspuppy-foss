@@ -355,6 +355,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     # Proper sorting of task priorities should result in them appearing in the
     # order: priority1, priority2, priority3
     get tasks_path
+    assert_response :success
     assert_match(/.*A priority1 task.*A priority2 task.*A priority3 task.*/m, response.body)
 
     # delete the three tasks
@@ -365,25 +366,31 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_equal 0, donpdonp.tasks.count
 
     # now he creates three tasks with a due date of today
-    create_task(donpdonp, Date.today.to_s(:db), 'Uncategorized', 2, 'priority2', 'index', nil)
-    create_task(donpdonp, Date.today.to_s(:db), 'Uncategorized', 1, 'priority1', 'index', nil)
-    create_task(donpdonp, Date.today.to_s(:db), 'Uncategorized', 3, 'priority3', 'index', nil)
+    today_db = Time.now.in_time_zone(donpdonp.time_zone).to_date.to_s(:db)
+    create_task(donpdonp, today_db, 'Uncategorized', 2, 'priority2', 'index', nil)
+    create_task(donpdonp, today_db, 'Uncategorized', 1, 'priority1', 'index', nil)
+    create_task(donpdonp, today_db, 'Uncategorized', 3, 'priority3', 'index', nil)
     assert_equal 3, donpdonp.tasks.count
+    assert_equal 3, donpdonp.tasks.current(today_db).count
 
     # Proper sorting of task priorities should result in them appearing in the
     # order: priority1, priority2, priority3
     get tasks_path
+    assert_response :success
     assert_match(/.*A priority1 task.*A priority2 task.*A priority3 task.*/m, response.body)
 
     # now he creates three tasks with a due date of tomorrow
-    create_task(donpdonp, Date.tomorrow.to_s(:db), 'Uncategorized', 2, 'priority2', 'index', nil)
-    create_task(donpdonp, Date.tomorrow.to_s(:db), 'Uncategorized', 1, 'priority1', 'index', nil)
-    create_task(donpdonp, Date.tomorrow.to_s(:db), 'Uncategorized', 3, 'priority3', 'index', nil)
+    tomorrow_db = Time.now.in_time_zone(donpdonp.time_zone).to_date.advance(days: 1).to_s(:db)
+    create_task(donpdonp, tomorrow_db, 'Uncategorized', 2, 'priority2', 'index', nil)
+    create_task(donpdonp, tomorrow_db, 'Uncategorized', 1, 'priority1', 'index', nil)
+    create_task(donpdonp, tomorrow_db, 'Uncategorized', 3, 'priority3', 'index', nil)
     assert_equal 6, donpdonp.tasks.count
+    assert_equal 3, donpdonp.tasks.future(today_db).count
 
     # Proper sorting of task priorities should result in them appearing in the
     # order: priority1, priority2, priority3
     get upcoming_tasks_path
+    assert_response :success
     assert_match(/.*A priority1 task.*A priority2 task.*A priority3 task.*/m, response.body)
   end
 
