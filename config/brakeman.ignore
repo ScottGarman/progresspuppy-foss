@@ -1,0 +1,378 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "1fcd049957376709220605733d121a163fc59e6dcffa9d9a4da670d8c427cf78",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/users/new.html.erb",
+      "line": 40,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(User.new(user_params), \"password_confirmation\", \"Password confirmation\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "UsersController",
+          "method": "create",
+          "line": 22,
+          "file": "app/controllers/users_controller.rb",
+          "rendered": {
+            "name": "users/new",
+            "file": "app/views/users/new.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "users/new"
+      },
+      "user_input": "User.new(user_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "4b18a5386a9eb46fff75b3a0eaabd1218a5ce3e8fe84312f531e9cd1f7a26442",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/users/new.html.erb",
+      "line": 35,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(User.new(user_params), \"password\", \"Password\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "UsersController",
+          "method": "create",
+          "line": 22,
+          "file": "app/controllers/users_controller.rb",
+          "rendered": {
+            "name": "users/new",
+            "file": "app/views/users/new.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "users/new"
+      },
+      "user_input": "User.new(user_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "564e035fe05b5dd0a14c8331dcac40eefa12827836a150d11d753fdede53e176",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/users/new.html.erb",
+      "line": 25,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(User.new(user_params), \"last_name\", \"Last name\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "UsersController",
+          "method": "create",
+          "line": 22,
+          "file": "app/controllers/users_controller.rb",
+          "rendered": {
+            "name": "users/new",
+            "file": "app/views/users/new.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "users/new"
+      },
+      "user_input": "User.new(user_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "74a5cf3bd77026645b9d8f07e2dd89aa3d1a4339434db0779229735d706d6c81",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/quotes/index.html.erb",
+      "line": 31,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(current_user.quotes.build(quote_params), \"source\", \"Quotation source\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "QuotesController",
+          "method": "create",
+          "line": 34,
+          "file": "app/controllers/quotes_controller.rb",
+          "rendered": {
+            "name": "quotes/index",
+            "file": "app/views/quotes/index.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "quotes/index"
+      },
+      "user_input": "current_user.quotes.build(quote_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "82366e9d0338d00edfd37f90dfb5fa58122e1648781f520cb1d5a027b3a2b723",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/password_resets/edit.html.erb",
+      "line": 14,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(User.find_by(:email => params[:email]), \"password_confirmation\", \"Password confirmation\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "PasswordResetsController",
+          "method": "edit",
+          "line": 34,
+          "file": "app/controllers/password_resets_controller.rb",
+          "rendered": {
+            "name": "password_resets/edit",
+            "file": "app/views/password_resets/edit.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "password_resets/edit"
+      },
+      "user_input": "User.find_by(:email => params[:email])",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "91767b0a97ea53f5c2665c548b5bd471bd33e51d3bd14c211ae6c8466b3b7c71",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/users/new.html.erb",
+      "line": 46,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(User.new(user_params), \"time_zone\", \"Time zone\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "UsersController",
+          "method": "create",
+          "line": 22,
+          "file": "app/controllers/users_controller.rb",
+          "rendered": {
+            "name": "users/new",
+            "file": "app/views/users/new.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "users/new"
+      },
+      "user_input": "User.new(user_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "a8c1ba984f51fb64173b4d2070472c5874fffbb18d752738ded2b5f3ab120fc5",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/users/new.html.erb",
+      "line": 30,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(User.new(user_params), \"email\", \"Email\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "UsersController",
+          "method": "create",
+          "line": 22,
+          "file": "app/controllers/users_controller.rb",
+          "rendered": {
+            "name": "users/new",
+            "file": "app/views/users/new.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "users/new"
+      },
+      "user_input": "User.new(user_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "bd24c0c8de3f82fbe38827f5a843f3cf598ba644af8ef6094cc0ba9986b066b4",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/password_resets/edit.html.erb",
+      "line": 10,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(User.find_by(:email => params[:email]), \"password\", \"Password\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "PasswordResetsController",
+          "method": "edit",
+          "line": 34,
+          "file": "app/controllers/password_resets_controller.rb",
+          "rendered": {
+            "name": "password_resets/edit",
+            "file": "app/views/password_resets/edit.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "password_resets/edit"
+      },
+      "user_input": "User.find_by(:email => params[:email])",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "c487fdb8a70b082412429f6b84a9aff94419b3b3997e7439c13a395bfd1abf19",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/users/new.html.erb",
+      "line": 51,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(User.new(user_params), \"accepted_tos\", \"The Terms of Service, Privacy Policy, and Cookie Policy\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "UsersController",
+          "method": "create",
+          "line": 22,
+          "file": "app/controllers/users_controller.rb",
+          "rendered": {
+            "name": "users/new",
+            "file": "app/views/users/new.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "users/new"
+      },
+      "user_input": "User.new(user_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "cb07659512ddcbdaf785236d232029da18cc210b5e818eed5f5f53dd278d4280",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/quotes/index.html.erb",
+      "line": 29,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(current_user.quotes.build(quote_params), \"quotation\", \"Quotation\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "QuotesController",
+          "method": "create",
+          "line": 34,
+          "file": "app/controllers/quotes_controller.rb",
+          "rendered": {
+            "name": "quotes/index",
+            "file": "app/views/quotes/index.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "quotes/index"
+      },
+      "user_input": "current_user.quotes.build(quote_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "e5fa3b35e5e0537ff158db6e41a7f7392b1bb63db678cf76073a98fd2a4aa384",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/task_categories/index.html.erb",
+      "line": 11,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(current_user.task_categories.build(task_category_params), \"name\", \"Category\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "TaskCategoriesController",
+          "method": "create",
+          "line": 29,
+          "file": "app/controllers/task_categories_controller.rb",
+          "rendered": {
+            "name": "task_categories/index",
+            "file": "app/views/task_categories/index.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "task_categories/index"
+      },
+      "user_input": "current_user.task_categories.build(task_category_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "fbe55a8a2d3fb24d9f6e91e35dcd07a950e933bedcd51a9f80a02ab4b76d64e9",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/users/new.html.erb",
+      "line": 20,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "validation_error_html(User.new(user_params), \"first_name\", \"First name\")",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "UsersController",
+          "method": "create",
+          "line": 22,
+          "file": "app/controllers/users_controller.rb",
+          "rendered": {
+            "name": "users/new",
+            "file": "app/views/users/new.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "users/new"
+      },
+      "user_input": "User.new(user_params)",
+      "confidence": "Weak",
+      "note": ""
+    }
+  ],
+  "updated": "2019-12-22 14:20:51 -0800",
+  "brakeman_version": "4.7.1"
+}
