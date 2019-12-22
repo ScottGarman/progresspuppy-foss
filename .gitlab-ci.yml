@@ -23,3 +23,8 @@ Integration Tests:
   stage: test
   script:
     - bundle exec rails test
+
+Brakeman Tests:
+  stage: lint
+  script:
+    - bundle exec brakeman
