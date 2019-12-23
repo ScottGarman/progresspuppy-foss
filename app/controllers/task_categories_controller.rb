@@ -88,14 +88,9 @@ class TaskCategoriesController < ApplicationController
       redirect_to(task_categories_path) && return
     end
 
-    # Re-assign any existing tasks from this category to Unassigned
-    orphaned_tasks = current_user.tasks.where('task_category_id = ?',
-                                              @task_category.id)
-    if orphaned_tasks.count > 0
-      uncategorized_tc = current_user.task_categories
-                                     .find_by_name('Uncategorized')
-      orphaned_tasks.update_all(task_category_id: uncategorized_tc.id)
-    end
+    # Re-assign any existing tasks from this category to Uncategorized
+    new_tc = current_user.task_categories.find_by_name('Uncategorized')
+    current_user.tasks.category(@task_category).move_to_category(new_tc.id)
 
     @task_category.destroy
     flash[:success] = 'Task Category deleted'
