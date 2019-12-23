@@ -24,6 +24,11 @@ Integration Tests:
   script:
     - bundle exec rails test
 
+Rails Best Practices Tests:
+  stage: lint
+  script:
+    - bundle exec rails_best_practices
+
 Brakeman Tests:
   stage: lint
   script:

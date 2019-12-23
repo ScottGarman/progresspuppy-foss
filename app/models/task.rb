@@ -25,6 +25,11 @@ class Task < ApplicationRecord
     where(task_category_id: tc_id)
   end
 
+  # Reassign a task collection to a different Task Category
+  def self.move_to_category(tc_id)
+    update_all(task_category_id: tc_id)
+  end
+
   # today_db should be today's date in database format (yyyy-mm-dd). It's
   # passed as an argument to allow its caller to apply the user's time
   # zone to the date.

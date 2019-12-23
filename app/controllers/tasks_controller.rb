@@ -8,7 +8,7 @@ class TasksController < ApplicationController
       @current_tasks = current_user.tasks.current(today_db)
                                    .paginate(page: params[:page], per_page: 20)
     else
-      tc_id = current_user.task_categories.find_by_name(tc_filter)
+      tc_id = current_user.task_categories.find_by(name: tc_filter)
       @current_tasks = current_user.tasks.category(tc_id).current(today_db)
                                    .paginate(page: params[:page], per_page: 20)
     end
@@ -27,7 +27,7 @@ class TasksController < ApplicationController
       @future_tasks = current_user.tasks.future(today_db)
                                   .paginate(page: params[:page], per_page: 20)
     else
-      tc_id = current_user.task_categories.find_by_name(tc_filter)
+      tc_id = current_user.task_categories.find_by(name: tc_filter)
       @future_tasks = current_user.tasks.category(tc_id).future(today_db)
                                   .paginate(page: params[:page], per_page: 20)
     end
@@ -36,7 +36,7 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task = current_user.tasks.find_by_id(params[:id])
+    @task = current_user.tasks.find_by(id: params[:id])
     if @task.nil?
       flash[:danger] = 'Task not found'
       redirect_to_correct_tasks_tab && return
@@ -54,14 +54,8 @@ class TasksController < ApplicationController
   def create
     @new_task = current_user.tasks.build(task_params)
     if @new_task.save
-      flash[:success] = 'New task created'
-      if @new_task.current?(today_db) && (params[:tasks_view] == 'upcoming' ||
-          params[:tasks_view] == 'search')
-        flash[:success] = "New task created (in Today's Tasks list)"
-      elsif @new_task.upcoming?(today_db) && (params[:tasks_view] == 'index' ||
-          params[:tasks_view] == 'search')
-        flash[:success] = 'New task created (in Upcoming Tasks list)'
-      end
+      flash[:success] = task_change_flash_msg(@new_task, params[:tasks_view],
+                                              'New task created')
       redirect_to_correct_tasks_tab
     else
       @new_task.destroy!
@@ -80,7 +74,7 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = current_user.tasks.find_by_id(params[:id])
+    @task = current_user.tasks.find_by(id: params[:id])
     if @task.nil?
       flash[:danger] = 'Task not found'
       redirect_to_correct_tasks_tab && return
@@ -92,27 +86,21 @@ class TasksController < ApplicationController
   end
 
   def update
-    @task = current_user.tasks.find_by_id(params[:id])
+    @task = current_user.tasks.find_by(id: params[:id])
     if @task.nil?
       flash[:danger] = 'Updating task failed: task not found'
       redirect_to_correct_tasks_tab && return
     end
 
     if @task.update(task_params)
-      flash[:success] = 'Task updated'
-      if @task.current?(today_db) && (params[:tasks_view] == 'upcoming' ||
-          params[:tasks_view] == 'search')
-        flash[:success] = "Task updated (in Today's Tasks list)"
-      elsif @task.upcoming?(today_db) && (params[:tasks_view] == 'index' ||
-          params[:tasks_view] == 'search')
-        flash[:success] = 'Task updated (in Upcoming Tasks list)'
-      end
+      flash[:success] = task_change_flash_msg(@task, params[:tasks_view],
+                                              'Task updated')
     end
     redirect_to_correct_tasks_tab
   end
 
   def destroy
-    @task = current_user.tasks.find_by_id(params[:id])
+    @task = current_user.tasks.find_by(id: params[:id])
     if @task.nil?
       flash[:danger] = 'Deleting task failed: task not found'
       redirect_to_correct_tasks_tab && return
@@ -124,7 +112,7 @@ class TasksController < ApplicationController
   end
 
   def toggle_task_status
-    @task = current_user.tasks.find_by_id(params[:id])
+    @task = current_user.tasks.find_by(id: params[:id])
     if @task.nil?
       flash[:danger] = 'Changing task status failed: task not found'
       redirect_to(tasks_path) && return
