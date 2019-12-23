@@ -29,4 +29,17 @@ class ApplicationController < ActionController::Base
   def today_end_db
     DateTime.now.in_time_zone(current_user.time_zone).end_of_day.to_s(:db)
   end
+
+  # Return the base message with optional references to the view the task change
+  # occurred on (sometimes task changes won't appeaar on the current view)
+  def task_change_flash_msg(task, tasks_view, base_msg)
+    msg = base_msg
+    if task.current?(today_db) && %w[upcoming search].include?(tasks_view)
+      msg = "#{base_msg} (in Today's Tasks list)"
+    elsif task.upcoming?(today_db) && %w[index search].include?(tasks_view)
+      msg = "#{base_msg} (in Upcoming Tasks list)"
+    end
+
+    msg
+  end
 end
