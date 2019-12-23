@@ -1,11 +1,6 @@
 class QuotesController < ApplicationController
   before_action :logged_in_user
 
-  # This method is for testing exception notifier:
-  def boom
-    raise 'NopeNopeNope'
-  end
-
   def index
     @new_quote = Quote.new
     @display_quotes = current_user.setting.display_quotes
