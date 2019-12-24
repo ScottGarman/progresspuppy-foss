@@ -23,7 +23,7 @@
   <% if @current_user.task_categories.count < 2 %>
     <p class="italic">You have no task categories to display.</p>
   <% else %>
-    <%= render partial: 'display_task_category', collection: @current_user.task_categories %>
+    <%= render @current_user.task_categories %>
   <% end %>
 
 </div>
