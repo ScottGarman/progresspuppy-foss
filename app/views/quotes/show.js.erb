@@ -1,1 +1,1 @@
-$('#quote_<%= @quote.id %>_container').replaceWith("<%= j render 'display_quote', display_quote: @quote %>")
+$('#quote_<%= @quote.id %>_container').replaceWith("<%= j render @quote %>")
