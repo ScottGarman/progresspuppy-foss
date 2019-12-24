@@ -42,6 +42,6 @@
   <% if @current_user.quotes.empty? %>
     <p class="italic">Your list of quotes is currently empty.</p>
   <% else %>
-    <%= render partial: 'display_quote', collection: @current_user.quotes %>
+    <%= render @current_user.quotes %>
   <% end %>
 </div>
