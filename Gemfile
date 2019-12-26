@@ -51,9 +51,6 @@ gem 'bcrypt', '~> 3.1.13'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.5', require: false
 
-# Payment processing with Stripe
-gem 'stripe'
-
 # Static code analysis and performance testing tools
 group :development do
   # Static code analyzer for best coding practices
@@ -97,7 +94,6 @@ group :development, :test do
   gem 'minitest-reporters'
   gem 'guard'
   gem 'guard-minitest'
-  gem 'stripe-ruby-mock', require: 'stripe_mock'
 
   # Check for N+1 queries and other anti-patterns
   gem 'bullet'
@@ -105,11 +101,6 @@ end
 
 # Use simplecov for code coverage metrics during testing
 gem 'simplecov', require: false, group: :test
-
-group :production do
-  # For using MySQL DB in production
-  #gem 'mysql2'
-end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
