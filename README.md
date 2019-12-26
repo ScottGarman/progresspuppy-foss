@@ -10,7 +10,7 @@ See the Adding Memes section below for instructions on how to configure your own
 
 ## Setup Notes
 
-This app is based on the Ruby on Rails 6.0.1 framework, which requires Ruby 2.5 or later. Review the Gemfile to see what ruby gems are needed.
+This app is based on the Ruby on Rails 6.0 framework, which requires Ruby 2.5 or later. Review the Gemfile to see what ruby gems are needed.
 
 To set up the sqlite3 default databases, run `rails db:migrate`.
 

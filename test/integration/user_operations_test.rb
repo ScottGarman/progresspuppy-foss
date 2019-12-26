@@ -1,15 +1,6 @@
 require 'test_helper'
 
 class UserOperationsTest < ActionDispatch::IntegrationTest
-  def setup
-    @stripe_test_helper = StripeMock.create_test_helper
-    StripeMock.start
-  end
-
-  def teardown
-    StripeMock.stop
-  end
-
   test 'Update user profile information' do
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
