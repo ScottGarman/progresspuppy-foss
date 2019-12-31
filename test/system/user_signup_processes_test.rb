@@ -1,4 +1,4 @@
-require "application_system_test_case"
+require 'application_system_test_case'
 
 class UserSignupProcessesTest < ApplicationSystemTestCase
   def setup
@@ -7,11 +7,11 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
 
   test 'invalid signup information' do
     visit signup_url
-    page.assert_no_selector 'p#first_name_error_msg'
-    page.assert_no_selector 'p#last_name_error_msg'
-    page.assert_no_selector 'p#email_error_msg'
-    page.assert_no_selector 'p#password_error_msg'
-    page.assert_no_selector 'p#accepted_tos_error_msg'
+    assert_no_selector 'p#first_name_error_msg'
+    assert_no_selector 'p#last_name_error_msg'
+    assert_no_selector 'p#email_error_msg'
+    assert_no_selector 'p#password_error_msg'
+    assert_no_selector 'p#accepted_tos_error_msg'
 
     assert_no_difference 'User.count' do
       fill_in 'user[first_name]', with: ''
@@ -23,23 +23,23 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     end
 
     assert_current_path signup_path
-    page.assert_selector 'p#first_name_error_msg', count: 1
-    assert page.has_content?("First name can't be blank")
-    page.assert_selector 'p#last_name_error_msg', count: 1
-    assert page.has_content?("Last name can't be blank")
-    page.assert_selector 'p#email_error_msg', count: 1
-    assert page.has_content?('Email is invalid')
-    page.assert_selector 'p#password_error_msg', count: 1
-    assert page.has_content?('Password is too short (minimum is 10 characters)')
-    assert page.has_content?("Password confirmation doesn't match Password")
-    page.assert_selector 'p#accepted_tos_error_msg', count: 1
-    assert page.has_content?('The Terms of Service, Privacy Policy, and' \
+    assert_selector 'p#first_name_error_msg', count: 1
+    assert has_content?("First name can't be blank")
+    assert_selector 'p#last_name_error_msg', count: 1
+    assert has_content?("Last name can't be blank")
+    assert_selector 'p#email_error_msg', count: 1
+    assert has_content?('Email is invalid')
+    assert_selector 'p#password_error_msg', count: 1
+    assert has_content?('Password is too short (minimum is 10 characters)')
+    assert has_content?("Password confirmation doesn't match Password")
+    assert_selector 'p#accepted_tos_error_msg', count: 1
+    assert has_content?('The Terms of Service, Privacy Policy, and' \
                              ' Cookie Policy must be accepted')
   end
 
   test 'signup attempt without accepting ToS/Privacy Policy' do
     visit signup_url
-    page.assert_no_selector 'p#accepted_tos_error_msg'
+    assert_no_selector 'p#accepted_tos_error_msg'
 
     assert_no_difference 'User.count' do
       fill_in 'user[first_name]', with: 'Example'
@@ -51,8 +51,8 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     end
 
     assert_current_path signup_path
-    page.assert_selector 'p#accepted_tos_error_msg', count: 1
-    assert page.has_content?('The Terms of Service, Privacy Policy, and' \
+    assert_selector 'p#accepted_tos_error_msg', count: 1
+    assert has_content?('The Terms of Service, Privacy Policy, and' \
                              ' Cookie Policy must be accepted')
   end
 
@@ -71,7 +71,7 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
       # Chrome-specific:
       #check 'user_accepted_tos'
       # So let's hit it with a hammer:
-      page.execute_script("$('#user_accepted_tos').click()")
+      execute_script("$('#user_accepted_tos').click()")
       click_button 'Create my account'
     end
 
@@ -98,26 +98,26 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     click_button 'Log in'
 
     assert_current_path login_path
-    assert page.has_content?('We need to verify your email address before' \
+    assert has_content?('We need to verify your email address before' \
                              ' you can log in. Please check your email for' \
                              ' the activation link.')
 
     # Use an invalid activation token
     visit edit_account_activation_url('invalid token', email: user.email)
     assert_current_path login_path
-    assert page.has_content?('That activation link was invalid or has' \
+    assert has_content?('That activation link was invalid or has' \
                              ' already been used')
 
     # Use a valid activation token, but with a wrong email address
     visit edit_account_activation_url(activation_token, email: 'wrong')
     assert_current_path login_path
-    assert page.has_content?('That activation link was invalid or has' \
+    assert has_content?('That activation link was invalid or has' \
                              ' already been used')
 
     # Valid activation token
     visit edit_account_activation_url(activation_token, email: user.email)
     assert_current_path tasks_path
-    assert page.has_content?('Thanks - your account has now been activated!')
+    assert has_content?('Thanks - your account has now been activated!')
     assert user.reload.activated?
 
     # Logged-in users trying to access the signup page should get redirected to
@@ -155,7 +155,7 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
       # Chrome-specific:
       #check 'user_accepted_tos'
       # So let's hit it with a hammer:
-      page.execute_script("$('#user_accepted_tos').click()")
+      execute_script("$('#user_accepted_tos').click()")
       click_button 'Create my account'
     end
 
@@ -180,12 +180,12 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     fill_in 'password', with: 'foobarbaz123'
     click_button 'Log in'
 
-    assert page.has_content?('We need to verify your email address before' \
+    assert has_content?('We need to verify your email address before' \
                              ' you can log in. Please check your email for' \
                              ' the activation link.')
     click_link 'click here'
 
-    assert page.has_content?("New activation link sent to #{user.email}." \
+    assert has_content?("New activation link sent to #{user.email}." \
                              ' Please check your email to activate your' \
                              ' account')
 
@@ -198,14 +198,14 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     # The old activation url should no longer work
     visit edit_account_activation_url(activation_token_old, email: user.email)
     assert_current_path login_path
-    assert page.has_content?('That activation link was invalid or has already' \
+    assert has_content?('That activation link was invalid or has already' \
                              ' been used')
     assert_not user.reload.activated?
 
     # But the new one should work
     visit edit_account_activation_url(activation_token, email: user.email)
     assert_current_path tasks_path
-    assert page.has_content?('Thanks - your account has now been activated!')
+    assert has_content?('Thanks - your account has now been activated!')
     assert user.reload.activated?
   end
 
@@ -224,7 +224,7 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
       # Chrome-specific:
       #check 'user_accepted_tos'
       # So let's hit it with a hammer:
-      page.execute_script("$('#user_accepted_tos').click()")
+      execute_script("$('#user_accepted_tos').click()")
       click_button 'Create my account'
     end
 
@@ -246,7 +246,7 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     # Activate the account
     visit edit_account_activation_url(activation_token, email: user.email)
     assert_current_path tasks_path
-    assert page.has_content?('Thanks - your account has now been activated!')
+    assert has_content?('Thanks - your account has now been activated!')
     assert user.reload.activated?
 
     # Visit all Task related urls
@@ -259,19 +259,19 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     click_link 'Settings'
     click_link 'User Profile'
     assert_current_path user_profile_path
-    assert page.has_content?('User Profile')
+    assert has_content?('User Profile')
     click_link 'Settings'
     click_link 'Task Categories'
     assert_current_path task_categories_path
-    assert page.has_content?('Manage Task Categories')
-    assert page.has_content?('Define a New Task Category')
-    assert page.has_content?('Your Task Categories')
+    assert has_content?('Manage Task Categories')
+    assert has_content?('Define a New Task Category')
+    assert has_content?('Your Task Categories')
     click_link 'Settings'
     click_link 'Quotes'
     assert_current_path quotes_path
-    assert page.has_content?('Manage Quotes')
-    assert page.has_content?('Quote Settings')
-    assert page.has_content?('Add a New Quote')
-    assert page.has_content?('Your Quotes')
+    assert has_content?('Manage Quotes')
+    assert has_content?('Quote Settings')
+    assert has_content?('Add a New Quote')
+    assert has_content?('Your Quotes')
   end
 end
