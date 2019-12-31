@@ -9,14 +9,14 @@
 
   <ul style="list-style-type: none; padding-left: 0;">
     <li>
-      <%= check_box_tag 'display', value='1', checked=@display_quotes,
+      <%= check_box_tag 'display_random_quote', value='1', checked=@display_quotes,
         class: "checkbox inline", style: "width: 2%;",
         data: {
           remote: true,
           url: settings_toggle_display_quotes_url,
           method: "POST"
         } %>
-      Display a random quote in the task view
+      <%= label_tag 'display_random_quote', 'Display a random quote in the task view', class: 'settings_label' %>
     </li>
   </ul>
 
