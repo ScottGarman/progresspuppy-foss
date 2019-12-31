@@ -6,48 +6,48 @@ class TaskFeaturesTest < ApplicationSystemTestCase
     log_in_as(donpdonp)
 
     # The new task form should be visible by default
-    assert page.has_selector?('div#new_task_container')
+    assert has_selector?('div#new_task_container')
 
     # The new task form should remain visible on Upcoming Tasks
     click_link 'Upcoming Tasks'
     assert_current_path upcoming_tasks_path
-    assert page.has_selector?('div#new_task_container')
+    assert has_selector?('div#new_task_container')
 
     # ...and again for New Tasks when the tab was clicked
     click_link "Today's Tasks"
     assert_current_path tasks_path
-    assert page.has_selector?('div#new_task_container')
+    assert has_selector?('div#new_task_container')
 
     # Close the new task form
     click_link 'toggle_new_task_form_control_link'
     assert_current_path tasks_path
     sleep 2
-    assert page.has_no_selector?('div#new_task_container')
+    assert has_no_selector?('div#new_task_container')
 
     # The new task form should remain invisible on Upcoming Tasks
     click_link 'Upcoming Tasks'
     assert_current_path upcoming_tasks_path
-    assert page.has_no_selector?('div#new_task_container')
+    assert has_no_selector?('div#new_task_container')
 
     # ...and again for New Tasks when the tab was clicked
     click_link "Today's Tasks"
     assert_current_path tasks_path
-    assert page.has_no_selector?('div#new_task_container')
+    assert has_no_selector?('div#new_task_container')
 
     # Open the new task form
     click_link 'toggle_new_task_form_control_link'
     assert_current_path tasks_path
     sleep 2
-    assert page.has_selector?('div#new_task_container')
+    assert has_selector?('div#new_task_container')
 
     # The new task form should remain visible on Upcoming Tasks
     click_link 'Upcoming Tasks'
     assert_current_path upcoming_tasks_path
-    assert page.has_selector?('div#new_task_container')
+    assert has_selector?('div#new_task_container')
 
     # ...and again for New Tasks when the tab was clicked
     click_link "Today's Tasks"
     assert_current_path tasks_path
-    assert page.has_selector?('div#new_task_container')
+    assert has_selector?('div#new_task_container')
   end
 end
