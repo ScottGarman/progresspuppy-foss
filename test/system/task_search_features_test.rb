@@ -1,17 +1,6 @@
-require "application_system_test_case"
+require 'application_system_test_case'
 
 class TaskSearchFeaturesTest < ApplicationSystemTestCase
-  def log_in_as(user)
-    visit login_url
-    assert_current_path login_path
-
-    fill_in 'email', with: user.email
-    fill_in 'password', with: 'foobarbaz123'
-    click_button 'Log in'
-
-    assert_current_path tasks_path
-  end
-
   test 'ensure search results remain persistent when reloading the page' do
     aaronpk = users(:aaronpk)
     log_in_as(aaronpk)

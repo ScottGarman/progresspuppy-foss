@@ -1,17 +1,6 @@
-require "application_system_test_case"
+require 'application_system_test_case'
 
 class TaskFeaturesTest < ApplicationSystemTestCase
-  def log_in_as(user)
-    visit login_url
-    assert_current_path login_path
-
-    fill_in 'email', with: user.email
-    fill_in 'password', with: 'foobarbaz123'
-    click_button 'Log in'
-
-    assert_current_path tasks_path
-  end
-
   test 'ensure the new task form visibility behaves consistently' do
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
