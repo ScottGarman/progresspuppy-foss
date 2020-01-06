@@ -24,6 +24,18 @@ Integration Tests:
   script:
     - bundle exec rails test
 
+System Tests:
+  stage: test
+  script:
+    - ./bin/setup_chrome
+    - bundle exec rails test:system
+  artifacts:
+    when: on_failure
+    expire_in: 1 week
+    paths:
+      - tmp/screenshots/
+      - log/
+
 Rails Best Practices Tests:
   stage: lint
   script:
