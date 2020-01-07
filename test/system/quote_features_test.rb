@@ -8,6 +8,7 @@ class QuoteFeaturesTest < ApplicationSystemTestCase
     assert has_selector?('div#header_quote_container')
 
     click_link 'Settings'
+    assert has_selector?(:link_or_button, 'Quotes')
     click_link 'Quotes'
     assert_current_path quotes_path
 
@@ -23,6 +24,7 @@ class QuoteFeaturesTest < ApplicationSystemTestCase
 
     # Now enable display of quotes
     click_link 'Settings'
+    assert has_selector?(:link_or_button, 'Quotes')
     click_link 'Quotes'
     assert_current_path quotes_path
 
