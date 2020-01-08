@@ -127,6 +127,7 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
 
     # Now log out and log back in normally
     click_link 'Settings'
+    assert has_selector?(:link_or_button, 'Log out')
     click_link 'Log out'
     assert_current_path login_path
 
@@ -257,16 +258,19 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
 
     # Visit all the links in the dropdown menu
     click_link 'Settings'
+    assert has_selector?(:link_or_button, 'User Profile')
     click_link 'User Profile'
     assert_current_path user_profile_path
     assert has_content?('User Profile')
     click_link 'Settings'
+    assert has_selector?(:link_or_button, 'Task Categories')
     click_link 'Task Categories'
     assert_current_path task_categories_path
     assert has_content?('Manage Task Categories')
     assert has_content?('Define a New Task Category')
     assert has_content?('Your Task Categories')
     click_link 'Settings'
+    assert has_selector?(:link_or_button, 'Quotes')
     click_link 'Quotes'
     assert_current_path quotes_path
     assert has_content?('Manage Quotes')

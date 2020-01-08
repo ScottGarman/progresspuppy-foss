@@ -21,7 +21,7 @@ class TaskFeaturesTest < ApplicationSystemTestCase
     # Close the new task form
     click_link 'toggle_new_task_form_control_link'
     assert_current_path tasks_path
-    sleep 2
+    sleep 5
     assert has_no_selector?('div#new_task_container')
 
     # The new task form should remain invisible on Upcoming Tasks
@@ -37,7 +37,7 @@ class TaskFeaturesTest < ApplicationSystemTestCase
     # Open the new task form
     click_link 'toggle_new_task_form_control_link'
     assert_current_path tasks_path
-    sleep 2
+    sleep 5
     assert has_selector?('div#new_task_container')
 
     # The new task form should remain visible on Upcoming Tasks

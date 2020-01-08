@@ -6,6 +6,7 @@ class TaskCategoryFeaturesTest < ApplicationSystemTestCase
     log_in_as(donpdonp)
 
     click_link 'Settings'
+    assert has_selector?(:link_or_button, 'Task Categories')
     click_link 'Task Categories'
     assert_current_path task_categories_path
 
