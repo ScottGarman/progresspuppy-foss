@@ -4,11 +4,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.0'
 # Use Puma as the app server
-gem 'puma', '~> 4.1.1'
+gem 'puma', '~> 4.3.1'
 # Use SCSS for stylesheets
 gem 'sassc-rails', '~> 2.1'
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 4.1.0'
+gem 'uglifier', '>= 4.2.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
 
@@ -19,7 +19,7 @@ gem 'haml'
 gem 'jquery-rails', '~> 4.3.5'
 
 # Use Bootstrap 4
-gem 'bootstrap', '~> 4.3.1'
+gem 'bootstrap', '~> 4.4.1'
 
 # bootstrap-datepicker support
 gem 'bootstrap-datepicker-rails'
@@ -31,7 +31,7 @@ gem 'js_cookie_rails'
 gem 'jsTimezoneDetect-rails'
 
 # Pagination
-gem 'will_paginate', '~> 3.1.8'
+gem 'will_paginate', '~> 3.2.1'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 5.0.0'
@@ -54,10 +54,7 @@ gem 'bootsnap', '>= 1.4.5', require: false
 # Static code analysis and performance testing tools
 group :development do
   # Static code analyzer for best coding practices
-  gem 'rails_best_practices'
-
-  # Static code analyzer for security issues
-  gem 'brakeman'
+  gem 'rails_best_practices', require: false
 
   # Use derailed_benchmarks for memory usage stats
   gem 'derailed_benchmarks'
@@ -81,7 +78,7 @@ end
 
 group :development, :test do
   # Use SQLite as the database for non-production environments
-  gem 'sqlite3', '~> 1.4.1'
+  gem 'sqlite3', '~> 1.4.2'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger
   # console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
@@ -94,6 +91,9 @@ group :development, :test do
   gem 'minitest-reporters'
   gem 'guard'
   gem 'guard-minitest'
+
+  # Static code analyzer for security issues
+  gem 'brakeman', require: false
 
   # Static code analyzer for security issues
   gem 'dawnscanner', require: false
