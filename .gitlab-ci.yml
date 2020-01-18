@@ -30,6 +30,7 @@ System Tests:
     - ./bin/setup_chrome
     - bundle exec rails test:system
   artifacts:
+    name: system_tests
     when: on_failure
     expire_in: 1 week
     paths:
@@ -43,8 +44,15 @@ Rails Best Practices Tests:
 
 Brakeman Tests:
   stage: lint
+  allow_failure: true
   script:
-    - bundle exec brakeman
+    - bundle exec brakeman --format html -o brakeman/index.html
+  artifacts:
+    name: brakeman_report
+    when: always
+    expire_in: 1 week
+    paths:
+      - brakeman/ 
 
 Dawnscanner Tests:
   stage: lint
@@ -53,6 +61,7 @@ Dawnscanner Tests:
     - mkdir dawnscanner
     - bundle exec dawn --html -zF dawnscanner/index.html .
   artifacts:
+    name: dawnscanner_report
     when: always
     expire_in: 1 week
     paths:
