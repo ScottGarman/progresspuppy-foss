@@ -95,6 +95,9 @@ group :development, :test do
   gem 'guard'
   gem 'guard-minitest'
 
+  # Static code analyzer for security issues
+  gem 'dawnscanner', require: false
+
   # Check for N+1 queries and other anti-patterns
   gem 'bullet'
 end
