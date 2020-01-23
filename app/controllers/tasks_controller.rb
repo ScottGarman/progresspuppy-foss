@@ -208,7 +208,7 @@ class TasksController < ApplicationController
     return nil if quote_ids.empty?
 
     # Use sample to return a random id from the array:
-    quote = current_user.quotes.find(quote_ids.sample)
+    current_user.quotes.find(quote_ids.sample)
   end
 
   # Returns a list of meme modal template names that can be shown.
