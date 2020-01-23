@@ -1,6 +1,9 @@
 AllCops:
+  TargetRubyVersion: 2.6
   Exclude:
     - db/schema.rb
+    - 'db/migrate/**/*'
+    - 'lib/tasks/**/*'
     - '**/bin/*'
     - '**/config/**/*'
     - '**/vendor/**/*'
@@ -8,9 +11,17 @@ AllCops:
 # Disabled cops:
 Bundler/OrderedGems:
   Enabled: false
+Layout/LeadingCommentSpace:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
 Style/Documentation:
   Enabled: false
 Style/EmptyMethod:
+  Enabled: false
+Style/ExpandPathArguments:
+  Enabled: false
+Style/FrozenStringLiteralComment:
   Enabled: false
 # Maybe add these back later?
 Metrics/MethodLength:
