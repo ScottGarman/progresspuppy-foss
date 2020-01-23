@@ -164,7 +164,7 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     assert_equal 1, ActionMailer::Base.deliveries.size
     email = ActionMailer::Base.deliveries.last
     activation_token_old = email.text_part.body.decoded
-                            .match(%r{http.*\/account_activations\/(.*)\/edit})[1]
+                                .match(%r{http.*\/account_activations\/(.*)\/edit})[1]
     assert_not_nil activation_token_old
 
     user = User.find_by_email('user@example.com')

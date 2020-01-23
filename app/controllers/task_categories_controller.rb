@@ -54,9 +54,8 @@ class TaskCategoriesController < ApplicationController
       redirect_to(task_categories_path) && return
     end
 
-    if @task_category.update(task_category_params)
-      flash[:success] = 'Task Category updated'
-    end
+    flash[:success] = 'Task Category updated' if
+      @task_category.update(task_category_params)
     redirect_to(task_categories_path)
   end
 
