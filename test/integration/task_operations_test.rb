@@ -8,14 +8,14 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     category_id = user.task_categories.find_by(name: category).id
     assert_difference 'user.tasks.count', 1 do
       post tasks_path(tasks_view: tasks_view, search_terms: search_terms),
-          params: {
-            task: {
-              summary: "A #{tag} task",
-              priority: priority,
-              task_category_id: category_id,
-              due_at: due_at
-            }
-          }
+           params: {
+             task: {
+               summary: "A #{tag} task",
+               priority: priority,
+               task_category_id: category_id,
+               due_at: due_at
+             }
+           }
     end
   end
 

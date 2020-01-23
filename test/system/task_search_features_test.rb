@@ -56,7 +56,7 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
     # Confirm that the tasks do not appear in priority order to begin with
     assert_raises 'Capybara::ElementNotFound' do
       find('div#search_results_container',
-                text: /Aaronpk task26 priority1.*Aaronpk task28 priority1.*Aaronpk task29 priority2.*Aaronpk task30/m)
+           text: /Aaronpk task26 priority1.*Aaronpk task28 priority1.*Aaronpk task29 priority2.*Aaronpk task30/m)
     end
 
     #select 'Priority - Highest First', from: 'sort_by'
@@ -66,7 +66,7 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
 
     # Confirm the tasks are now appearing in priority order
     assert find('div#search_results_container',
-                     text: /Aaronpk task26 priority1.*Aaronpk task28 priority1.*Aaronpk task29 priority2.*Aaronpk task30/m)
+                text: /Aaronpk task26 priority1.*Aaronpk task28 priority1.*Aaronpk task29 priority2.*Aaronpk task30/m)
 
     # Change the sort method to Priority - Lowest First
     # option[4] is Priority - Lowest First
@@ -76,11 +76,11 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
     # Confirm the tasks are not appearing in priority order
     assert_raises 'Capybara::ElementNotFound' do
       find('div#search_results_container',
-                text: /Aaronpk task26 priority1.*Aaronpk task28 priority1.*Aaronpk task29 priority2.*Aaronpk task30/m)
+           text: /Aaronpk task26 priority1.*Aaronpk task28 priority1.*Aaronpk task29 priority2.*Aaronpk task30/m)
     end
 
     # But instead are appearing in reverse priority order
     assert find('div#search_results_container',
-                     text: /Aaronpk task30.*Aaronpk task29 priority2.*Aaronpk task26 priority1.*Aaronpk task28 priority1/m)
+                text: /Aaronpk task30.*Aaronpk task29 priority2.*Aaronpk task26 priority1.*Aaronpk task28 priority1/m)
   end
 end

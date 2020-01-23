@@ -215,9 +215,9 @@ class TasksController < ApplicationController
   def meme_modal_list(user)
     # Customize your memes by adding partial templates in app/views/tasks/ and
     # reference them here:
-    return %w[awwyiss_modal_bravocado
-                awwyiss_modal_like_a_boss
-                awwyiss_modal_nice_one]
+    %w[awwyiss_modal_bravocado
+       awwyiss_modal_like_a_boss
+       awwyiss_modal_nice_one]
   end
 
   # Return the name of a random awwyiss modal template
