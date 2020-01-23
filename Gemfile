@@ -100,6 +100,9 @@ group :development, :test do
 
   # Check for N+1 queries and other anti-patterns
   gem 'bullet'
+
+  # Rubocop style linter
+  gem 'rubocop', require: false
 end
 
 # Use simplecov for code coverage metrics during testing

@@ -208,21 +208,21 @@ class TasksController < ApplicationController
     return nil if quote_ids.empty?
 
     # Use sample to return a random id from the array:
-    quote = current_user.quotes.find(quote_ids.sample)
+    current_user.quotes.find(quote_ids.sample)
   end
 
   # Returns a list of meme modal template names that can be shown.
-  def meme_modal_list(user)
+  def meme_modal_list
     # Customize your memes by adding partial templates in app/views/tasks/ and
     # reference them here:
-    return %w[awwyiss_modal_bravocado
-                awwyiss_modal_like_a_boss
-                awwyiss_modal_nice_one]
+    %w[awwyiss_modal_bravocado
+       awwyiss_modal_like_a_boss
+       awwyiss_modal_nice_one]
   end
 
   # Return the name of a random awwyiss modal template
   def random_awwyiss_modal
-    awwyiss_modal_templates = meme_modal_list(current_user)
+    awwyiss_modal_templates = meme_modal_list
 
     awwyiss_modal_templates[rand(awwyiss_modal_templates.length)]
   end
