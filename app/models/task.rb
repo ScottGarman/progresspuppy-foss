@@ -89,9 +89,8 @@ class Task < ApplicationRecord
 
   def self.search(summary_terms, completed_status, category_id, sort_by)
     tasks = all
-    unless summary_terms.empty?
-      tasks = tasks.where('summary LIKE ?', "%#{summary_terms}%")
-    end
+    tasks = tasks.where('summary LIKE ?', "%#{summary_terms}%") unless
+      summary_terms.empty?
     tasks = tasks.completed if completed_status == 'completed'
     tasks = tasks.incomplete if completed_status == 'incomplete'
     tasks = tasks.category(category_id) if category_id != 'All'

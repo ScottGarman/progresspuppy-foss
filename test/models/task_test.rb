@@ -131,7 +131,7 @@ class TaskTest < ActiveSupport::TestCase
                                        @tc_uncategorized.id, nil).length
   end
 
-  # TODO: STILL NEED TESTING: self.category, self.move_to_category, self.current,
-  # self.current_with_due_dates, self.overdue, self.future, self.completed_today,
-  # status_as_boolean, toggle_status
+  # TODO: STILL NEED TESTING: self.category, self.move_to_category,
+  # self.current, self.current_with_due_dates, self.overdue, self.future,
+  # self.completed_today, status_as_boolean, toggle_status
 end

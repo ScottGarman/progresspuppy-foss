@@ -117,7 +117,8 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     assert_template 'sessions/new'
 
     # create (via login)
-    post login_url, params: { email: 'user@example.com', password: 'foobarbaz123' }
+    post login_url, params: { email: 'user@example.com',
+                              password: 'foobarbaz123' }
     assert_response :success
   end
 
