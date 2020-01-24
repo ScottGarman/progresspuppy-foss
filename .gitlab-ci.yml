@@ -37,6 +37,12 @@ System Tests:
       - tmp/screenshots/
       - log/
 
+Rubocop Check:
+  stage: lint
+  allow_failure: true
+  script:
+    - bundle exec rubocop
+
 Rails Best Practices Tests:
   stage: lint
   script:
