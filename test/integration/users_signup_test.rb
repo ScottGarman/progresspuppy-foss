@@ -89,11 +89,13 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   test 'resend account activation' do
     get signup_path
     assert_difference 'User.count', 1 do
-      post users_path, params: { user: { first_name: 'Example',
-                                         last_name: 'User',
-                                         email: 'user@example.com',
-                                         password: 'foobarbaz123',
-                                         password_confirmation: 'foobarbaz123' } }
+      post users_path, params: {
+        user: { first_name: 'Example',
+                last_name: 'User',
+                email: 'user@example.com',
+                password: 'foobarbaz123',
+                password_confirmation: 'foobarbaz123' }
+      }
     end
     assert_equal 1, ActionMailer::Base.deliveries.size
     user = assigns(:user)

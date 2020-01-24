@@ -78,8 +78,9 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     assert_current_path thanks_path
     assert_equal 1, ActionMailer::Base.deliveries.size
     email = ActionMailer::Base.deliveries.last
-    activation_token = email.text_part.body.decoded
-                            .match(%r{http.*\/account_activations\/(.*)\/edit})[1]
+    activation_token = email.text_part.body.decoded.match(
+      %r{http.*\/account_activations\/(.*)\/edit}
+    )[1]
     assert_not_nil activation_token
 
     user = User.find_by_email('user@example.com')
@@ -88,7 +89,8 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
 
     # Check the email that was sent
     assert_equal user.email, email['to'].to_s
-    assert_equal 'ProgressPuppy - FOSS Edition account activation', email.subject
+    assert_equal 'ProgressPuppy - FOSS Edition account activation',
+                 email.subject
 
     # Try to log in before activation
     visit login_url
@@ -163,8 +165,9 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     assert_current_path thanks_path
     assert_equal 1, ActionMailer::Base.deliveries.size
     email = ActionMailer::Base.deliveries.last
-    activation_token_old = email.text_part.body.decoded
-                                .match(%r{http.*\/account_activations\/(.*)\/edit})[1]
+    activation_token_old = email.text_part.body.decoded.match(
+      %r{http.*\/account_activations\/(.*)\/edit}
+    )[1]
     assert_not_nil activation_token_old
 
     user = User.find_by_email('user@example.com')
@@ -173,7 +176,8 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
 
     # Check the email that was sent
     assert_equal user.email, email['to'].to_s
-    assert_equal 'ProgressPuppy - FOSS Edition account activation', email.subject
+    assert_equal 'ProgressPuppy - FOSS Edition account activation',
+                 email.subject
 
     # Try to log in, and request a new activation link
     visit login_url
@@ -192,8 +196,9 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
 
     assert_equal 2, ActionMailer::Base.deliveries.size
     email = ActionMailer::Base.deliveries.last
-    activation_token = email.text_part.body.decoded
-                            .match(%r{http.*\/account_activations\/(.*)\/edit})[1]
+    activation_token = email.text_part.body.decoded.match(
+      %r{http.*\/account_activations\/(.*)\/edit}
+    )[1]
     assert_not_nil activation_token
 
     # The old activation url should no longer work
@@ -232,8 +237,9 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     assert_current_path thanks_path
     assert_equal 1, ActionMailer::Base.deliveries.size
     email = ActionMailer::Base.deliveries.last
-    activation_token = email.text_part.body.decoded
-                            .match(%r{http.*\/account_activations\/(.*)\/edit})[1]
+    activation_token = email.text_part.body.decoded.match(
+      %r{http.*\/account_activations\/(.*)\/edit}
+    )[1]
     assert_not_nil activation_token
 
     user = User.find_by_email('user@example.com')
@@ -242,7 +248,8 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
 
     # Check the email that was sent
     assert_equal user.email, email['to'].to_s
-    assert_equal 'ProgressPuppy - FOSS Edition account activation', email.subject
+    assert_equal 'ProgressPuppy - FOSS Edition account activation',
+                 email.subject
 
     # Activate the account
     visit edit_account_activation_url(activation_token, email: user.email)

@@ -55,8 +55,16 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
     assert_selector('div.display-task-summary', count: 11)
     # Confirm that the tasks do not appear in priority order to begin with
     assert_raises 'Capybara::ElementNotFound' do
-      find('div#search_results_container',
-           text: /Aaronpk task26 priority1.*Aaronpk task28 priority1.*Aaronpk task29 priority2.*Aaronpk task30/m)
+      regex = /
+        Aaronpk\stask26\spriority1
+        .*
+        Aaronpk\stask28\spriority1
+        .*
+        Aaronpk\stask29\spriority2
+        .*
+        Aaronpk\stask30
+      /mx
+      find('div#search_results_container', text: regex)
     end
 
     #select 'Priority - Highest First', from: 'sort_by'
@@ -65,8 +73,16 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
     assert_selector('div.display-task-summary', count: 11)
 
     # Confirm the tasks are now appearing in priority order
-    assert find('div#search_results_container',
-                text: /Aaronpk task26 priority1.*Aaronpk task28 priority1.*Aaronpk task29 priority2.*Aaronpk task30/m)
+    regex = /
+      Aaronpk\stask26\spriority1
+      .*
+      Aaronpk\stask28\spriority1
+      .*
+      Aaronpk\stask29\spriority2
+      .*
+      Aaronpk\stask30
+    /mx
+    assert find('div#search_results_container', text: regex)
 
     # Change the sort method to Priority - Lowest First
     # option[4] is Priority - Lowest First
@@ -75,12 +91,28 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
 
     # Confirm the tasks are not appearing in priority order
     assert_raises 'Capybara::ElementNotFound' do
-      find('div#search_results_container',
-           text: /Aaronpk task26 priority1.*Aaronpk task28 priority1.*Aaronpk task29 priority2.*Aaronpk task30/m)
+      regex = /
+        Aaronpk\stask26\spriority1
+        .*
+        Aaronpk\stask28\spriority1
+        .*
+        Aaronpk\stask29\spriority2
+        .*
+        Aaronpk\stask30
+      /mx
+      find('div#search_results_container', text: regex)
     end
 
     # But instead are appearing in reverse priority order
-    assert find('div#search_results_container',
-                text: /Aaronpk task30.*Aaronpk task29 priority2.*Aaronpk task26 priority1.*Aaronpk task28 priority1/m)
+    regex = /
+      Aaronpk\stask30
+      .*
+      Aaronpk\stask29\spriority2
+      .*
+      Aaronpk\stask26\spriority1
+      .*
+      Aaronpk\stask28\spriority1
+    /mx
+    assert find('div#search_results_container', text: regex)
   end
 end

@@ -356,7 +356,14 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     # order: priority1, priority2, priority3
     get tasks_path
     assert_response :success
-    assert_match(/.*A priority1 task.*A priority2 task.*A priority3 task.*/m, response.body)
+    regex = /
+      A\spriority1\stask
+      .*
+      A\spriority2\stask
+      .*
+      A\spriority3\stask
+    /mx
+    assert_match(regex, response.body)
 
     # delete the three tasks
     3.times do
@@ -367,9 +374,12 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
 
     # now he creates three tasks with a due date of today
     today_db = Time.now.in_time_zone(donpdonp.time_zone).to_date.to_s(:db)
-    create_task(donpdonp, today_db, 'Uncategorized', 2, 'priority2', 'index', nil)
-    create_task(donpdonp, today_db, 'Uncategorized', 1, 'priority1', 'index', nil)
-    create_task(donpdonp, today_db, 'Uncategorized', 3, 'priority3', 'index', nil)
+    create_task(donpdonp, today_db, 'Uncategorized', 2, 'priority2',
+                'index', nil)
+    create_task(donpdonp, today_db, 'Uncategorized', 1, 'priority1',
+                'index', nil)
+    create_task(donpdonp, today_db, 'Uncategorized', 3, 'priority3',
+                'index', nil)
     assert_equal 3, donpdonp.tasks.count
     assert_equal 3, donpdonp.tasks.current(today_db).count
 
@@ -377,13 +387,24 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     # order: priority1, priority2, priority3
     get tasks_path
     assert_response :success
-    assert_match(/.*A priority1 task.*A priority2 task.*A priority3 task.*/m, response.body)
+    regex = /
+      A\spriority1\stask
+      .*
+      A\spriority2\stask
+      .*
+      A\spriority3\stask
+    /mx
+    assert_match(regex, response.body)
 
     # now he creates three tasks with a due date of tomorrow
-    tomorrow_db = Time.now.in_time_zone(donpdonp.time_zone).to_date.advance(days: 1).to_s(:db)
-    create_task(donpdonp, tomorrow_db, 'Uncategorized', 2, 'priority2', 'index', nil)
-    create_task(donpdonp, tomorrow_db, 'Uncategorized', 1, 'priority1', 'index', nil)
-    create_task(donpdonp, tomorrow_db, 'Uncategorized', 3, 'priority3', 'index', nil)
+    tomorrow_db = Time.now.in_time_zone(donpdonp.time_zone).to_date
+                      .advance(days: 1).to_s(:db)
+    create_task(donpdonp, tomorrow_db, 'Uncategorized', 2, 'priority2',
+                'index', nil)
+    create_task(donpdonp, tomorrow_db, 'Uncategorized', 1, 'priority1',
+                'index', nil)
+    create_task(donpdonp, tomorrow_db, 'Uncategorized', 3, 'priority3',
+                'index', nil)
     assert_equal 6, donpdonp.tasks.count
     assert_equal 3, donpdonp.tasks.future(today_db).count
 
@@ -391,7 +412,14 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     # order: priority1, priority2, priority3
     get upcoming_tasks_path
     assert_response :success
-    assert_match(/.*A priority1 task.*A priority2 task.*A priority3 task.*/m, response.body)
+    regex = /
+      A\spriority1\stask
+      .*
+      A\spriority2\stask
+      .*
+      A\spriority3\stask
+    /mx
+    assert_match(regex, response.body)
   end
 
   test 'ensure the auto-update overdue tasks button works' do

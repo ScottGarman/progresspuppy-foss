@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class QuoteOperationsTest < ActionDispatch::IntegrationTest
-  test 'Check that the default help tip quote exits when no quotes are defined' do
+  test 'Check that the help tip quote is shown when no quotes are defined' do
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
     assert_empty donpdonp.quotes
@@ -9,22 +9,28 @@ class QuoteOperationsTest < ActionDispatch::IntegrationTest
     get tasks_path
     assert_response :success
     assert_select 'div#header_quote_container'
-    assert_select 'blockquote#header_quotation', /To add custom quotes to appear here/
-    assert_select 'blockquote#header_quotation', /or disable the display of quotes altogether/
+    assert_select 'blockquote#header_quotation',
+                  /To add custom quotes to appear here/
+    assert_select 'blockquote#header_quotation',
+                  /or disable the display of quotes altogether/
     assert_select 'footer#header_quotation_source', '-ProgressPuppy'
 
     get upcoming_tasks_path
     assert_response :success
     assert_select 'div#header_quote_container'
-    assert_select 'blockquote#header_quotation', /To add custom quotes to appear here/
-    assert_select 'blockquote#header_quotation', /or disable the display of quotes altogether/
+    assert_select 'blockquote#header_quotation',
+                  /To add custom quotes to appear here/
+    assert_select 'blockquote#header_quotation',
+                  /or disable the display of quotes altogether/
     assert_select 'footer#header_quotation_source', '-ProgressPuppy'
 
     get search_tasks_path
     assert_response :success
     assert_select 'div#header_quote_container'
-    assert_select 'blockquote#header_quotation', /To add custom quotes to appear here/
-    assert_select 'blockquote#header_quotation', /or disable the display of quotes altogether/
+    assert_select 'blockquote#header_quotation',
+                  /To add custom quotes to appear here/
+    assert_select 'blockquote#header_quotation',
+                  /or disable the display of quotes altogether/
     assert_select 'footer#header_quotation_source', '-ProgressPuppy'
   end
 
