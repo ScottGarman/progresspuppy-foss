@@ -24,6 +24,19 @@ You can add your own memes by adding a partial template under `app/views/tasks/`
 
 A reasonable set of model, integration, and capybara-based system tests are included. You can execute them with `rails test` and `rails test:system`.
 
+## Running the Docker Container
+
+A `Dockerfile` is included in this repository which can be used to generate a docker container of this app in development mode. Assuming you have docker already installed, run these commands from the root directory of this repo to build the docker image and run the container:
+
+```
+docker build -t progresspuppy-foss .
+docker run -p 3000:3000 progresspuppy-foss
+```
+
+Then point your web browser to `http://localhost:3000` and you should be able to log in using the admin credentials mentioned earlier in this document.
+
+This container is an early experiment, and isn't intended to be a means of running the app in production mode. It uses sqlite3 as the database, and is simply a way you can try out the app without worrying about the specifics of your host OS environment.
+
 ## License
 
 ProgressPuppy - FOSS Edition is released under the [GNU Affero General Public License, Version 3](https://www.gnu.org/licenses/agpl-3.0.en.html). See the `LICENSE` file for the full text of this software license.
