@@ -48,6 +48,12 @@ Rails Best Practices Tests:
   script:
     - bundle exec rails_best_practices
 
+Bundler Audit:
+  stage: lint
+  allow_failure: true
+  script:
+    - bundle exec bundle-audit check --update 
+
 Brakeman Tests:
   stage: lint
   allow_failure: true
