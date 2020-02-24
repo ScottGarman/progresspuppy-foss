@@ -53,6 +53,9 @@ gem 'bootsnap', '>= 1.4.5', require: false
 
 # Static code analysis and performance testing tools
 group :development do
+  # Check gem versions for known security issues
+  gem 'bundler-audit', require: false
+
   # Static code analyzer for best coding practices
   gem 'rails_best_practices', require: false
 
