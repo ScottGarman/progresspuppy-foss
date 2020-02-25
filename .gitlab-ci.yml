@@ -16,7 +16,7 @@ before_script:
   - ruby -v
   - which ruby
   - gem install bundler --no-document
-  - bundle install --jobs $(nproc)  "${FLAGS[@]}" --path vendor
+  - bundle install --jobs $(nproc)  "${FLAGS[@]}" --path vendor --without development production
   - bundle exec rails db:schema:load RAILS_ENV=test
 
 Integration Tests:
