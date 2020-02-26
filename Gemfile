@@ -51,14 +51,8 @@ gem 'bcrypt', '~> 3.1.13'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.5', require: false
 
-# Static code analysis and performance testing tools
+# Performance testing tools
 group :development do
-  # Check gem versions for known security issues
-  gem 'bundler-audit', require: false
-
-  # Static code analyzer for best coding practices
-  gem 'rails_best_practices', require: false
-
   # Use derailed_benchmarks for memory usage stats
   gem 'derailed_benchmarks'
   gem 'stackprof'
@@ -95,11 +89,15 @@ group :development, :test do
   gem 'guard'
   gem 'guard-minitest'
 
-  # Static code analyzer for security issues
-  gem 'brakeman', require: false
+  # Check gem versions for known security issues
+  gem 'bundler-audit', require: false
 
-  # Static code analyzer for security issues
+  # Static code analyzers for security issues
+  gem 'brakeman', require: false
   gem 'dawnscanner', require: false
+
+  # Static code analyzer for best coding practices
+  gem 'rails_best_practices', require: false
 
   # Check for N+1 queries and other anti-patterns
   gem 'bullet'
