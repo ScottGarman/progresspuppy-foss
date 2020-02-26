@@ -92,9 +92,8 @@ group :development, :test do
   # Check gem versions for known security issues
   gem 'bundler-audit', require: false
 
-  # Static code analyzers for security issues
+  # Static code analyzer for security issues
   gem 'brakeman', require: false
-  gem 'dawnscanner', require: false
 
   # Static code analyzer for best coding practices
   gem 'rails_best_practices', require: false
