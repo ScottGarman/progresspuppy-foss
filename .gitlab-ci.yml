@@ -26,6 +26,7 @@ Integration Tests:
 
 System Tests:
   stage: test
+  allow_failure: true
   script:
     - ./bin/setup_chrome
     - bundle exec rails test:system
