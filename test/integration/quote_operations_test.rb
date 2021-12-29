@@ -249,11 +249,12 @@ class QuoteOperationsTest < ActionDispatch::IntegrationTest
     20.times do
       get tasks_path
       assert_response :success
-      if @response.body =~ /First quote/
+      case @response.body
+      when /First quote/
         displayed_quotes['First'] = true
-      elsif @response.body =~ /Second quote/
+      when /Second quote/
         displayed_quotes['Second'] = true
-      elsif @response.body =~ /Third quote/
+      when /Third quote/
         displayed_quotes['Third'] = true
       end
     end
