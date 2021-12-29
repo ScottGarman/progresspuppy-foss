@@ -16,7 +16,7 @@ gem 'uglifier', '>= 4.2.0'
 gem 'haml'
 
 # Use jQuery
-gem 'jquery-rails', '~> 4.3.5'
+gem 'jquery-rails', '~> 4.4.0'
 
 # Use Bootstrap 4
 gem 'bootstrap', '~> 4.4.1'

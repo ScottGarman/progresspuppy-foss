@@ -169,10 +169,11 @@ class TasksController < ApplicationController
   # (index), upcoming tasks view, or search view. This ensures we redirect
   # to the correct tasks view we originated from.
   def redirect_to_correct_tasks_tab
-    if params[:tasks_view] == 'upcoming'
+    case params[:tasks_view]
+    when 'upcoming'
       redirect_to upcoming_tasks_path(category: params[:category],
                                       page: params[:page])
-    elsif params[:tasks_view] == 'search'
+    when 'search'
       redirect_to search_tasks_path(search_terms: params[:search_terms],
                                     tasks_filter: params[:tasks_filter],
                                     task_category_filter:
