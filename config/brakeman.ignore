@@ -15,7 +15,7 @@
           "type": "controller",
           "class": "UsersController",
           "method": "create",
-          "line": 22,
+          "line": 20,
           "file": "app/controllers/users_controller.rb",
           "rendered": {
             "name": "users/new",
@@ -46,7 +46,7 @@
           "type": "controller",
           "class": "UsersController",
           "method": "create",
-          "line": 22,
+          "line": 20,
           "file": "app/controllers/users_controller.rb",
           "rendered": {
             "name": "users/new",
@@ -59,6 +59,26 @@
         "template": "users/new"
       },
       "user_input": "User.new(user_params)",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "HTTP Verb Confusion",
+      "warning_code": 118,
+      "fingerprint": "4fa287df1783e275e81f67e78fc4f3540eb7b4491559b2176b6a68eb3befd2a5",
+      "check_name": "VerbConfusion",
+      "message": "Potential HTTP verb confusion. `HEAD` is routed like `GET` but `request.get?` will return `false`",
+      "file": "app/helpers/sessions_helper.rb",
+      "line": 61,
+      "link": "https://brakemanscanner.org/docs/warning_types/http_verb_confusion/",
+      "code": "session[:forwarding_url] = request.original_url if request.get?",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "SessionsHelper",
+        "method": "store_location"
+      },
+      "user_input": "request.get?",
       "confidence": "Weak",
       "note": ""
     },
@@ -77,7 +97,7 @@
           "type": "controller",
           "class": "UsersController",
           "method": "create",
-          "line": 22,
+          "line": 20,
           "file": "app/controllers/users_controller.rb",
           "rendered": {
             "name": "users/new",
@@ -108,7 +128,7 @@
           "type": "controller",
           "class": "QuotesController",
           "method": "create",
-          "line": 34,
+          "line": 29,
           "file": "app/controllers/quotes_controller.rb",
           "rendered": {
             "name": "quotes/index",
@@ -139,7 +159,7 @@
           "type": "controller",
           "class": "PasswordResetsController",
           "method": "edit",
-          "line": 34,
+          "line": 33,
           "file": "app/controllers/password_resets_controller.rb",
           "rendered": {
             "name": "password_resets/edit",
@@ -170,7 +190,7 @@
           "type": "controller",
           "class": "UsersController",
           "method": "create",
-          "line": 22,
+          "line": 20,
           "file": "app/controllers/users_controller.rb",
           "rendered": {
             "name": "users/new",
@@ -201,7 +221,7 @@
           "type": "controller",
           "class": "UsersController",
           "method": "create",
-          "line": 22,
+          "line": 20,
           "file": "app/controllers/users_controller.rb",
           "rendered": {
             "name": "users/new",
@@ -232,7 +252,7 @@
           "type": "controller",
           "class": "PasswordResetsController",
           "method": "edit",
-          "line": 34,
+          "line": 33,
           "file": "app/controllers/password_resets_controller.rb",
           "rendered": {
             "name": "password_resets/edit",
@@ -263,7 +283,7 @@
           "type": "controller",
           "class": "UsersController",
           "method": "create",
-          "line": 22,
+          "line": 20,
           "file": "app/controllers/users_controller.rb",
           "rendered": {
             "name": "users/new",
@@ -294,7 +314,7 @@
           "type": "controller",
           "class": "QuotesController",
           "method": "create",
-          "line": 34,
+          "line": 29,
           "file": "app/controllers/quotes_controller.rb",
           "rendered": {
             "name": "quotes/index",
@@ -356,7 +376,7 @@
           "type": "controller",
           "class": "UsersController",
           "method": "create",
-          "line": 22,
+          "line": 20,
           "file": "app/controllers/users_controller.rb",
           "rendered": {
             "name": "users/new",
@@ -373,6 +393,6 @@
       "note": ""
     }
   ],
-  "updated": "2019-12-22 14:20:51 -0800",
-  "brakeman_version": "4.7.1"
+  "updated": "2021-12-29 10:54:26 -0800",
+  "brakeman_version": "5.2.0"
 }

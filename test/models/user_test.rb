@@ -66,12 +66,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'email should not be too long' do
-    @user.email = 'a' * 250 + '@example.com'
+    @user.email = "#{'a' * 250}@example.com"
     assert @user.invalid?
     assert @user.errors[:email].any?
 
     # 80-char email
-    @user.email = 'a' * 75 + '@b.co'
+    @user.email = "#{'a' * 75}@b.co"
     assert @user.valid?
   end
 
