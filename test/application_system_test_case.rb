@@ -1,13 +1,13 @@
 require 'test_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  # Configuring capybara this way is now deprecated:
-  #driven_by :selenium, using: :chrome, screen_size: [1400, 1400]
-  #driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1400]
-
   Capybara.register_driver :chrome do |app|
-    Capybara::Selenium::Driver.new app, browser: :chrome,
-      options: Selenium::WebDriver::Chrome::Options.new(args: %w[headless disable-gpu])
+    Capybara::Selenium::Driver.new app,
+      browser: :chrome,
+      options: Selenium::WebDriver::Chrome::Options.new(
+        args: %w[headless disable-dev-shm-usage disable-gpu
+                 no-sandbox window-size=1400,1400]
+      )
   end
 
   Capybara.javascript_driver = :chrome
