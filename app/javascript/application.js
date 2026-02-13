@@ -1,29 +1,34 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, or any plugin's
-// vendor/assets/javascripts directory can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file. JavaScript code in this file should be added after the last require_* statement.
-//
-// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
-// about supported directives.
-//
-//= require popper
-//= require jquery3
-//= require rails-ujs
-//= require turbolinks
-//= require bootstrap-sprockets
-//= require bootstrap-datepicker/core
-//= require bootstrap-datepicker/locales/bootstrap-datepicker.en-CA.js
-//= require jstz
-//= require js.cookie
-//= require_tree .
+// Import external dependencies
+import jquery from "jquery"
+import "@popperjs/core"
+import * as bootstrap from "bootstrap"
+import "bootstrap-datepicker"
+import Cookies from "js-cookie"
+import "@hotwired/turbo-rails"
 
-$(document).ready(function() {
-  // initialize tooltips
-  $('[data-toggle="tooltip"]').tooltip({ trigger: 'hover' });
+// Import and start Stimulus
+import "controllers"
+
+// Make jQuery available globally (needed for legacy code and Bootstrap)
+window.$ = window.jQuery = jquery;
+
+// Make Bootstrap available globally
+window.bootstrap = bootstrap;
+
+// Make Cookies available globally
+window.Cookies = Cookies;
+
+// Import local modules
+import "cable"
+import "tasks"
+
+document.addEventListener('turbo:load', function() {
+  // Initialize Bootstrap tooltips (Bootstrap 5 native API)
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new
+  bootstrap.Tooltip(tooltipTriggerEl, {
+    trigger: 'hover'
+  }));
 
   // fade out alerts after an initial delay
   $('[data-fade-out]').delay(4000).fadeTo(500, 0).slideUp(500, function() {
@@ -56,10 +61,10 @@ function save_new_task_form_state() {
 // value as the new sort_by parameter
 function search_results_sort_by() {
   // obtain the select tag value
-  val = $('#sort_by').val();
+  const val = $('#sort_by').val();
 
   // obtain the current url
-  url = $(location).attr('href');
+  let url = $(location).attr('href');
   // strip out any previous occurances of '&sort_by=...'
   if (url.match(/&sort_by=.*/) != null) {
     url = url.replace(/&sort_by=.*/, '&sort_by=' + val);
@@ -70,3 +75,5 @@ function search_results_sort_by() {
   // reload the page
   location.href = url;
 }
+// Make it globally accessible
+window.search_results_sort_by = search_results_sort_by;
