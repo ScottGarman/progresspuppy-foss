@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_secure_password
 
   # Validation
-  EMAIL_REGEX = /\A[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}\Z/i.freeze
+  EMAIL_REGEX = /\A[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}\Z/i
 
   validates :first_name, presence: true,
                          length: { maximum: 50 }
@@ -33,7 +33,12 @@ class User < ApplicationRecord
 
   # Returns the hash digest of the given string
   def self.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    cost = if ActiveModel::SecurePassword.min_cost
+             BCrypt::Engine::MIN_COST
+           else
+             BCrypt::Engine.cost
+           end
+
     BCrypt::Password.create(string, cost: cost)
   end
 
