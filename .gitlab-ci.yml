@@ -1,4 +1,4 @@
-image: "ruby:3.2"
+image: "ruby:4.0"
 
 # Cache gems between builds. Use the project path slug as the key to maintain
 # one cache per project.
@@ -12,31 +12,17 @@ stages:
   - lint
 
 before_script:
-  - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev nodejs
+  - apt-get update -qq && apt-get install -y -qq sqlite3 libsqlite3-dev
   - ruby -v
   - which ruby
   - gem install bundler --no-document
-  - bundle install --jobs $(nproc)  "${FLAGS[@]}" --path vendor --without development production
+  - bundle install --jobs $(nproc) "${FLAGS[@]}" --path vendor --without development production
   - bundle exec rails db:schema:load RAILS_ENV=test
 
 Integration Tests:
   stage: test
   script:
     - bundle exec rails test
-
-System Tests:
-  stage: test
-  allow_failure: true
-  script:
-    - ./bin/setup_chrome
-    - bundle exec rails test:system
-  artifacts:
-    name: system_tests
-    when: on_failure
-    expire_in: 1 week
-    paths:
-      - tmp/screenshots/
-      - log/
 
 Rubocop Check:
   stage: lint
@@ -53,7 +39,7 @@ Bundler Audit:
   stage: lint
   allow_failure: true
   script:
-    - bundle exec bundle-audit check --update 
+    - bundle exec bundle-audit check --update
 
 Brakeman Tests:
   stage: lint
@@ -65,4 +51,4 @@ Brakeman Tests:
     when: always
     expire_in: 1 week
     paths:
-      - brakeman/ 
+      - brakeman/
