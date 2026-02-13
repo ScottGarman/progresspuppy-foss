@@ -160,8 +160,8 @@ class UserTest < ActiveSupport::TestCase
     assert_nil @user.remember_digest
   end
 
-  test 'the create_reset_digest method should create a reset_token and save a' \
-       ' reset_digest attribute' do
+  test 'the create_reset_digest method should create a reset_token and save a ' \
+       'reset_digest attribute' do
     assert @user.reset_token.nil?
     assert @user.reset_digest.nil?
     assert @user.reset_sent_at.nil?
@@ -169,8 +169,8 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil @user.reset_token
   end
 
-  test 'the activate method should set the activated and activated_at' \
-       ' attributes' do
+  test 'the activate method should set the activated and activated_at ' \
+       'attributes' do
     assert_not @user.activated
     assert_nil @user.activated_at
     @user.activate
@@ -187,8 +187,8 @@ class UserTest < ActiveSupport::TestCase
     assert @user.password_reset_expired?
   end
 
-  test 'ensure associated model objects get destroyed when a user is' \
-       ' destroyed' do
+  test 'ensure associated model objects get destroyed when a user is ' \
+       'destroyed' do
     @user.save!
     assert_equal 0, @user.quotes.count
     assert_equal 0, @user.tasks.count
