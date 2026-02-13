@@ -20,8 +20,8 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     # Reset request with the email address of an invalid user
     post password_resets_path, params: { email: 'bogus@example.com' }
     assert_not flash.empty?
-    assert_select 'div.alert-warning', '[bogus@example.com] is not a' \
-                                       ' registered user'
+    assert_select 'div.alert-warning', '[bogus@example.com] is not a ' \
+                                       'registered user'
     assert_template 'password_resets/new'
 
     # Reset request with a valid email
@@ -34,8 +34,8 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_redirected_to password_reset_sent_path
     follow_redirect!
     assert_template 'password_resets/sent'
-    assert_select 'div.alert-success', 'Reset instructions sent to' \
-                                       " #{user.email}"
+    assert_select 'div.alert-success', 'Reset instructions sent to ' \
+                                       "#{user.email}"
 
     # Reset link using wrong email, right token
     get edit_password_reset_path(user.reset_token, email: '')
@@ -44,8 +44,9 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_template 'password_resets/new'
-    assert_select 'div.alert-warning', 'That password reset link was' \
-                  ' invalid. Please try again.'
+    assert_select 'div.alert-warning', 'That password reset link was ' \
+                                       'invalid. Please try again or contact ' \
+                                       'support for help.'
 
     # Reset link from an inactive user
     user.toggle!(:activated)
@@ -54,8 +55,9 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_not flash.empty?
     follow_redirect!
     assert_response :success
-    assert_select 'div.alert-warning', 'That password reset link was' \
-                  ' invalid. Please try again.'
+    assert_select 'div.alert-warning', 'That password reset link was ' \
+                                       'invalid. Please try again or contact ' \
+                                       'support for help.'
     user.toggle!(:activated)
 
     # Reset link using right email, wrong token
@@ -64,8 +66,9 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_not flash.empty?
     follow_redirect!
     assert_response :success
-    assert_select 'div.alert-warning', 'That password reset link was' \
-                  ' invalid. Please try again.'
+    assert_select 'div.alert-warning', 'That password reset link was ' \
+                                       'invalid. Please try again or contact ' \
+                                       'support for help.'
 
     # Reset link using right email, right token
     get edit_password_reset_path(user.reset_token, email: user.email)
@@ -94,7 +97,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
                     user: { password: 'foobarbaz123',
                             password_confirmation: 'foobarbaz123' } }
     assert_nil user.reload.reset_digest
-    assert is_logged_in?
+    assert logged_in?
     assert_not flash.empty?
     assert_redirected_to tasks_path
     follow_redirect!
@@ -118,7 +121,7 @@ class PasswordResetsTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     follow_redirect!
     assert_response :success
-    assert_select 'div.alert-warning', 'That password reset link has expired' \
-                                       ' (they expire after 2 hours)'
+    assert_select 'div.alert-warning', 'That password reset link has expired ' \
+                                       '(they expire after 2 hours)'
   end
 end

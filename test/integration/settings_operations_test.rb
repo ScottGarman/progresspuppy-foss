@@ -11,16 +11,16 @@ class SettingsOperationsTest < ActionDispatch::IntegrationTest
     assert donpdonp.setting.display_quotes
 
     # Turn display_quotes off
-    post settings_toggle_display_quotes_path, xhr: true
+    post settings_toggle_display_quotes_path, as: :turbo_stream
     assert_not donpdonp.setting.reload.display_quotes
 
     # Turn display_quotes back on again
-    post settings_toggle_display_quotes_path, xhr: true
+    post settings_toggle_display_quotes_path, as: :turbo_stream
     assert donpdonp.setting.reload.display_quotes
   end
 
-  test 'ensure users cannot modify the display_quotes setting of another' \
-       ' user' do
+  test 'ensure users cannot modify the display_quotes setting of another ' \
+       'user' do
     donpdonp = users(:donpdonp)
     ows = users(:onewheelskyward)
 
@@ -39,7 +39,7 @@ class SettingsOperationsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert ows.setting.display_quotes
 
-    post settings_toggle_display_quotes_path, xhr: true
+    post settings_toggle_display_quotes_path, as: :turbo_stream
     assert_not ows.setting.reload.display_quotes
 
     assert donpdonp.setting.reload.display_quotes
