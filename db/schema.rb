@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_28_103148) do
-
+ActiveRecord::Schema[7.0].define(version: 2023_08_23_194229) do
   create_table "quotes", force: :cascade do |t|
     t.string "quotation", null: false
     t.string "source", null: false
     t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_quotes_on_user_id"
   end
 
@@ -25,16 +24,16 @@ ActiveRecord::Schema.define(version: 2022_12_28_103148) do
     t.boolean "display_quotes", default: true
     t.boolean "burnination", default: false
     t.integer "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_settings_on_user_id"
   end
 
   create_table "task_categories", force: :cascade do |t|
     t.string "name", null: false
     t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_task_categories_on_user_id"
   end
 
@@ -44,10 +43,10 @@ ActiveRecord::Schema.define(version: 2022_12_28_103148) do
     t.integer "priority", default: 3, null: false
     t.string "status", default: "INCOMPLETE", null: false
     t.date "due_at"
-    t.datetime "completed_at"
+    t.datetime "completed_at", precision: nil
     t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["task_category_id"], name: "index_tasks_on_task_category_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
@@ -58,18 +57,18 @@ ActiveRecord::Schema.define(version: 2022_12_28_103148) do
     t.string "email", limit: 80, null: false
     t.string "password_digest", limit: 80, null: false
     t.boolean "email_confirmed", default: false
-    t.datetime "last_login_at"
+    t.datetime "last_login_at", precision: nil
     t.boolean "admin", default: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "remember_digest"
     t.string "activation_digest"
     t.boolean "activated", default: false
-    t.datetime "activated_at"
+    t.datetime "activated_at", precision: nil
     t.string "reset_digest"
-    t.datetime "reset_sent_at"
+    t.datetime "reset_sent_at", precision: nil
     t.string "time_zone"
-    t.datetime "accepted_tos_at"
+    t.datetime "accepted_tos_at", precision: nil
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
