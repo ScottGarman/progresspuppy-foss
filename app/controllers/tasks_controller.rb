@@ -37,14 +37,10 @@ class TasksController < ApplicationController
 
   def show
     @task = current_user.tasks.find_by(id: params[:id])
-    if @task.nil?
-      flash[:danger] = 'Task not found'
-      redirect_to_correct_tasks_tab && return
-    end
+    return unless @task.nil?
 
-    respond_to do |f|
-      f.js
-    end
+    flash[:danger] = 'Task not found'
+    redirect_to_correct_tasks_tab && return
   end
 
   def new
@@ -75,14 +71,10 @@ class TasksController < ApplicationController
 
   def edit
     @task = current_user.tasks.find_by(id: params[:id])
-    if @task.nil?
-      flash[:danger] = 'Task not found'
-      redirect_to_correct_tasks_tab && return
-    end
+    return unless @task.nil?
 
-    respond_to do |f|
-      f.js
-    end
+    flash[:danger] = 'Task not found'
+    redirect_to_correct_tasks_tab && return
   end
 
   def update
@@ -93,10 +85,20 @@ class TasksController < ApplicationController
     end
 
     if @task.update(task_params)
-      flash[:success] = task_change_flash_msg(@task, params[:tasks_view],
-                                              'Task updated')
+      @tasks_view = params[:tasks_view]
+      @today_db = today_db
+      @flash_msg = task_change_flash_msg(@task, @tasks_view, 'Task updated')
+      respond_to do |f|
+        f.turbo_stream
+        f.html do
+          flash[:success] = task_change_flash_msg(@task, params[:tasks_view],
+                                                  'Task updated')
+          redirect_to_correct_tasks_tab
+        end
+      end
+    else
+      render 'edit', status: :unprocessable_entity
     end
-    redirect_to_correct_tasks_tab
   end
 
   def destroy
@@ -107,8 +109,14 @@ class TasksController < ApplicationController
     end
 
     @task.destroy
-    flash[:success] = 'Task deleted'
-    redirect_to_correct_tasks_tab
+
+    respond_to do |f|
+      f.turbo_stream
+      f.html do
+        flash[:success] = 'Task deleted'
+        redirect_to_correct_tasks_tab
+      end
+    end
   end
 
   def toggle_task_status
@@ -120,14 +128,28 @@ class TasksController < ApplicationController
 
     @task.toggle_status
     @task.reload
+
     @current_tasks = current_user.tasks.current(today_db)
                                  .paginate(page: params[:page], per_page: 20)
     @completed_tasks = current_user.tasks.completed_today(today_start_db,
                                                           today_end_db)
     @awwyiss_modal = random_awwyiss_modal
 
+    # When completing a recurring task, create an identical task with the due date
+    # set to the current time, advanced by the recurrance period
+    if @task.status == 'COMPLETED' && @task.recurring?
+      new_task = @task.dup
+      new_task.due_at = (@task.due_at || Time.zone.now.to_date) + @task.recurring_period
+      new_task.status = 'INCOMPLETE'
+      new_task.completed_at = nil
+      new_task.save!
+
+      @new_task_reminder = "Note: Created recurring task due #{new_task.due_at}"
+    end
+
     respond_to do |f|
-      f.js
+      f.turbo_stream
+      f.html { redirect_to tasks_path }
     end
   end
 
@@ -136,14 +158,15 @@ class TasksController < ApplicationController
     current_user.tasks.current_with_due_dates(today_db).update(due_at: today_db)
     @current_tasks = current_user.tasks.current(today_db)
                                  .paginate(page: params[:page], per_page: 20)
-    flash[:success] = "Updated #{num_overdue_tasks} task due" \
-                      " #{'date'.pluralize(num_overdue_tasks)} to today"
+    flash[:success] = "Updated #{num_overdue_tasks} task due " \
+                      "#{'date'.pluralize(num_overdue_tasks)} to today"
     redirect_to tasks_path(page: params[:page])
   end
 
   def search
     @quote = random_quote
     @awwyiss_modal = random_awwyiss_modal
+    @new_task = Task.new
 
     if params[:search_terms]
       @search_results = current_user.tasks.search(params[:search_terms],
@@ -169,11 +192,10 @@ class TasksController < ApplicationController
   # (index), upcoming tasks view, or search view. This ensures we redirect
   # to the correct tasks view we originated from.
   def redirect_to_correct_tasks_tab
-    case params[:tasks_view]
-    when 'upcoming'
+    if params[:tasks_view] == 'upcoming'
       redirect_to upcoming_tasks_path(category: params[:category],
                                       page: params[:page])
-    when 'search'
+    elsif params[:tasks_view] == 'search'
       redirect_to search_tasks_path(search_terms: params[:search_terms],
                                     tasks_filter: params[:tasks_filter],
                                     task_category_filter:
@@ -189,8 +211,6 @@ class TasksController < ApplicationController
     # Only explicitly set view to a known set of views, otherwise an attacker
     # could render any view by setting params[:tasks_view]
     case params[:tasks_view]
-    when 'index'
-      view = 'index'
     when 'upcoming'
       view = 'upcoming'
     when 'search'
@@ -199,7 +219,7 @@ class TasksController < ApplicationController
       view = 'index'
     end
 
-    render(view)
+    render(view, status: :unprocessable_entity)
   end
 
   def random_quote
@@ -209,7 +229,24 @@ class TasksController < ApplicationController
     return nil if quote_ids.empty?
 
     # Use sample to return a random id from the array:
-    current_user.quotes.find(quote_ids.sample)
+    quote = current_user.quotes.find(quote_ids.sample)
+
+    if quote_ids.length < 5 || current_user.quote_history.length < 3
+      current_user.quote_history.shift if current_user.quote_history.length > 2
+      current_user.quote_history << quote.id
+      current_user.save!
+      return quote
+    end
+
+    # Ensure we aren't repeating one of the last 3 quotes the user has seen:
+    while current_user.quote_history.include?(quote.id)
+      quote = current_user.quotes.find(quote_ids.sample)
+    end
+
+    current_user.quote_history.shift
+    current_user.quote_history << quote.id
+    current_user.save!
+    quote
   end
 
   # Returns a list of meme modal template names that can be shown.
@@ -225,6 +262,25 @@ class TasksController < ApplicationController
   def random_awwyiss_modal
     awwyiss_modal_templates = meme_modal_list
 
-    awwyiss_modal_templates[rand(awwyiss_modal_templates.length)]
+    template = awwyiss_modal_templates[rand(awwyiss_modal_templates.length)]
+    if current_user.awwyiss_history.length < 3
+      current_user.awwyiss_history << template
+      # Don't run validations here since we may be reloading the tasks view to
+      # show validation errors on tasks:
+      current_user.save(validate: false)
+      return template
+    end
+
+    # Ensure we aren't repeating one of the last 3 awwyiss templates the user
+    # has seen:
+    while current_user.awwyiss_history.include?(template)
+      template = awwyiss_modal_templates[rand(awwyiss_modal_templates.length)]
+    end
+    current_user.awwyiss_history.shift
+    current_user.awwyiss_history << template
+    # Don't run validations here since we may be reloading the tasks view to
+    # show validation errors on tasks:
+    current_user.save(validate: false)
+    template
   end
 end

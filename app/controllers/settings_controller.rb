@@ -10,8 +10,6 @@ class SettingsController < ApplicationController
     current_user.setting.save!
     @display_quotes = current_user.setting.display_quotes
 
-    respond_to do |f|
-      f.js
-    end
+    respond_to(&:turbo_stream)
   end
 end

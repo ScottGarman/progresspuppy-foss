@@ -17,7 +17,7 @@ class UsersController < ApplicationController
       @user.send_activation_email
       redirect_to thanks_path
     else
-      render 'new'
+      render 'new', status: :unprocessable_entity
     end
   end
 
@@ -29,14 +29,14 @@ class UsersController < ApplicationController
     @user = User.find_by_id(params[:id])
     if @user.nil?
       flash[:danger] = 'Update failed: User not found'
-      redirect_to(root_path)
+      redirect_to(root_path) && return
     end
 
     if @user.update(user_params)
       flash[:success] = 'Profile updated'
       redirect_to user_profile_path
     else
-      render 'edit'
+      render 'edit', status: :unprocessable_entity
     end
   end
 
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
     user = User.find_by_id(params[:id])
     if user.nil?
       flash[:danger] = 'Deleting User failed: user not found'
-      redirect_to(root_path)
+      redirect_to(root_path) && return
     end
 
     user.destroy

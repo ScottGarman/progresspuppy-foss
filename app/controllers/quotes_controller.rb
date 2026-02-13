@@ -8,14 +8,10 @@ class QuotesController < ApplicationController
 
   def show
     @quote = current_user.quotes.find_by_id(params[:id])
-    if @quote.nil?
-      flash[:danger] = 'Show quote failed: quote not found'
-      redirect_to(quotes_path) && return
-    end
+    return unless @quote.nil?
 
-    respond_to do |f|
-      f.js
-    end
+    flash[:danger] = 'Show quote failed: quote not found'
+    redirect_to(quotes_path) && return
   end
 
   def create
@@ -26,20 +22,16 @@ class QuotesController < ApplicationController
     else
       @display_quotes = current_user.setting.display_quotes
       @quotes = current_user.quotes.reload
-      render('index')
+      render('index', status: :unprocessable_entity)
     end
   end
 
   def edit
     @quote = current_user.quotes.find_by_id(params[:id])
-    if @quote.nil?
-      flash[:danger] = 'Quote not found'
-      redirect_to(quote_path) && return
-    end
+    return unless @quote.nil?
 
-    respond_to do |f|
-      f.js
-    end
+    flash[:danger] = 'Quote not found'
+    redirect_to(quote_path) && return
   end
 
   def update
@@ -49,8 +41,17 @@ class QuotesController < ApplicationController
       redirect_to(quotes_path) && return
     end
 
-    flash[:success] = 'Quote updated' if @quote.update(quote_params)
-    redirect_to(quotes_path)
+    if @quote.update(quote_params)
+      respond_to do |f|
+        f.turbo_stream
+        f.html do
+          flash[:success] = 'Quote updated'
+          redirect_to(quotes_path)
+        end
+      end
+    else
+      render('edit', status: :unprocessable_entity)
+    end
   end
 
   def destroy
@@ -61,8 +62,14 @@ class QuotesController < ApplicationController
     end
 
     @quote.destroy!
-    flash[:success] = 'Quote deleted'
-    redirect_to(quotes_path)
+
+    respond_to do |f|
+      f.turbo_stream
+      f.html do
+        flash[:success] = 'Quote deleted'
+        redirect_to(quotes_path)
+      end
+    end
   end
 
   private
