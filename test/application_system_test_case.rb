@@ -2,12 +2,10 @@ require 'test_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   Capybara.register_driver :chrome do |app|
-    Capybara::Selenium::Driver.new app,
-      browser: :chrome,
-      options: Selenium::WebDriver::Chrome::Options.new(
-        args: %w[headless disable-dev-shm-usage disable-gpu
-                 no-sandbox window-size=1400,1400]
-      )
+    # rubocop:disable Layout/HashAlignment
+    Capybara::Selenium::Driver.new app, browser: :chrome,
+      options: Selenium::WebDriver::Chrome::Options.new(args: %w[headless disable-gpu])
+    # rubocop:enable Layout/HashAlignment
   end
 
   Capybara.javascript_driver = :chrome

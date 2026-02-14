@@ -33,8 +33,8 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     assert has_content?('Password is too short (minimum is 10 characters)')
     assert has_content?("Password confirmation doesn't match Password")
     assert_selector 'p#accepted_tos_error_msg', count: 1
-    assert has_content?('The Terms of Service, Privacy Policy, and' \
-                             ' Cookie Policy must be accepted')
+    assert has_content?('The Terms of Service, Privacy Policy, and ' \
+                        'Cookie Policy must be accepted')
   end
 
   test 'signup attempt without accepting ToS/Privacy Policy' do
@@ -52,8 +52,8 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
 
     assert_current_path signup_path
     assert_selector 'p#accepted_tos_error_msg', count: 1
-    assert has_content?('The Terms of Service, Privacy Policy, and' \
-                             ' Cookie Policy must be accepted')
+    assert has_content?('The Terms of Service, Privacy Policy, and ' \
+                        'Cookie Policy must be accepted')
   end
 
   test 'valid signup information with account activation' do
@@ -73,14 +73,14 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
       # So let's hit it with a hammer:
       execute_script("$('#user_accepted_tos').click()")
       click_button 'Create my account'
+
+      assert has_current_path?(thanks_path, wait: 10)
     end
 
-    assert_current_path thanks_path
     assert_equal 1, ActionMailer::Base.deliveries.size
     email = ActionMailer::Base.deliveries.last
-    activation_token = email.text_part.body.decoded.match(
-      %r{http.*/account_activations/(.*)/edit}
-    )[1]
+    activation_token = email.text_part.body.decoded
+                            .match(%r{http.*/account_activations/(.*)/edit})[1]
     assert_not_nil activation_token
 
     user = User.find_by_email('user@example.com')
@@ -100,21 +100,21 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     click_button 'Log in'
 
     assert_current_path login_path
-    assert has_content?('We need to verify your email address before' \
-                             ' you can log in. Please check your email for' \
-                             ' the activation link.')
+    assert has_content?('We need to verify your email address before ' \
+                        'you can log in. Please check your email for ' \
+                        'the activation link.')
 
     # Use an invalid activation token
     visit edit_account_activation_url('invalid token', email: user.email)
     assert_current_path login_path
-    assert has_content?('That activation link was invalid or has' \
-                             ' already been used')
+    assert has_content?('That activation link was invalid or has ' \
+                        'already been used')
 
     # Use a valid activation token, but with a wrong email address
     visit edit_account_activation_url(activation_token, email: 'wrong')
     assert_current_path login_path
-    assert has_content?('That activation link was invalid or has' \
-                             ' already been used')
+    assert has_content?('That activation link was invalid or has ' \
+                        'already been used')
 
     # Valid activation token
     visit edit_account_activation_url(activation_token, email: user.email)
@@ -128,9 +128,8 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     assert_current_path root_path
 
     # Now log out and log back in normally
-    click_link 'Settings'
-    assert has_selector?(:link_or_button, 'Log out')
-    click_link 'Log out'
+    click_button 'Settings'
+    click_button 'Log out'
     assert_current_path login_path
 
     visit login_path
@@ -160,14 +159,14 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
       # So let's hit it with a hammer:
       execute_script("$('#user_accepted_tos').click()")
       click_button 'Create my account'
+
+      assert has_current_path?(thanks_path, wait: 10)
     end
 
-    assert_current_path thanks_path
     assert_equal 1, ActionMailer::Base.deliveries.size
     email = ActionMailer::Base.deliveries.last
-    activation_token_old = email.text_part.body.decoded.match(
-      %r{http.*/account_activations/(.*)/edit}
-    )[1]
+    activation_token_old = email.text_part.body.decoded
+                                .match(%r{http.*/account_activations/(.*)/edit})[1]
     assert_not_nil activation_token_old
 
     user = User.find_by_email('user@example.com')
@@ -185,27 +184,26 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     fill_in 'password', with: 'foobarbaz123'
     click_button 'Log in'
 
-    assert has_content?('We need to verify your email address before' \
-                             ' you can log in. Please check your email for' \
-                             ' the activation link.')
+    assert has_content?('We need to verify your email address before ' \
+                        'you can log in. Please check your email for ' \
+                        'the activation link.')
     click_link 'click here'
 
-    assert has_content?("New activation link sent to #{user.email}." \
-                             ' Please check your email to activate your' \
-                             ' account')
+    assert has_content?("New activation link sent to #{user.email}. " \
+                        'Please check your email to activate your ' \
+                        'account')
 
     assert_equal 2, ActionMailer::Base.deliveries.size
     email = ActionMailer::Base.deliveries.last
-    activation_token = email.text_part.body.decoded.match(
-      %r{http.*/account_activations/(.*)/edit}
-    )[1]
+    activation_token = email.text_part.body.decoded
+                            .match(%r{http.*/account_activations/(.*)/edit})[1]
     assert_not_nil activation_token
 
     # The old activation url should no longer work
     visit edit_account_activation_url(activation_token_old, email: user.email)
     assert_current_path login_path
-    assert has_content?('That activation link was invalid or has already' \
-                             ' been used')
+    assert has_content?('That activation link was invalid or has already ' \
+                        'been used')
     assert_not user.reload.activated?
 
     # But the new one should work
@@ -232,14 +230,14 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
       # So let's hit it with a hammer:
       execute_script("$('#user_accepted_tos').click()")
       click_button 'Create my account'
+
+      assert has_current_path?(thanks_path, wait: 10)
     end
 
-    assert_current_path thanks_path
     assert_equal 1, ActionMailer::Base.deliveries.size
     email = ActionMailer::Base.deliveries.last
-    activation_token = email.text_part.body.decoded.match(
-      %r{http.*/account_activations/(.*)/edit}
-    )[1]
+    activation_token = email.text_part.body.decoded
+                            .match(%r{http.*/account_activations/(.*)/edit})[1]
     assert_not_nil activation_token
 
     user = User.find_by_email('user@example.com')
@@ -264,20 +262,17 @@ class UserSignupProcessesTest < ApplicationSystemTestCase
     assert_current_path search_tasks_path
 
     # Visit all the links in the dropdown menu
-    click_link 'Settings'
-    assert has_selector?(:link_or_button, 'User Profile')
+    click_button 'Settings'
     click_link 'User Profile'
     assert_current_path user_profile_path
     assert has_content?('User Profile')
-    click_link 'Settings'
-    assert has_selector?(:link_or_button, 'Task Categories')
+    click_button 'Settings'
     click_link 'Task Categories'
     assert_current_path task_categories_path
     assert has_content?('Manage Task Categories')
     assert has_content?('Define a New Task Category')
     assert has_content?('Your Task Categories')
-    click_link 'Settings'
-    assert has_selector?(:link_or_button, 'Quotes')
+    click_button 'Settings'
     click_link 'Quotes'
     assert_current_path quotes_path
     assert has_content?('Manage Quotes')

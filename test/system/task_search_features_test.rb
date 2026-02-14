@@ -67,13 +67,13 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
       find('div#search_results_container', text: regex)
     end
 
-    #select 'Priority - Highest First', from: 'sort_by'
+    # Select 'Priority - Highest First', from: 'sort_by'
     # option[3] is Priority - Highest First
     find('#sort_by').find(:xpath, 'option[3]').select_option
     assert_selector('div.display-task-summary', count: 11)
 
     # Confirm the tasks are now appearing in priority order
-    regex = /
+    regex_priority_order = /
       Aaronpk\stask26\spriority1
       .*
       Aaronpk\stask28\spriority1
@@ -82,7 +82,7 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
       .*
       Aaronpk\stask30
     /mx
-    assert find('div#search_results_container', text: regex)
+    assert find('div#search_results_container', text: regex_priority_order)
 
     # Change the sort method to Priority - Lowest First
     # option[4] is Priority - Lowest First
@@ -104,7 +104,7 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
     end
 
     # But instead are appearing in reverse priority order
-    regex = /
+    regex_reverse_priority_order = /
       Aaronpk\stask30
       .*
       Aaronpk\stask29\spriority2
@@ -113,6 +113,7 @@ class TaskSearchFeaturesTest < ApplicationSystemTestCase
       .*
       Aaronpk\stask28\spriority1
     /mx
-    assert find('div#search_results_container', text: regex)
+    assert find('div#search_results_container',
+                text: regex_reverse_priority_order)
   end
 end
