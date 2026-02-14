@@ -1,2 +1,0 @@
-$('#task_<%= @task.id %>_container').replaceWith("<%= j render 'editable_task', editable_task: @task, current_user: @current_user %>")
-$('#editable_task_<%= @task.id %>_date_picker').datepicker({ format: 'yyyy-mm-dd', autoclose: true, todayBtn: "linked", todayHighlight: true, clearBtn: true, daysOfWeekHighlighted: '06', zIndexOffset: 2000 })

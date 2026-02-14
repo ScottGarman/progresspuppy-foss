@@ -1,9 +1,9 @@
 <div class="task-sort-selector-container">
-  <%= form_tag "", class: "form-inline" do %>
+  <%= form_tag "", class: "d-flex flex-row gap-2 align-items-center" do %>
     <%= label_tag :sort_by, "Sort by:" %>
     <%= select_tag :sort_by, options_for_select(task_sort_options,
                                                 params[:sort_by]),
       { onchange: "search_results_sort_by()",
-        class: "form-control form-control-sm" } %>
+        class: "form-select form-select-sm" } %>
   <% end %>
 </div>
