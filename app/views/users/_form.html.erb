@@ -2,33 +2,33 @@
   <%= f.label :first_name, "First Name:" %>
   <%= f.text_field :first_name,
     class: "form-control #{form_validity_class(user, 'first_name')}" %>
-  <%= raw validation_error_html(user, 'first_name', 'First name') %>
+  <%= validation_error_html(user, 'first_name', 'First name') %>
 
   <%= f.label :last_name, "Last Name:" %>
   <%= f.text_field :last_name,
     class: "form-control #{form_validity_class(user, 'last_name')}" %>
-  <%= raw validation_error_html(user, 'last_name', 'Last name') %>
+  <%= validation_error_html(user, 'last_name', 'Last name') %>
 
   <%= f.label :email, "Email:" %>
   <%= f.email_field :email,
     class: "form-control #{form_validity_class(user, 'email')}" %>
-  <%= raw validation_error_html(user, 'email', 'Email') %>
+  <%= validation_error_html(user, 'email', 'Email') %>
 
   <%= f.label :password, "Password:" %>
   <%= f.password_field :password,
     class: "form-control #{form_validity_class(user, 'password')}" %>
-  <%= raw validation_error_html(user, 'password', 'Password') %>
+  <%= validation_error_html(user, 'password', 'Password') %>
 
   <%= f.label :password_confirmation, "Confirm Password:" %>
   <%= f.password_field :password_confirmation,
     class: "form-control #{form_validity_class(user, 'password')}" %>
-  <%= raw validation_error_html(user, 'password_confirmation', 'Password confirmation') %>
+  <%= validation_error_html(user, 'password_confirmation', 'Password confirmation') %>
 
   <%= f.label :time_zone, "Time Zone:" %>
   <%= f.time_zone_select :time_zone, nil,
     { include_blank: false },
     { class: "form-control #{form_validity_class(user, 'time_zone')}" } %>
-  <%= raw validation_error_html(user, 'time_zone', 'Time zone') %>
+  <%= validation_error_html(user, 'time_zone', 'Time zone') %>
 
-  <%= f.submit "Save Changes", class: "btn btn-primary" %>
+  <%= f.submit "Save Changes", class: "btn btn-primary w-100" %>
 <% end %>

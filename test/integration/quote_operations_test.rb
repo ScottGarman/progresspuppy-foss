@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class QuoteOperationsTest < ActionDispatch::IntegrationTest
-  test 'Check that the help tip quote is shown when no quotes are defined' do
+  test 'Ensure the default help tip quote is displayed when no quotes are' \
+       'defined' do
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
     assert_empty donpdonp.quotes
@@ -55,20 +56,20 @@ class QuoteOperationsTest < ActionDispatch::IntegrationTest
     assert_equal first_quote.quotation, 'First new quote'
     assert_equal first_quote.source, 'Source One'
 
-    # Show the quote (ajax)
-    get quote_path(first_quote), xhr: true
-    assert_equal 'text/javascript', @response.media_type
+    # Show the quote
+    get quote_path(first_quote)
+    assert_response :success
     assert_match(/First new quote/, @response.body)
 
-    # Show the editable quote (ajax)
-    get edit_quote_path(first_quote), xhr: true
-    assert_equal 'text/javascript', @response.media_type
+    # Show the editable quote
+    get edit_quote_path(first_quote)
+    assert_response :success
     assert_match(/First new quote/, @response.body)
 
     # Update the quote
     patch quote_path(first_quote), params: { quote:
-                                               { quotation: 'First edited' \
-                                                            ' new quote',
+                                               { quotation: 'First edited ' \
+                                                            'new quote',
                                                  source: 'Source One Edited' } }
     assert_redirected_to quotes_path
     assert_equal 'Quote updated', flash[:success]
@@ -135,6 +136,33 @@ class QuoteOperationsTest < ActionDispatch::IntegrationTest
     assert_select 'p#source_error_msg', /is too long/
   end
 
+  test 'try to update a quote with invalid data' do
+    donpdonp = users(:donpdonp)
+    log_in_as(donpdonp)
+
+    # Create a quote first
+    post quotes_path, params: { quote: { quotation: 'Valid quote',
+                                         source: 'Valid source' } }
+    quote = donpdonp.quotes.first
+
+    # Update with empty quotation
+    patch quote_path(quote), params: { quote: { quotation: '',
+                                                source: 'Valid source' } }
+    assert_response :unprocessable_entity
+    assert_select 'p#quotation_error_msg', /can't be blank/
+
+    # Update with empty source
+    patch quote_path(quote), params: { quote: { quotation: 'Valid quote',
+                                                source: '' } }
+    assert_response :unprocessable_entity
+    assert_select 'p#source_error_msg', /can't be blank/
+
+    # Verify quote was not changed
+    quote.reload
+    assert_equal 'Valid quote', quote.quotation
+    assert_equal 'Valid source', quote.source
+  end
+
   test 'try to edit an invalid quote' do
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
@@ -147,10 +175,10 @@ class QuoteOperationsTest < ActionDispatch::IntegrationTest
       Quote.find(invalid_id)
     end
 
-    get edit_quote_path(invalid_id), xhr: true
+    get edit_quote_path(invalid_id)
     patch quote_path(invalid_id), params: { quote:
-                                              { quotation: 'Editing an' \
-                                                           ' invalid quote',
+                                              { quotation: 'Editing an ' \
+                                                           'invalid quote',
                                                 source: 'Quotation Source' } }
     assert_redirected_to quotes_path
     assert_equal 'Updating quote failed: quote not found', flash[:danger]
@@ -194,8 +222,8 @@ class QuoteOperationsTest < ActionDispatch::IntegrationTest
 
     # Edit Don's quote
     patch quote_path(dons_quote), params: { quote:
-                                              { quotation: 'First edited new' \
-                                                           ' quote',
+                                              { quotation: 'First edited new ' \
+                                                           'quote',
                                                 source: 'Source One Edited' } }
     assert_redirected_to quotes_path
     assert_equal 'Updating quote failed: quote not found', flash[:danger]

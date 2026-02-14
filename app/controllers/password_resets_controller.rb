@@ -14,18 +14,18 @@ class PasswordResetsController < ApplicationController
       @user.create_reset_digest
       @user.send_password_reset_email
       flash[:success] =
-        'Reset instructions sent to' \
-        " #{ActionController::Base.helpers.sanitize(email)}"
+        'Reset instructions sent to ' \
+        "#{ActionController::Base.helpers.sanitize(email)}"
       redirect_to password_reset_sent_path
     else
       if email.blank?
         flash.now[:warning] = 'Please enter a valid email address'
       else
         flash.now[:warning] =
-          "[#{ActionController::Base.helpers.sanitize(email)}] is not a" \
-          ' registered user'
+          "[#{ActionController::Base.helpers.sanitize(email)}] is not a " \
+          'registered user'
       end
-      render 'new'
+      render 'new', status: :unprocessable_entity
     end
   end
 
@@ -35,14 +35,14 @@ class PasswordResetsController < ApplicationController
   def update
     if params[:user][:password].empty?
       @user.errors.add(:password, "can't be empty")
-      render 'edit'
+      render 'edit', status: :unprocessable_entity
     elsif @user.update(user_params)
       log_in @user
       @user.update_attribute(:reset_digest, nil)
       flash[:success] = 'Password has been reset'
       redirect_to tasks_path
     else
-      render 'edit'
+      render 'edit', status: :unprocessable_entity
     end
   end
 
@@ -66,9 +66,10 @@ class PasswordResetsController < ApplicationController
 
   # Confirms a valid user.
   def valid_user
-    return if @user&.activated? && @user&.authenticated?(:reset, params[:id])
+    return if @user&.activated? && @user.authenticated?(:reset, params[:id])
 
-    flash[:warning] = 'That password reset link was invalid. Please try again.'
+    flash[:warning] = 'That password reset link was invalid. Please try ' \
+                      'again or contact support for help.'
     redirect_to new_password_reset_path
   end
 
@@ -77,8 +78,8 @@ class PasswordResetsController < ApplicationController
     return unless @user.password_reset_expired?
 
     @user.password_reset_expired?
-    flash[:warning] = 'That password reset link has expired (they expire' \
-      ' after 2 hours)'
+    flash[:warning] = 'That password reset link has expired (they expire ' \
+                      'after 2 hours)'
     redirect_to new_password_reset_path
   end
 end

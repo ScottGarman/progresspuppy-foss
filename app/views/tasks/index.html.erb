@@ -10,7 +10,7 @@
     <%= link_to image_tag('chevron-down.svg',
                           id: 'toggle_new_task_form_control'),
                           "/", id: 'toggle_new_task_form_control_link',
-                          'data-toggle': 'tooltip', 'data-placement': 'right',
+                          'data-bs-toggle': 'tooltip', 'data-bs-placement': 'right',
                           title: "Click this arrow to show/hide the new task form" %>
   </h2>
   <hr />
@@ -29,7 +29,7 @@
       <div id="advance_overdue_tasks_button_container">
         <%= button_to "Advance Overdue Tasks", advance_overdue_tasks_path(page: params[:page]),
           class: 'btn btn-sm btn-tiny btn-primary',
-          'data-toggle': 'tooltip', 'data-placement': 'top',
+          'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top',
           title: 'This button will update all tasks that are currently overdue to have a new due date of today' %>
       </div>
       <% end %>

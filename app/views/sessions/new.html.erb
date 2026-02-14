@@ -3,7 +3,7 @@
 <%= render 'layouts/flash_alerts_static' %>
 
 <div class="container">
-  <div class="col-md-6 col-md-offset-3 mx-auto">
+  <div class="col-md-6 mx-auto">
     <%= form_with url: login_path, local: true do |f| %>
       <%= f.label :email, "Email Address:" %>
       <%= f.email_field :email, placeholder: "Email", class: "form-control" %>
@@ -13,7 +13,7 @@
 
       <%= f.check_box :remember_me, checked: true, class: "remember-me-checkbox" %>Remember my login
 
-      <%= f.submit "Log in", class: "btn btn-primary" %>
+      <%= f.submit "Log in", class: "btn btn-primary w-100" %>
     <% end %>
 
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>

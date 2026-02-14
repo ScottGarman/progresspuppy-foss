@@ -23,8 +23,9 @@ module ApplicationHelper
     return if obj.errors[attribute].blank?
 
     # When there are multiple validation messages, this prints the first one
-    "<p id='#{attribute}_error_msg' class='error-msg'>#{displayname}" \
-    " #{obj.errors[attribute][0]}</p>"
+    tag.p(id: "#{attribute}_error_msg", class: 'error-msg') do
+      "#{displayname} #{obj.errors[attribute][0]}"
+    end
   end
 
   # Return the hidden-by-default CSS class if the new task form should

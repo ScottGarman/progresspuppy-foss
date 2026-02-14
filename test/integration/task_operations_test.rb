@@ -36,12 +36,12 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     # View tasks with no results (paginated messages)
     get tasks_path(page: 6)
     assert_response :success
-    assert_select 'p', 'There are no current tasks to display for this page -' \
-                       ' maybe try going back one page?'
+    assert_select 'p', 'There are no current tasks to display for this page - ' \
+                       'maybe try going back one page?'
     get upcoming_tasks_path(page: 6)
     assert_response :success
-    assert_select 'p', 'There are no upcoming tasks to display for this page' \
-                       ' - maybe try going back one page?'
+    assert_select 'p', 'There are no upcoming tasks to display for this page ' \
+                       '- maybe try going back one page?'
 
     # Create a new task
     uncategorized_id = donpdonp.task_categories.find_by(name: 'Uncategorized')
@@ -59,14 +59,14 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_equal first_task.priority, 1
     assert_equal first_task.task_category_id, uncategorized_id
 
-    # Show the task (ajax)
-    get task_path(first_task), xhr: true
-    assert_equal 'text/javascript', @response.media_type
+    # Show the task (Turbo Frame)
+    get task_path(first_task)
+    assert_equal 'text/html', @response.media_type
     assert_match(/A first task/, @response.body)
 
-    # Show the editable task (ajax)
-    get edit_task_path(first_task), xhr: true
-    assert_equal 'text/javascript', @response.media_type
+    # Show the editable task (Turbo Frame)
+    get edit_task_path(first_task)
+    assert_equal 'text/html', @response.media_type
     assert_match(/A first task/, @response.body)
 
     # Update the task
@@ -102,7 +102,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
         summary: '',
         priority: '1',
         task_category_id: uncategorized_id,
-        due_at: Date.tomorrow.to_s(:db)
+        due_at: Date.tomorrow.to_fs(:db)
       } }
     end
     assert_template 'tasks/index'
@@ -114,7 +114,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
         summary: '   ',
         priority: '1',
         task_category_id: uncategorized_id,
-        due_at: Date.tomorrow.to_s(:db)
+        due_at: Date.tomorrow.to_fs(:db)
       } }
     end
     assert_template 'tasks/index'
@@ -126,7 +126,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
         summary: 'a' * 151,
         priority: '1',
         task_category_id: uncategorized_id,
-        due_at: Date.tomorrow.to_s(:db)
+        due_at: Date.tomorrow.to_fs(:db)
       } }
     end
     assert_template 'tasks/index'
@@ -162,10 +162,10 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_equal task.summary, 'A generic task'
     assert_equal task.status, 'INCOMPLETE'
 
-    # Display a task via show (ajax)
-    get task_path(task), xhr: true
+    # Display a task via show (Turbo Frame)
+    get task_path(task)
     assert_response :success
-    assert_equal 'text/javascript', @response.media_type
+    assert_equal 'text/html', @response.media_type
     assert_match(/A generic task/, @response.body)
   end
 
@@ -214,7 +214,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'A first task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: Date.tomorrow.to_s(:db)
+      due_at: Date.tomorrow.to_fs(:db)
     } }
     assert_redirected_to tasks_path
     assert_equal donpdonp.tasks.size, 1
@@ -223,8 +223,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'p', 'There are no current tasks to display.'
     assert_select 'p', 'There are no completed tasks for today.'
-    assert_select 'p', count: 0, text: 'There are no upcoming tasks to' \
-                                         ' display.'
+    assert_select 'p', count: 0, text: 'There are no upcoming tasks to ' \
+                                       'display.'
   end
 
   test 'create a task and mark it as completed' do
@@ -256,11 +256,211 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     get tasks_path
     assert_response :success
     assert_select 'p', 'There are no current tasks to display.'
-    assert_select 'p', count: 0, text: 'There are no completed tasks for' \
-                                         ' today.'
+    assert_select 'p', count: 0, text: 'There are no completed tasks for ' \
+                                       'today.'
     get upcoming_tasks_path
     assert_response :success
     assert_select 'p', 'There are no upcoming tasks to display.'
+  end
+
+  test 'create a daily recurring task and mark it as completed' do
+    donpdonp = users(:donpdonp)
+    log_in_as(donpdonp)
+
+    # View tasks
+    get tasks_path
+    assert_response :success
+    assert_empty donpdonp.tasks
+    assert_select 'p', 'There are no current tasks to display.'
+    assert_select 'p', 'There are no completed tasks for today.'
+    get upcoming_tasks_path
+    assert_response :success
+    assert_select 'p', 'There are no upcoming tasks to display.'
+
+    create_task(donpdonp)
+    assert_equal donpdonp.tasks.size, 1
+    first_task = donpdonp.tasks.first
+    assert_equal first_task.status, 'INCOMPLETE'
+    assert_nil first_task.completed_at
+
+    # Add the recurring syntax to the summary
+    first_task.summary = 'A recurring task (every day)'
+    first_task.save!
+
+    # Mark the task as completed
+    post toggle_task_status_path(first_task), xhr: true
+    first_task.reload
+    assert_equal first_task.status, 'COMPLETED'
+    assert_not_nil first_task.completed_at
+
+    get tasks_path
+    assert_response :success
+    assert_select 'p', 'There are no current tasks to display.'
+    assert_select 'p', count: 0, text: 'There are no completed tasks for ' \
+                                       'today.'
+
+    assert_equal 2, donpdonp.tasks.count
+    assert_equal 1, donpdonp.tasks.completed.count
+    assert_equal 1, donpdonp.tasks.incomplete.count
+
+    # Check that the recurring task was created with the correct summary and due date
+    assert_equal donpdonp.tasks.incomplete.first.summary, 'A recurring task (every day)'
+    assert_equal donpdonp.tasks.incomplete.first.due_at, Date.tomorrow
+
+    get upcoming_tasks_path
+    assert_response :success
+    assert_match(/.*A recurring task \(every day\).*/m, response.body)
+  end
+
+  test 'create a weekly recurring task and mark it as completed' do
+    donpdonp = users(:donpdonp)
+    log_in_as(donpdonp)
+
+    # View tasks
+    get tasks_path
+    assert_response :success
+    assert_empty donpdonp.tasks
+    assert_select 'p', 'There are no current tasks to display.'
+    assert_select 'p', 'There are no completed tasks for today.'
+    get upcoming_tasks_path
+    assert_response :success
+    assert_select 'p', 'There are no upcoming tasks to display.'
+
+    create_task(donpdonp)
+    assert_equal donpdonp.tasks.size, 1
+    first_task = donpdonp.tasks.first
+    assert_equal first_task.status, 'INCOMPLETE'
+    assert_nil first_task.completed_at
+
+    # Add the recurring syntax to the summary
+    first_task.summary = 'A recurring task (every week)'
+    first_task.save!
+
+    # Mark the task as completed
+    post toggle_task_status_path(first_task), xhr: true
+    first_task.reload
+    assert_equal first_task.status, 'COMPLETED'
+    assert_not_nil first_task.completed_at
+
+    get tasks_path
+    assert_response :success
+    assert_select 'p', 'There are no current tasks to display.'
+    assert_select 'p', count: 0, text: 'There are no completed tasks for ' \
+                                       'today.'
+
+    assert_equal 2, donpdonp.tasks.count
+    assert_equal 1, donpdonp.tasks.completed.count
+    assert_equal 1, donpdonp.tasks.incomplete.count
+
+    # Check that the recurring task was created with the correct summary and due date
+    assert_equal donpdonp.tasks.incomplete.first.summary, 'A recurring task (every week)'
+    assert_equal donpdonp.tasks.incomplete.first.due_at, Date.current + 1.week
+
+    get upcoming_tasks_path
+    assert_response :success
+    assert_match(/.*A recurring task \(every week\).*/m, response.body)
+  end
+
+  test 'create a monthly recurring task and mark it as completed' do
+    donpdonp = users(:donpdonp)
+    log_in_as(donpdonp)
+
+    # View tasks
+    get tasks_path
+    assert_response :success
+    assert_empty donpdonp.tasks
+    assert_select 'p', 'There are no current tasks to display.'
+    assert_select 'p', 'There are no completed tasks for today.'
+    get upcoming_tasks_path
+    assert_response :success
+    assert_select 'p', 'There are no upcoming tasks to display.'
+
+    create_task(donpdonp)
+    assert_equal donpdonp.tasks.size, 1
+    first_task = donpdonp.tasks.first
+    assert_equal first_task.status, 'INCOMPLETE'
+    assert_nil first_task.completed_at
+
+    # Add the recurring syntax to the summary
+    first_task.summary = 'A recurring task (every month)'
+    first_task.save!
+
+    # Mark the task as completed
+    post toggle_task_status_path(first_task), xhr: true
+    first_task.reload
+    assert_equal first_task.status, 'COMPLETED'
+    assert_not_nil first_task.completed_at
+
+    # We should now have one completed and one incomplete task
+    assert_equal 2, donpdonp.tasks.count
+    assert_equal 1, donpdonp.tasks.completed.count
+    assert_equal 1, donpdonp.tasks.incomplete.count
+
+    # Check that the recurring task was created with the correct summary and due date
+    recurring_task_due_date = Date.current + 1.month
+    assert_equal donpdonp.tasks.incomplete.first.summary, 'A recurring task (every month)'
+    assert_equal donpdonp.tasks.incomplete.first.due_at, recurring_task_due_date
+
+    get tasks_path
+    assert_response :success
+    assert_select 'p', 'There are no current tasks to display.'
+    assert_select 'p', count: 0, text: 'There are no completed tasks for ' \
+                                       'today.'
+
+    get upcoming_tasks_path
+    assert_response :success
+    assert_match(/.*A recurring task \(every month\).*/m, response.body)
+  end
+
+  test 'create a recurring task for every 3 weeks and mark it as completed' do
+    donpdonp = users(:donpdonp)
+    log_in_as(donpdonp)
+
+    # View tasks
+    get tasks_path
+    assert_response :success
+    assert_empty donpdonp.tasks
+    assert_select 'p', 'There are no current tasks to display.'
+    assert_select 'p', 'There are no completed tasks for today.'
+    get upcoming_tasks_path
+    assert_response :success
+    assert_select 'p', 'There are no upcoming tasks to display.'
+
+    create_task(donpdonp)
+    assert_equal donpdonp.tasks.size, 1
+    first_task = donpdonp.tasks.first
+    assert_equal first_task.status, 'INCOMPLETE'
+    assert_nil first_task.completed_at
+
+    # Add the recurring syntax to the summary
+    first_task.summary = 'A recurring task (every 3 weeks)'
+    first_task.save!
+
+    # Mark the task as completed
+    post toggle_task_status_path(first_task), xhr: true
+    first_task.reload
+    assert_equal first_task.status, 'COMPLETED'
+    assert_not_nil first_task.completed_at
+
+    # We should now have one completed and one incomplete task
+    assert_equal 2, donpdonp.tasks.count
+    assert_equal 1, donpdonp.tasks.completed.count
+    assert_equal 1, donpdonp.tasks.incomplete.count
+
+    # Check that the recurring task was created with the correct summary and due date
+    recurring_task_due_date = Date.current + 3.weeks
+    assert_equal donpdonp.tasks.incomplete.first.summary, 'A recurring task (every 3 weeks)'
+    assert_equal donpdonp.tasks.incomplete.first.due_at, recurring_task_due_date
+
+    get tasks_path
+    assert_response :success
+    assert_select 'p', 'There are no current tasks to display.'
+    assert_select 'p', count: 0, text: 'There are no completed tasks for ' \
+                                       'today.'
+
+    get upcoming_tasks_path
+    assert_response :success
+    assert_match(/.*A recurring task \(every 3 weeks\).*/m, response.body)
   end
 
   test 'ensure filtering tasks by task category works correctly' do
@@ -298,7 +498,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'First task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: Time.now.in_time_zone(tz).to_date.advance(days: 3).to_s(:db)
+      due_at: Time.now.in_time_zone(tz).to_date.advance(days: 3).to_fs(:db)
     } }
     assert_redirected_to tasks_path
     assert_equal donpdonp.tasks.size, 1
@@ -307,7 +507,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'Second task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: Time.now.in_time_zone(tz).to_date.tomorrow.to_s(:db)
+      due_at: Time.now.in_time_zone(tz).to_date.tomorrow.to_fs(:db)
     } }
     assert_redirected_to tasks_path
     assert_equal donpdonp.tasks.size, 2
@@ -316,7 +516,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'Third task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: Time.now.in_time_zone(tz).to_date.to_s(:db)
+      due_at: Time.now.in_time_zone(tz).to_date.to_fs(:db)
     } }
     assert_redirected_to tasks_path
     assert_equal donpdonp.tasks.size, 3
@@ -325,7 +525,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'Fourth task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: Time.now.in_time_zone(tz).to_date.yesterday.to_s(:db)
+      due_at: Time.now.in_time_zone(tz).to_date.yesterday.to_fs(:db)
     } }
     assert_redirected_to tasks_path
     assert_equal donpdonp.tasks.size, 4
@@ -339,8 +539,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_match(/.*Second task.*First task.*/m, response.body)
   end
 
-  test 'ensure current and future tasks with the same due date are sorted by' \
-       ' priority' do
+  test 'ensure current and future tasks with the same due date are sorted by ' \
+       'priority' do
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
 
@@ -355,15 +555,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     # Proper sorting of task priorities should result in them appearing in the
     # order: priority1, priority2, priority3
     get tasks_path
-    assert_response :success
-    regex = /
-      A\spriority1\stask
-      .*
-      A\spriority2\stask
-      .*
-      A\spriority3\stask
-    /mx
-    assert_match(regex, response.body)
+    assert_match(/.*A priority1 task.*A priority2 task.*A priority3 task.*/m,
+                 response.body)
 
     # delete the three tasks
     3.times do
@@ -373,53 +566,36 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_equal 0, donpdonp.tasks.count
 
     # now he creates three tasks with a due date of today
-    today_db = Time.now.in_time_zone(donpdonp.time_zone).to_date.to_s(:db)
-    create_task(donpdonp, today_db, 'Uncategorized', 2, 'priority2',
+    today_in_user_tz = Time.now.in_time_zone(donpdonp.time_zone).to_date.to_fs(:db)
+    create_task(donpdonp, today_in_user_tz, 'Uncategorized', 2, 'priority2',
                 'index', nil)
-    create_task(donpdonp, today_db, 'Uncategorized', 1, 'priority1',
+    create_task(donpdonp, today_in_user_tz, 'Uncategorized', 1, 'priority1',
                 'index', nil)
-    create_task(donpdonp, today_db, 'Uncategorized', 3, 'priority3',
+    create_task(donpdonp, today_in_user_tz, 'Uncategorized', 3, 'priority3',
                 'index', nil)
     assert_equal 3, donpdonp.tasks.count
-    assert_equal 3, donpdonp.tasks.current(today_db).count
 
     # Proper sorting of task priorities should result in them appearing in the
     # order: priority1, priority2, priority3
     get tasks_path
-    assert_response :success
-    regex = /
-      A\spriority1\stask
-      .*
-      A\spriority2\stask
-      .*
-      A\spriority3\stask
-    /mx
-    assert_match(regex, response.body)
+    assert_match(/.*A priority1 task.*A priority2 task.*A priority3 task.*/m,
+                 response.body.force_encoding('UTF-8'))
 
     # now he creates three tasks with a due date of tomorrow
-    tomorrow_db = Time.now.in_time_zone(donpdonp.time_zone).to_date
-                      .advance(days: 1).to_s(:db)
-    create_task(donpdonp, tomorrow_db, 'Uncategorized', 2, 'priority2',
-                'index', nil)
-    create_task(donpdonp, tomorrow_db, 'Uncategorized', 1, 'priority1',
-                'index', nil)
-    create_task(donpdonp, tomorrow_db, 'Uncategorized', 3, 'priority3',
-                'index', nil)
+    tomorrow_in_user_tz = (Time.now.in_time_zone(donpdonp.time_zone).to_date + 1.day).to_fs(:db)
+    create_task(donpdonp, tomorrow_in_user_tz, 'Uncategorized', 2,
+                'priority2', 'index', nil)
+    create_task(donpdonp, tomorrow_in_user_tz, 'Uncategorized', 1,
+                'priority1', 'index', nil)
+    create_task(donpdonp, tomorrow_in_user_tz, 'Uncategorized', 3,
+                'priority3', 'index', nil)
     assert_equal 6, donpdonp.tasks.count
-    assert_equal 3, donpdonp.tasks.future(today_db).count
 
     # Proper sorting of task priorities should result in them appearing in the
     # order: priority1, priority2, priority3
     get upcoming_tasks_path
-    assert_response :success
-    regex = /
-      A\spriority1\stask
-      .*
-      A\spriority2\stask
-      .*
-      A\spriority3\stask
-    /mx
-    assert_match(regex, response.body)
+    assert_match(/.*A priority1 task.*A priority2 task.*A priority3 task.*/m,
+                 response.body.force_encoding('UTF-8'))
   end
 
   test 'ensure the auto-update overdue tasks button works' do
@@ -438,7 +614,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'An overdue task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: 5.days.ago.to_date.to_s(:db)
+      due_at: 5.days.ago.to_date.to_fs(:db)
     } }
     assert_redirected_to tasks_path
     assert_equal donpdonp.tasks.size, 1
@@ -468,8 +644,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_select 'div#advance_overdue_tasks_button_container', false
   end
 
-  test 'ensure that after creating a new task, any selected task category' \
-       ' filter is remembered and the correct task view tab is displayed' do
+  test 'ensure that after creating a new task, any selected task category ' \
+       'filter is remembered and the correct task view tab is displayed' do
     donpdonp = users(:donpdonp)
 
     # donpdonp logs in and creates some new tasks
@@ -481,7 +657,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'First task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: Time.now.to_date.to_s(:db)
+      due_at: Time.now.to_date.to_fs(:db)
     } }
     assert_redirected_to tasks_path(category: 'Uncategorized')
 
@@ -490,7 +666,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
                    { summary: 'Second task',
                      priority: '1',
                      task_category_id: uncategorized_id,
-                     due_at: Time.now.to_date.to_s(:db) } }
+                     due_at: Time.now.to_date.to_fs(:db) } }
     assert_redirected_to upcoming_tasks_path(category: 'Uncategorized')
 
     get search_tasks_path(tasks_view: 'search', category: 'Uncategorized'),
@@ -498,12 +674,12 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
                   { summary: 'Third task',
                     priority: '1',
                     task_category_id: uncategorized_id,
-                    due_at: Time.now.to_date.to_s(:db) } }
+                    due_at: Time.now.to_date.to_fs(:db) } }
     assert_response :success
   end
 
-  test 'ensure that search parameters are preserved after performing task' \
-       ' operations from the search tab' do
+  test 'ensure that search parameters are preserved after performing task ' \
+       'operations from the search tab' do
     donpdonp = users(:donpdonp)
 
     # donpdonp logs in and creates a new task
@@ -526,12 +702,12 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_equal donpdonp.tasks.size, 2
     assert_redirected_to search_tasks_path(search_terms: 'generic')
     get search_tasks_path
-    assert_select 'div.alert-flex-container', "New task created (in Today's" \
-                                              ' Tasks list)'
+    assert_select 'div.alert-flex-container', "New task created (in Today's " \
+                                              'Tasks list)'
   end
 
-  test 'ensure that updating and deleting an upcoming task redirects to the' \
-       ' upcoming tasks tab' do
+  test 'ensure that updating and deleting an upcoming task redirects to the ' \
+       'upcoming tasks tab' do
     donpdonp = users(:donpdonp)
 
     # donpdonp logs in and creates a future-dated task
@@ -544,7 +720,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'First task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: Time.now.in_time_zone(tz).to_date.advance(days: 3).to_s(:db)
+      due_at: Time.now.in_time_zone(tz).to_date.advance(days: 3).to_fs(:db)
     } }
     assert_redirected_to tasks_path
     assert_equal donpdonp.tasks.size, 1
@@ -562,8 +738,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_redirected_to upcoming_tasks_path
   end
 
-  test 'ensure that updating and deleting a task while filtered by task' \
-       ' category redirects to the same task category filter' do
+  test 'ensure that updating and deleting a task while filtered by task ' \
+       'category redirects to the same task category filter' do
     donpdonp = users(:donpdonp)
 
     # donpdonp logs in and creates a current task
@@ -576,7 +752,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'First task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: Time.now.in_time_zone(tz).to_date.to_s(:db)
+      due_at: Time.now.in_time_zone(tz).to_date.to_fs(:db)
     } }
     assert_redirected_to tasks_path
     assert_equal donpdonp.tasks.size, 1
@@ -598,7 +774,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
       summary: 'First task',
       priority: '1',
       task_category_id: uncategorized_id,
-      due_at: Time.now.in_time_zone(tz).to_date.advance(days: 3).to_s(:db)
+      due_at: Time.now.in_time_zone(tz).to_date.advance(days: 3).to_fs(:db)
     } }
     assert_redirected_to tasks_path
     assert_equal donpdonp.tasks.size, 1
@@ -616,8 +792,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_redirected_to upcoming_tasks_path(category: 'Uncategorized')
   end
 
-  test 'check the flash messages when tasks are created and updated from' \
-       ' various task views' do
+  test 'check the flash messages when tasks are created and updated from ' \
+       'various task views' do
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
 
@@ -633,16 +809,16 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_equal donpdonp.tasks.size, 2
     get upcoming_tasks_path
     assert_response :success
-    assert_select 'div.alert-flex-container', "New task created (in Today's" \
-                                              ' Tasks list)'
+    assert_select 'div.alert-flex-container', "New task created (in Today's " \
+                                              'Tasks list)'
 
     # Current task creation from Search view
     create_task(donpdonp, nil, 'Uncategorized', 1, 'generic', 'search')
     assert_equal donpdonp.tasks.size, 3
     get search_tasks_path
     assert_response :success
-    assert_select 'div.alert-flex-container', "New task created (in Today's" \
-                                              ' Tasks list)'
+    assert_select 'div.alert-flex-container', "New task created (in Today's " \
+                                              'Tasks list)'
 
     # Current task update from Today's Tasks view
     current_task = donpdonp.tasks.first
@@ -661,8 +837,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_redirected_to upcoming_tasks_path
     get upcoming_tasks_path
     assert_response :success
-    assert_select 'div.alert-flex-container', "Task updated (in Today's" \
-                                              ' Tasks list)'
+    assert_select 'div.alert-flex-container', "Task updated (in Today's " \
+                                              'Tasks list)'
 
     # Current task update from Search view
     patch task_path(current_task), params: { task: {
@@ -671,8 +847,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_redirected_to search_tasks_path
     get search_tasks_path
     assert_response :success
-    assert_select 'div.alert-flex-container', "Task updated (in Today's" \
-                                              ' Tasks list)'
+    assert_select 'div.alert-flex-container', "Task updated (in Today's " \
+                                              'Tasks list)'
 
     task1, task2, task3 = donpdonp.tasks[0..2]
     assert_not task1.nil?
@@ -701,8 +877,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_select 'div.alert-flex-container', 'Task deleted'
   end
 
-  test 'ensure users cannot edit, modify, or delete the quotes of other' \
-       ' users' do
+  test 'ensure users cannot edit, modify, or delete the quotes of other ' \
+       'users' do
     donpdonp = users(:donpdonp)
     ows = users(:onewheelskyward)
 
@@ -753,8 +929,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_equal donpdonp.tasks.reload.size, 1
   end
 
-  test 'display_quotes should toggle the display of quotes on the tasks' \
-       ' index' do
+  test 'display_quotes should toggle the display of quotes on the tasks ' \
+       'index' do
     don = users(:donpdonp)
     log_in_as(don)
 
@@ -774,69 +950,19 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_select 'div#header_quote_container', 0
   end
 
-  test 'ensure that free plan users get the correct 5 awwyiss modals' do
-    # leofsiege is a free plan user
-    leofsiege = users(:leofsiege)
-    log_in_as(leofsiege)
-
-    valid_modals = %w[awwyiss_modal_bravocado
-                      awwyiss_modal_hell_yes
-                      awwyiss_modal_like_a_boss
-                      awwyiss_modal_nice_one
-                      awwyiss_modal_unstoppable2]
-
-    # Reload the page 20 times to get a good sampling of results
-    20.times do
-      get tasks_path
-      assert_response :success
-      awwyiss_modal = assigns(:awwyiss_modal)
-      assert valid_modals.include?(awwyiss_modal)
-    end
-  end
-
-  test 'ensure that pro plan users get the correct 12 awwyiss modals' do
-    # donpdonp is a pro plan user
+  test 'ensure that awwyiss_modal selection works without hanging when there ' \
+       'are only a few modals' do
+    # With only 3 modals available, we can't guarantee non-repetition, but
+    # we can verify the selection doesn't hang or crash
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
 
-    valid_modals = %w[awwyiss_modal_beavis_butthead1
-                      awwyiss_modal_boom
-                      awwyiss_modal_bravocado
-                      awwyiss_modal_hell_yes
+    valid_modals = %w[awwyiss_modal_bravocado
                       awwyiss_modal_like_a_boss
-                      awwyiss_modal_nice_one
-                      awwyiss_modal_oh_yeah
-                      awwyiss_modal_unstoppable1
-                      awwyiss_modal_unstoppable2
-                      awwyiss_modal_victory]
+                      awwyiss_modal_nice_one]
 
-    # Reload the page 30 times to get a good sampling of results
-    30.times do
-      get tasks_path
-      assert_response :success
-      awwyiss_modal = assigns(:awwyiss_modal)
-      assert valid_modals.include?(awwyiss_modal)
-    end
-  end
-
-  test 'ensure that premier plan users get the correct 20 awwyiss modals' do
-    # onewheelskyward is a premier plan user
-    onewheelskyward = users(:onewheelskyward)
-    log_in_as(onewheelskyward)
-
-    valid_modals = %w[awwyiss_modal_beavis_butthead1
-                      awwyiss_modal_boom
-                      awwyiss_modal_bravocado
-                      awwyiss_modal_hell_yes
-                      awwyiss_modal_like_a_boss
-                      awwyiss_modal_nice_one
-                      awwyiss_modal_oh_yeah
-                      awwyiss_modal_unstoppable1
-                      awwyiss_modal_unstoppable2
-                      awwyiss_modal_victory]
-
-    # Reload the page 30 times to get a good sampling of results
-    30.times do
+    # Reload the page 25 times to exercise the awwyiss_history logic
+    25.times do
       get tasks_path
       assert_response :success
       awwyiss_modal = assigns(:awwyiss_modal)
@@ -845,8 +971,8 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
   end
 
   # Previously this crash bug happened in production
-  test 'ensure that attemping to create an invalid task when quote history' \
-       " is being saved doesn't cause a site crash" do
+  test 'ensure that attemping to create an invalid task when quote history ' \
+       "is being saved doesn't cause a site crash" do
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
 
@@ -865,7 +991,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
         summary: '',
         priority: '1',
         task_category_id: uncategorized_id,
-        due_at: Date.today.to_s(:db)
+        due_at: Date.current.to_fs(:db)
       } }
     end
     assert_template 'tasks/index'

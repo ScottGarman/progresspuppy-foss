@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   attr_accessor :accepted_tos, :activation_token, :reset_token, :remember_token
 
+  serialize :awwyiss_history, coder: YAML
+  serialize :quote_history, coder: YAML
   has_secure_password
 
   # Validation
@@ -33,7 +35,12 @@ class User < ApplicationRecord
 
   # Returns the hash digest of the given string
   def self.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    cost = if ActiveModel::SecurePassword.min_cost
+             BCrypt::Engine::MIN_COST
+           else
+             BCrypt::Engine.cost
+           end
+
     BCrypt::Password.create(string, cost: cost)
   end
 

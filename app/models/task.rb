@@ -65,6 +65,37 @@ class Task < ApplicationRecord
     due_at.to_s > today_db
   end
 
+  # A recurring task is one whose summary includes special syntax, e.g.
+  # (every day/week/month/year), (every N days/weeks/months/years).
+  # Look for this syntax and return true if found.
+  def recurring?
+    # singular time units
+    return true if summary =~ /\(every\s+(day|week|month|year)\)/
+
+    # plural time units
+    return true if summary =~ /\(every\s+\d+\s+(day|week|month|year)s\)/
+
+    false
+  end
+
+  # The recurring period is the total amount of time to advance the due date
+  # for a recurring task.
+  def recurring_period
+    # singular time units
+    return 1.day if summary =~ /\(every\s+day\)/
+    return 1.week if summary =~ /\(every\s+week\)/
+    return 1.month if summary =~ /\(every\s+month\)/
+    return 1.year if summary =~ /\(every\s+year\)/
+
+    # plural time units
+    return ::Regexp.last_match(1).to_i.days if summary =~ /\(every\s+(\d+)\s+days\)/
+    return ::Regexp.last_match(1).to_i.weeks if summary =~ /\(every\s+(\d+)\s+weeks\)/
+    return ::Regexp.last_match(1).to_i.months if summary =~ /\(every\s+(\d+)\s+months\)/
+    return ::Regexp.last_match(1).to_i.years if summary =~ /\(every\s+(\d+)\s+years\)/
+
+    nil
+  end
+
   # today_db should be today's date in database format (yyyy-mm-dd). It's
   # passed as an arguent to allow its caller to apply the user's time
   # zone to the date.
@@ -88,9 +119,11 @@ class Task < ApplicationRecord
   end
 
   def self.search(summary_terms, completed_status, category_id, sort_by)
+    logger.info("*** Task.search(): args are [#{summary_terms}], " \
+                "[#{completed_status}], and [#{category_id}]")
+
     tasks = all
-    tasks = tasks.where('summary LIKE ?', "%#{summary_terms}%") unless
-      summary_terms.empty?
+    summary_terms && tasks = tasks.where('summary LIKE ?', "%#{summary_terms}%")
     tasks = tasks.completed if completed_status == 'completed'
     tasks = tasks.incomplete if completed_status == 'incomplete'
     tasks = tasks.category(category_id) if category_id != 'All'
@@ -115,7 +148,7 @@ class Task < ApplicationRecord
     return false if status == 'INCOMPLETE'
     return true if status == 'COMPLETED'
 
-    false
+    raise 'Invalid task status'
   end
 
   def toggle_status

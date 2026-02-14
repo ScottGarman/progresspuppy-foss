@@ -1,0 +1,27 @@
+<% if @task.status == "COMPLETED" %>
+<%= turbo_stream.update "awwyiss_container" do %>
+  <div data-controller="modal">
+    <%= render @awwyiss_modal %>
+  </div>
+<% end %>
+<% end %>
+
+<%= turbo_stream.update "current_task_list" do %>
+  <%= render partial: 'display_task', collection: @current_tasks, as: :display_task %>
+<% end %>
+
+<%= turbo_stream.update "completed_task_list" do %>
+  <% if @completed_tasks.empty? %>
+    <p class="italic">There are no completed tasks for today.<p>
+  <% else %>
+    <%= render partial: 'display_task', collection: @completed_tasks, as: :display_task %>
+  <% end %>
+<% end %>
+
+<% if @new_task_reminder %>
+<%= turbo_stream.update "tasks_flash_alert" do %>
+  <%= content_tag :div, @new_task_reminder,
+      class: "alert alert-info alert-compact",
+      data: { controller: "fade" } %>
+<% end %>
+<% end %>

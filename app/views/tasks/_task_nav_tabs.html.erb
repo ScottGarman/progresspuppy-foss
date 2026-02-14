@@ -9,5 +9,11 @@
     <%= link_to "Search", search_tasks_path, class: "nav-link #{'active' if current_page?(search_tasks_path)}" %>
   </li>
 
-  <%= render 'layouts/flash_alerts_inline' %>
+  <div id="tasks_flash_alert" class="alert-flex-container ms-2">
+    <% flash.each do |message_type, message| %>
+      <%= content_tag :div, message.html_safe,
+        class: "alert alert-#{message_type} alert-compact",
+        data: { "fade-out": true } %>
+    <% end %>
+  </div>
 </ul>

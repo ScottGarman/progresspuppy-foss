@@ -1,22 +1,24 @@
+<%= turbo_frame_tag dom_id(editable_quote) do %>
 <div id="quote_<%= editable_quote.id %>_container" class="quote-container">
-  <div id="editable_quote_<%= editable_quote.id %>" class="row flex-nowrap editable-quote">
+  <div id="editable_quote_<%= editable_quote.id %>" class="d-flex flex-nowrap align-items-start editable-quote">
     <div>
       <%= link_to image_tag('delete-icon.svg', class: "quote-delete-icon"),
-        quote_path(editable_quote), method: :delete,
-        data: { confirm: 'Delete this quote?' }, :class => 'action destroy' %>
+        quote_path(editable_quote),
+        data: { turbo_method: :delete, turbo_confirm: 'Delete this quote?' },
+        :class => 'action destroy' %>
     </div>
 
-    <%= form_with model: editable_quote, url: quote_path(editable_quote), class: 'form-inline', local: true do |f| %>
+    <%= form_with model: editable_quote, url: quote_path(editable_quote), class: 'd-flex flex-row align-items-start' do |f| %>
       <div class='editable-quote-quotation'>
         <%= f.text_field :quotation, placeholder: "Quotation", size: 60,
           class: "form-control form-control-sm #{form_validity_class(editable_quote, 'quotation')}" %>
-          <%= raw validation_error_html(editable_quote, 'quotation', 'Quotation') %>
+          <%= validation_error_html(editable_quote, 'quotation', 'Quotation') %>
       </div>
 
       <div class='editable-quote-source'>
         <%= f.text_field :source, placeholder: "Quotation Source",
           class: "form-control form-control-sm #{form_validity_class(editable_quote, 'source')}" %>
-        <%= raw validation_error_html(editable_quote, 'source', 'Source') %>
+        <%= validation_error_html(editable_quote, 'source', 'Source') %>
       </div>
 
       <div class="editable-quote-submit">
@@ -25,7 +27,8 @@
     <% end %>
 
     <div class="editable-quote-cancel">
-      <span>or <%= link_to "Cancel", quote_path(editable_quote), remote: true %></span>
+      <span>or <%= link_to "Cancel", quotes_path %></span>
     </div>
   </div>
 </div>
+<% end %>

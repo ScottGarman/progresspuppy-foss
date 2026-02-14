@@ -1,0 +1,16 @@
+<% task_moved_away = (@tasks_view == 'index' && !@task.current?(@today_db)) ||
+                     (@tasks_view == 'upcoming' && !@task.upcoming?(@today_db)) %>
+
+<% if task_moved_away %>
+  <%= turbo_stream.remove dom_id(@task) %>
+<% else %>
+  <%= turbo_stream.replace dom_id(@task) do %>
+    <%= render 'display_task', display_task: @task %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.update "tasks_flash_alert" do %>
+  <%= content_tag :div, @flash_msg,
+      class: "alert alert-success alert-compact",
+      data: { controller: "fade" } %>
+<% end %>

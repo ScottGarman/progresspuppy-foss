@@ -8,38 +8,42 @@
 
   <%= hidden_field_tag 'tasks_view', tasks_view %>
 
-  <div class="form-row">
+  <div class="row g-2">
     <div class="col-5">
       <%= f.text_field :summary, placeholder: "Summary",
         class: "form-control form-control-sm #{form_validity_class(new_task, 'summary')}" %>
-      <%= raw validation_error_html(new_task, 'summary', 'Summary') %>
+      <%= validation_error_html(new_task, 'summary', 'Summary') %>
     </div>
 
     <div class="col-auto">
-      Due at:
-      <%= f.text_field :due_at,
-        class: "form-control form-control-sm date-picker-input #{form_validity_class(new_task, 'due_at')}" %>
-      <%= raw validation_error_html(new_task, 'due_at', 'Due Date') %>
+      <div class="d-flex gap-2" style="align-items: center;">
+        <%= f.label :due_at, "Due at:", for: "new_task_due_at", class: "text-nowrap", style: "line-height: 1; align-self: center; margin-bottom: 0;" %>
+        <%= f.text_field :due_at,
+          class: "form-control form-control-sm date-picker-input #{form_validity_class(new_task, 'due_at')}", id: "new_task_due_at" %>
+      </div>
+      <%= validation_error_html(new_task, 'due_at', 'Due Date') %>
     </div>
 
     <div class="col-auto">
-      Category:
-      <%= f.select :task_category_id, current_user.task_categories.map { |tc| [tc.name, tc.id] }, {},
-        { class: "form-control form-control-sm select-inline #{form_validity_class(new_task, 'task_category_id')}" } %>
-      <%= raw validation_error_html(new_task, 'task_category_id', 'Task Category') %>
+      <div class="d-flex gap-2" style="align-items: center;">
+        <%= f.label :task_category_id, "Category:", for: "new_task_task_category_id", class: "text-nowrap", style: "line-height: 1; align-self: center; margin-bottom: 0;" %>
+        <%= f.select :task_category_id, current_user.task_categories.order(name: :asc).map { |tc| [tc.name, tc.id] }, {},
+          { class: "form-select form-select-sm select-inline #{form_validity_class(new_task, 'task_category_id')}", id: "new_task_task_category_id" } %>
+      </div>
+      <%= validation_error_html(new_task, 'task_category_id', 'Task Category') %>
     </div>
 
     <div class="col-auto">
-      Priority:
-      <%= f.select :priority, [1, 2, 3], {},
-        { class: "form-control form-control-sm select-inline #{form_validity_class(new_task, 'priority')}" } %>
-      <%= raw validation_error_html(new_task, 'priority', 'Priority') %>
+      <div class="d-flex gap-2" style="align-items: center;">
+        <%= f.label :priority, "Priority:", for: "new_task_priority", class: "text-nowrap", style: "line-height: 1; align-self: center; margin-bottom: 0;" %>
+        <%= f.select :priority, [1, 2, 3], {},
+          { class: "form-select form-select-sm select-inline #{form_validity_class(new_task, 'priority')}", id: "new_task_priority" } %>
+      </div>
+      <%= validation_error_html(new_task, 'priority', 'Priority') %>
     </div>
   </div>
 
-  <div class="form-row">
-    <div class="col-auto">
-      <%= f.submit "Create Task", class: "btn btn-sm btn-primary create-task-btn" %>
-    </div>
+  <div class="col-auto mt-1">
+    <%= f.submit "Create Task", class: "btn btn-sm btn-primary create-task-btn" %>
   </div>
 <% end %>

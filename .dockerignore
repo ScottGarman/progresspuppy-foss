@@ -3,6 +3,5 @@ db/*.sqlite3
 log/*
 tmp/*
 public/assets/*
-public/packs/*
 vendor/bundle
 Dockerfile

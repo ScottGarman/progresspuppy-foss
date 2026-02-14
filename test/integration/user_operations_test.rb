@@ -95,4 +95,40 @@ class UserOperationsTest < ActionDispatch::IntegrationTest
       donpdonp.reload
     end
   end
+
+  test 'update should fail gracefully when user id is invalid' do
+    donpdonp = users(:donpdonp)
+    log_in_as(donpdonp)
+
+    # Try to update a non-existent user (invalid ID)
+    # The correct_user before_action will catch this and redirect
+    invalid_id = 999_999_999
+    patch user_path(invalid_id), params: {
+      user: {
+        first_name: 'Updated',
+        last_name: 'Name'
+      }
+    }
+
+    # correct_user redirects to root_url when user not found or unauthorized
+    assert_redirected_to root_url
+  end
+
+  test 'destroy should fail gracefully when user id is invalid' do
+    leofsiege = users(:leofsiege)
+    log_in_as(leofsiege)
+
+    # Verify admin user is logged in
+    assert leofsiege.admin
+
+    # Try to delete a non-existent user (invalid ID)
+    invalid_id = 999_999_999
+
+    assert_no_difference 'User.count' do
+      delete user_path(invalid_id)
+    end
+
+    assert_redirected_to root_path
+    assert_equal 'Deleting User failed: user not found', flash[:danger]
+  end
 end

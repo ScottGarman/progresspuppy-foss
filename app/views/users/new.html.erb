@@ -1,54 +1,44 @@
 <h1>Sign Up for Free</h1>
 
-<% if params[:landing_page] %>
-<div class="alert-container">
-  <div id="landing_page_referral_alert" class="alert alert-success">
-    <p>If you already have a ProgressPuppy account, <%= link_to "log in", login_path %> and access your Subscription Plan Settings page to upgrade your account to a paid plan.</p>
-
-    <p>But if you don't have a ProgressPuppy account yet, we encourage you to sign up for free below and try out our free plan first to make sure ProgressPuppy meets your needs. We're not sending you to a credit card form just yet, because <strong>we want to make sure you enjoy using ProgressPuppy first</strong>! You can then always upgrade your plan from your Subscription Plan Settings page.</p>
-  </div>
-</div>
-<% end %>
-
 <div class="container">
-  <div class="col-md-6 col-md-offset-3 mx-auto">
+  <div class="col-md-6 mx-auto">
 
     <%= form_with model: @user, :url => signup_path, local: true do |f| %>
       <%= f.label :first_name, "First Name:" %>
       <%= f.text_field :first_name, placeholder: "First Name",
         class: "form-control #{form_validity_class(@user, 'first_name')}" %>
-      <%= raw validation_error_html(@user, 'first_name', 'First name') %>
+      <%= validation_error_html(@user, 'first_name', 'First name') %>
 
       <%= f.label :last_name, "Last Name:" %>
       <%= f.text_field :last_name, placeholder: "Last Name",
         class: "form-control #{form_validity_class(@user, 'last_name')}" %>
-      <%= raw validation_error_html(@user, 'last_name', 'Last name') %>
+      <%= validation_error_html(@user, 'last_name', 'Last name') %>
 
       <%= f.label :email, "Email Address:" %>
       <%= f.email_field :email, placeholder: "Email",
         class: "form-control #{form_validity_class(@user, 'email')}" %>
-      <%= raw validation_error_html(@user, 'email', 'Email') %>
+      <%= validation_error_html(@user, 'email', 'Email') %>
 
       <%= f.label :password, "Password (at least 10 characters):" %>
       <%= f.password_field :password, placeholder: "Password",
         class: "form-control #{form_validity_class(@user, 'password')}" %>
-      <%= raw validation_error_html(@user, 'password', 'Password') %>
+      <%= validation_error_html(@user, 'password', 'Password') %>
 
       <%= f.label :password_confirmation, "Confirm Password:" %>
       <%= f.password_field :password_confirmation, placeholder: "Confirm password",
         class: "form-control #{form_validity_class(@user, 'password')}" %>
-      <%= raw validation_error_html(@user, 'password_confirmation', 'Password confirmation') %>
+      <%= validation_error_html(@user, 'password_confirmation', 'Password confirmation') %>
 
       <%= f.label :time_zone, "Time Zone:" %>
       <%= f.time_zone_select :time_zone, nil,
         { include_blank: false, default: "Pacific Time (US & Canada)" },
         { class: "form-control #{form_validity_class(@user, 'time_zone')}" } %>
-      <%= raw validation_error_html(@user, 'time_zone', 'Time zone') %>
+      <%= validation_error_html(@user, 'time_zone', 'Time zone') %>
 
-      <div class="form-group form-check">
+      <div class="form-check mb-1">
         <%= f.check_box :accepted_tos, class: "form-check-input new-user-checkbox" %>
-        <%= f.label :accepted_tos, "I have read and agree to the ProgressPuppy <a href='/terms_of_service' target='_blank' rel='noopener noreferrer'>Terms of Service</a>, <a href='https://www.iubenda.com/privacy-policy/77152679' target='_blank' rel='noopener noreferrer'>Privacy Policy</a>, and <a href='https://www.iubenda.com/privacy-policy/77152679/cookie-policy' target='_blank' rel='noopener noreferrer'>Cookie Policy</a>.".html_safe, class: "form-check-label" %>
-        <%= raw validation_error_html(@user, 'accepted_tos', 'The Terms of Service, Privacy Policy, and Cookie Policy') %>
+        <%= f.label :accepted_tos, "I have read and agree to the ProgressPuppy <a href='/terms_of_service' target='_blank' rel='noopener noreferrer'>Terms of Service</a>, <a href='https://www.iubenda.com/privacy-policy/77152679' target='_blank' rel='noopener noreferrer'>Privacy Policy</a>, and <a href='https://www.iubenda.com/privacy-policy/77152679/cookie-policy' target='_blank' rel='noopener noreferrer'>Cookie Policy</a>.".html_safe, class: "form-check-label new-user-checkbox-label" %>
+        <%= validation_error_html(@user, 'accepted_tos', 'The Terms of Service, Privacy Policy, and Cookie Policy') %>
       </div>
 
       <%= f.submit "Create my account", class: "btn btn-primary" %>

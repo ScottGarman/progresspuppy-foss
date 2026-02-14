@@ -1,29 +1,25 @@
 AllCops:
-  TargetRubyVersion: 2.6
+  NewCops: enable
   Exclude:
-    - '.simplecov'
-    - 'db/schema.rb'
-    - 'db/migrate/**/*'
-    - 'lib/tasks/**/*'
-    - 'node_modules/**/*'
+    - db/schema.rb
     - '**/bin/*'
     - '**/config/**/*'
     - '**/vendor/**/*'
 
+Layout/LineLength:
+  Exclude:
+    - db/migrate/*
+
 # Disabled cops:
 Bundler/OrderedGems:
-  Enabled: false
-Layout/LeadingCommentSpace:
-  Enabled: false
-Style/ClassAndModuleChildren:
   Enabled: false
 Style/Documentation:
   Enabled: false
 Style/EmptyMethod:
   Enabled: false
-Style/ExpandPathArguments:
-  Enabled: false
 Style/FrozenStringLiteralComment:
+  Enabled: false
+Layout/LeadingCommentSpace:
   Enabled: false
 # Maybe add these back later?
 Metrics/MethodLength:

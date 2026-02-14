@@ -1,5 +1,29 @@
 @import "bootstrap";
 
+/* No-JS fallback for Bootstrap dropdowns: show menu on hover and focus-within */
+.dropdown:hover > .dropdown-menu,
+.dropdown:focus-within > .dropdown-menu {
+  display: block;
+}
+
+/* Bootstrap 5.0 overrides */
+
+/* Restore Bootstrap 4.6 badge padding (was 0.25em 0.4em, now 0.35em 0.65em) and transition effects */
+.badge {
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Prevent color change on hover for badge links - maintain white text on colored backgrounds */
+/* Darken background slightly on hover (like Bootstrap 4 behavior) using inset shadow */
+a.badge {
+  &:hover, &:focus {
+    color: #fff;
+    box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.15);
+  }
+}
+
 /* add an xxl container size for 1080p widescreens */
 
 @media (min-width: 1600px) {
@@ -16,12 +40,18 @@ $gray-light: #777777;
 $gray-medium-light: #eaeaea;
 
 @mixin box_sizing {
-  -moz-box-sizing:    border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing:         border-box;
+  box-sizing: border-box;
 }
 
 /* universal */
+
+a {
+  text-decoration: none;
+
+  &:hover, &:focus {
+    text-decoration: none;
+  }
+}
 
 body {
   padding-top: 85px;
@@ -90,7 +120,6 @@ p {
 /* header */
 
 #logo {
-  float: left;
   margin-right: 10px;
   font-size: 1.7em;
   color: white;
@@ -111,7 +140,13 @@ label {
   margin-bottom: 5px;
 }
 
-input, textarea, select, .uneditable-input {
+/* Remove bottom margin from form controls in inline flex layouts */
+.d-flex .form-control,
+.d-flex .form-select {
+  margin-bottom: 0 !important;
+}
+
+input:not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="checkbox"]), textarea, select, .uneditable-input {
   border: 1px solid #bbb;
   width: 100%;
   margin-bottom: 15px;
@@ -120,13 +155,13 @@ input, textarea, select, .uneditable-input {
 
 .new-user-checkbox {
   width: auto;
+  margin-left: -15px;
+}
+.new-user-checkbox-label {
+  margin-left: 0.2em;
 }
 #accepted_tos_error_msg {
   margin-top: 0;
-}
-
-.checkbox-inline {
-  margin: 0;
 }
 
 .select-inline {
@@ -137,7 +172,7 @@ input, textarea, select, .uneditable-input {
   cursor: pointer;
 }
 
-input {
+input:not([type="radio"]):not([type="submit"]):not([type="button"]) {
   height: auto !important;
 }
 
@@ -150,11 +185,11 @@ input {
 }
 
 .input-quarter-width {
-  width: 25%;
+  width: 25% !important;
 }
 
 .input-half-width {
-  width: 50%;
+  width: 50% !important;
 }
 
 .date-picker-input {
@@ -170,6 +205,7 @@ input {
 .create-task-btn {
   display: block;
   width: 7rem;
+  margin-top: -0.5rem;
   margin-bottom: 2rem;
 }
 
@@ -181,16 +217,18 @@ input {
 .create-quote-btn {
   display: block;
   width: 5rem;
+  margin-top: -0.5rem;
   margin-bottom: 2rem;
 }
 
 .create-task-category-btn {
   display: block;
   width: 5rem;
+  margin-top: -0.5rem;
   margin-bottom: 2rem;
 }
 
-.help-block {
+.form-text {
   color: red;
   font-size: 10px;
 }
@@ -233,10 +271,30 @@ input {
 /* footer */
 
 footer#page_footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 45px;
+  margin-bottom: 15px;
   padding-top: 5px;
   border-top: 1px solid $gray-medium-light;
   color: $gray-light;
+  a {
+    color: $gray;
+    &:hover {
+      color: $gray-darker;
+    }
+  }
+
+  ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      margin-left: 15px;
+    }
+  }
 }
 
 /* miscellaneous */
@@ -284,6 +342,7 @@ footer#page_footer {
 
 .quote-delete-icon {
   padding-right: 0.5em;
+  padding-top: 0.3rem;
 }
 
 .display-quote {
@@ -305,6 +364,10 @@ footer#page_footer {
 .editable-quote {
   margin-left: 0;
   margin-right: 0;
+
+  .error-msg {
+    margin-top: 0;
+  }
 }
 
 .editable-quote-quotation {
@@ -320,7 +383,7 @@ footer#page_footer {
 }
 
 .editable-quote-cancel {
-  padding-top: 0.2rem;
+  padding-top: 0.3rem;
 }
 
 /* tasks */
@@ -353,6 +416,11 @@ footer#page_footer {
   label {
     white-space: nowrap;
     font-weight: normal;
+    margin-bottom: 0;
+  }
+
+  .form-check {
+    margin-bottom: 0;
   }
 
   input {
@@ -378,10 +446,6 @@ footer#page_footer {
 
   #category_search {
     margin-left: 0.5em;
-
-    label {
-      margin-right: 0.5em;
-    }
   }
 }
 
@@ -402,8 +466,12 @@ footer#page_footer {
 .task-sort-selector-container {
   margin-top: -5px;
 
+  label {
+    white-space: nowrap;
+    margin-bottom: 0;
+  }
+
   select {
-    margin-left: 0.3em;
     margin-bottom: 0;
   }
 }
@@ -441,7 +509,7 @@ footer#page_footer {
   margin-right: 10px;
 
   input {
-    margin-bottom: 0;
+    margin-bottom: 0 !important;
   }
 }
 
@@ -467,8 +535,8 @@ footer#page_footer {
   margin-left: 0;
   margin-right: 0;
 
-  .form-inline {
-    width: 100%;
+  label {
+    margin-bottom: 0;
   }
 }
 
@@ -478,7 +546,7 @@ footer#page_footer {
 
 .editable-task-summary {
   width: 90%;
-  margin-bottom: 0.5em;
+  margin-left: -0.5rem;
 
   input {
     width: 100% !important;
@@ -487,7 +555,9 @@ footer#page_footer {
 }
 
 .editable-task-task-category {
-  padding-right: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
   margin-bottom: 0.5em;
 
   select {
@@ -496,7 +566,9 @@ footer#page_footer {
 }
 
 .editable-task-priority {
-  padding-right: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
   margin-bottom: 0.5em;
 
   select {
@@ -505,8 +577,11 @@ footer#page_footer {
 }
 
 .editable-task-due-on {
-  padding-right: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
   margin-bottom: 0.5em;
+  white-space: nowrap;
 
   input {
     margin-bottom: 0;
@@ -514,7 +589,6 @@ footer#page_footer {
 }
 
 .editable-task-submit {
-  padding-right: 0.5em;
   margin-bottom: 0.5em;
 
   input {
@@ -545,15 +619,16 @@ footer#page_footer {
 
 .task-category-delete-icon {
   padding-right: 0.5em;
+  padding-top: 0.3rem;
 }
 
 .editable-task-category {
   margin-left: 0;
   margin-right: 0;
-}
 
-.editable-task-category-name {
-  padding-right: 0.5em;
+  .error-msg {
+    margin-top: 0;
+  }
 }
 
 .editable-task-category-submit {
@@ -561,7 +636,7 @@ footer#page_footer {
 }
 
 .editable-task-category-cancel {
-  padding-top: 0.2em;
+  padding-top: 0.3rem;
 }
 
 /* task category filters */
@@ -606,18 +681,22 @@ footer#page_footer {
 }
 
 .debug-dump {
-  clear: both;
-  float: left;
   width: 100%;
   margin-top: 45px;
   @include box_sizing;
 }
 
-/* webkit-specific */
+/* browser-specific adjustments */
 
 input[type=checkbox]:not(*:root) {
-  width: 10px;
-  margin-top: 2px;
-  zoom: 1.8;
-  -webkit-appearance: checkbox;
+  width: auto;
+  margin-top: 3px;
+  zoom: 1.4;
+  appearance: checkbox;
+}
+
+input[type=radio]:not(*:root) {
+  width: auto;
+  margin-top: 3px;
+  appearance: radio;
 }
