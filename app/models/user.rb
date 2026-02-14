@@ -11,7 +11,7 @@ class User < ApplicationRecord
   has_secure_password
 
   # Validation
-  EMAIL_REGEX = /\A[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}\Z/i
+  EMAIL_REGEX = /\A[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}\Z/i.freeze
 
   validates :first_name, presence: true,
                          length: { maximum: 50 }

@@ -239,9 +239,7 @@ class TasksController < ApplicationController
     end
 
     # Ensure we aren't repeating one of the last 3 quotes the user has seen:
-    while current_user.quote_history.include?(quote.id)
-      quote = current_user.quotes.find(quote_ids.sample)
-    end
+    quote = current_user.quotes.find(quote_ids.sample) while current_user.quote_history.include?(quote.id)
 
     current_user.quote_history.shift
     current_user.quote_history << quote.id
