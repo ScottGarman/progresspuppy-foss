@@ -1,18 +1,20 @@
 <% unless editable_task_category.name == "Uncategorized" %>
 
+<%= turbo_frame_tag dom_id(editable_task_category) do %>
 <div id="task_category_<%= editable_task_category.id %>_container" class="task-category-container">
-  <div id="editable_task_category_<%= editable_task_category.id %>" class="row flex-nowrap editable-task-category">
+  <div id="editable_task_category_<%= editable_task_category.id %>" class="d-flex flex-nowrap align-items-start editable-task-category">
     <div>
       <%= link_to image_tag('delete-icon.svg', class: "task-category-delete-icon"),
-        task_category_delete_with_confirmation_path(editable_task_category), remote: true,
+        task_category_delete_with_confirmation_path(editable_task_category),
+        data: { turbo_stream: true },
         :class => 'action destroy' %>
     </div>
 
-    <%= form_with model: editable_task_category, class: "form-inline", local: true do |f| %>
+    <%= form_with model: editable_task_category, class: "d-flex flex-row gap-2 align-items-start" do |f| %>
       <div class='editable-task-category-name'>
         <%= f.text_field :name, placeholder: "Category Name",
           class: "form-control form-control-sm #{form_validity_class(editable_task_category, 'category')}" %>
-        <%= raw validation_error_html(editable_task_category, 'name', 'Category name') %>
+        <%= validation_error_html(editable_task_category, 'name', 'Category name') %>
       </div>
 
       <div class="editable-task-category-submit">
@@ -21,9 +23,10 @@
     <% end %>
 
     <div class="editable-task-category-cancel">
-      <span>or <%= link_to "Cancel", task_category_path(editable_task_category), remote: true %></span>
+      <span>or <%= link_to "Cancel", task_categories_path %></span>
     </div>
   </div>
 </div>
+<% end %>
 
 <% end %>

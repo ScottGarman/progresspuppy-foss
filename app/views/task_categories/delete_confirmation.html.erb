@@ -1,0 +1,13 @@
+<div class="container">
+  <h1 class="page-header">Confirm Task Category Deletion</h1>
+
+  <p>
+    <%= @num_impacted_tasks %> existing tasks in this category will be reassigned to the 'Uncategorized' category.
+  </p>
+
+  <div class="d-flex gap-2">
+    <%= button_to "Delete", task_category_path(@task_category), method: :delete,
+      class: 'btn btn-danger' %>
+    <%= link_to "Cancel", task_categories_path, class: 'btn btn-secondary' %>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<%= turbo_stream.replace dom_id(@task_category) do %>
+  <%= render @task_category %>
+<% end %>
+
+<%= turbo_stream.update "task_categories_flash_alert" do %>
+  <%= content_tag :div, "Task Category updated",
+      class: "alert alert-success alert-compact",
+      data: { controller: "fade" } %>
+<% end %>

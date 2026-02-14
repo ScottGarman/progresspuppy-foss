@@ -1,0 +1,3 @@
+<%= turbo_stream.update "tc_modal_container" do %>
+  <%= render 'delete_confirmation_modal', task_category: @task_category, num_impacted_tasks: @num_impacted_tasks %>
+<% end %>
