@@ -1,7 +1,8 @@
+<%= turbo_frame_tag dom_id(quote) do %>
 <div id="quote_<%= quote.id %>_container" class="quote-container">
-  <div id="display_quote_<%= quote.id %>" class="row flex-nowrap highlight-on-hover display-quote">
+  <div id="display_quote_<%= quote.id %>" class="d-flex flex-nowrap align-items-center highlight-on-hover display-quote">
     <div>
-      <%= link_to image_tag('edit-pencil-icon.svg', title: "Click to Edit", class: "quote-edit-icon"), edit_quote_path(quote), remote: true %>
+      <%= link_to image_tag('edit-pencil-icon.svg', title: "Click to Edit", class: "quote-edit-icon"), edit_quote_path(quote) %>
     </div>
 
     <div>
@@ -13,3 +14,4 @@
     </div>
   </div>
 </div>
+<% end %>
