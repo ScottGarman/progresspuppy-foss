@@ -69,6 +69,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_23_194229) do
     t.datetime "reset_sent_at", precision: nil
     t.string "time_zone"
     t.datetime "accepted_tos_at", precision: nil
+    t.string "quote_history", default: "--- []\n"
+    t.string "awwyiss_history", default: "--- []\n"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

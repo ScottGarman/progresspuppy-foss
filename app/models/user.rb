@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   attr_accessor :accepted_tos, :activation_token, :reset_token, :remember_token
 
+  serialize :awwyiss_history, coder: YAML
+  serialize :quote_history, coder: YAML
   has_secure_password
 
   # Validation

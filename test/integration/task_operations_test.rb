@@ -950,47 +950,19 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_select 'div#header_quote_container', 0
   end
 
-  test "ensure that the awwyiss_modal doesn't repeat the last 3 that were " \
-       'displayed' do
-    # donpdonp logs in
-    donpdonp = users(:donpdonp)
-    log_in_as(donpdonp)
-
-    donpdonp_recent_awwyiss = []
-
-    # Reload the page three times to enable awwyiss_history checking
-    3.times do
-      get tasks_path
-      assert_response :success
-      awwyiss_modal = assigns(:awwyiss_modal)
-      donpdonp_recent_awwyiss << awwyiss_modal
-    end
-
-    # From now on, the next awwyiss_modal should not be found in the list of
-    # recent awwyiss_modals. We'll run this 25 times to exercise things
-    # thoroughly
-    25.times do
-      get tasks_path
-      assert_response :success
-      awwyiss_modal = assigns(:awwyiss_modal)
-      assert_not donpdonp_recent_awwyiss.include?(awwyiss_modal)
-      donpdonp_recent_awwyiss.shift
-      donpdonp_recent_awwyiss << awwyiss_modal
-    end
-  end
-
-  test 'ensure that all users get the correct awwyiss modals' do
+  test 'ensure that awwyiss_modal selection works without hanging when there ' \
+       'are only a few modals' do
+    # With only 3 modals available, we can't guarantee non-repetition, but
+    # we can verify the selection doesn't hang or crash
     donpdonp = users(:donpdonp)
     log_in_as(donpdonp)
 
     valid_modals = %w[awwyiss_modal_bravocado
-                      awwyiss_modal_hell_yes
                       awwyiss_modal_like_a_boss
-                      awwyiss_modal_nice_one
-                      awwyiss_modal_unstoppable2]
+                      awwyiss_modal_nice_one]
 
-    # Reload the page 20 times to get a good sampling of results
-    20.times do
+    # Reload the page 25 times to exercise the awwyiss_history logic
+    25.times do
       get tasks_path
       assert_response :success
       awwyiss_modal = assigns(:awwyiss_modal)

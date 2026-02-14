@@ -263,7 +263,8 @@ class TasksController < ApplicationController
     awwyiss_modal_templates = meme_modal_list
 
     template = awwyiss_modal_templates[rand(awwyiss_modal_templates.length)]
-    if current_user.awwyiss_history.length < 3
+    if awwyiss_modal_templates.length <= 3 || current_user.awwyiss_history.length < 3
+      current_user.awwyiss_history.shift if current_user.awwyiss_history.length > 2
       current_user.awwyiss_history << template
       # Don't run validations here since we may be reloading the tasks view to
       # show validation errors on tasks:
