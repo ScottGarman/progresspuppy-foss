@@ -2,7 +2,16 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   include SessionsHelper
 
+  # Handle CSRF token failures gracefully
+  rescue_from ActionController::InvalidAuthenticityToken, with: :handle_invalid_token
+
   private
+
+  # Handle invalid CSRF token (expired session, bot attempts, etc.)
+  def handle_invalid_token
+    flash[:warning] = 'Your session has expired. Please log in again.'
+    redirect_to login_url
+  end
 
   # Confirms a logged-in user
   def logged_in_user
@@ -15,19 +24,19 @@ class ApplicationController < ActionController::Base
 
   # Return a DB formatted date string in the current user's time zone for today
   def today_db
-    Time.now.in_time_zone(current_user.time_zone).to_date.to_s(:db)
+    Time.now.in_time_zone(current_user.time_zone).to_date.to_fs(:db)
   end
 
   # Return a DB formatted datetime string in the current user's time zone
   # for the start of today
   def today_start_db
-    DateTime.now.in_time_zone(current_user.time_zone).beginning_of_day.to_s(:db)
+    DateTime.now.in_time_zone(current_user.time_zone).beginning_of_day.to_fs(:db)
   end
 
   # Return a DB formatted datetime string in the current user's time zone
   # for the end of today
   def today_end_db
-    DateTime.now.in_time_zone(current_user.time_zone).end_of_day.to_s(:db)
+    DateTime.now.in_time_zone(current_user.time_zone).end_of_day.to_fs(:db)
   end
 
   # Return the base message with optional references to the view the task change

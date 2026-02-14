@@ -1,0 +1,9 @@
+<%= turbo_stream.replace dom_id(@quote) do %>
+  <%= render @quote %>
+<% end %>
+
+<%= turbo_stream.update "quotes_flash_alert" do %>
+  <%= content_tag :div, "Quote updated",
+      class: "alert alert-success alert-compact",
+      data: { controller: "fade" } %>
+<% end %>

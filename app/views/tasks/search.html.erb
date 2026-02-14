@@ -5,7 +5,19 @@
 
   <%= render 'quote_container', quote: @quote %>
 
-  <div id="new_task_placeholder"></div>
+  <h2 class="task-header">
+    New Task
+    <%= link_to image_tag('chevron-down.svg',
+                          id: 'toggle_new_task_form_control'),
+                          "/", id: 'toggle_new_task_form_control_link',
+                          'data-bs-toggle': 'tooltip', 'data-bs-placement': 'right',
+                          title: "Click this arrow to show/hide the new task form" %>
+  </h2>
+  <hr />
+
+  <div id="new_task_container" class="<%= new_task_form_display_class %>">
+  <%= render 'new_task_form', new_task: @new_task, tasks_view: 'search', current_user: @current_user %>
+  </div>
 
   <%= render 'task_nav_tabs' %>
 
@@ -16,7 +28,7 @@
         <%= submit_tag 'Search Tasks', name: nil, class: "no-margins btn btn-sm btn-primary" %>
       </div>
 
-      <div class="d-flex flex-row">
+      <div class="d-flex flex-row align-items-center">
         <div class="form-check form-check-inline">
           <%= radio_button_tag 'tasks_filter', 'all', true, class: "form-check-input" %>
           <%= label_tag 'tasks_all', 'All Tasks', class: "form-check-label" %>
@@ -30,9 +42,9 @@
           <%= label_tag 'tasks_incomplete', 'Incomplete Tasks', class: "form-check-label" %>
         </div>
 
-        <div id="category_search" class="form-inline">
+        <div id="category_search" class="d-flex flex-row gap-2 align-items-center">
           <%= label_tag :task_category_filter, "in Category:", class: "form-label" %>
-          <%= select_tag :task_category_filter, options_for_select(['All'] + @current_user.task_categories.map { |tc| [tc.name, tc.id] }), { class: "form-control form-control-sm" } %>
+          <%= select_tag :task_category_filter, options_for_select(['All'] + @current_user.task_categories.order(name: :asc).map { |tc| [tc.name, tc.id] }), { class: "form-select form-select-sm" } %>
         </div>
       </div>
     <% end %>

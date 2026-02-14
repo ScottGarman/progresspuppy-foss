@@ -7,13 +7,15 @@
 # Ignore bundler config.
 /.bundle
 /vendor/bundle
-
-# Ignore rbenv config.
 .ruby-version
+
+# Ignore all environment files (except templates).
+.env
+!/.env*.erb
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
-/db/*.sqlite3-journal
+/db/*.sqlite3-*
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -21,21 +23,21 @@
 !/log/.keep
 !/tmp/.keep
 
-# Ignore uploaded files in development.
+# Ignore uploaded files in development
 /storage/*
 !/storage/.keep
-
-/node_modules
-/yarn-error.log
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
 
 /public/assets
 .byebug_history
 
-# Ignore master key for decrypting credentials.
+# Ignore compiled CSS from dartsass
+/app/assets/builds/*
+
+# Ignore master key for decrypting credentials and more.
 /config/master.key
 
-# Ignore Spring files.
-/spring/*.pid
-
-# Ignore code coverage reports.
+# Ignore coverage reports.
 coverage

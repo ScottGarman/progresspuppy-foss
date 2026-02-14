@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+# Ensure foreman gem is installed
+unless system("gem list foreman -i", out: File::NULL)
+  puts "Installing foreman..."
+  system("gem install foreman", exception: true)
+end
+
+# Start all processes from Procfile.dev
+exec "foreman start -f Procfile.dev", *ARGV

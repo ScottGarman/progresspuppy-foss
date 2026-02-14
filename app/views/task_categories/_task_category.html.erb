@@ -1,10 +1,11 @@
 <% unless task_category.name == "Uncategorized" %>
 
+<%= turbo_frame_tag dom_id(task_category) do %>
 <div id="task_category_<%= task_category.id %>_container" class="task-category-container">
-  <div id="display_task_category_<%= task_category.id %>" class="row flex-nowrap highlight-on-hover display-task-category">
+  <div id="display_task_category_<%= task_category.id %>" class="d-flex flex-nowrap align-items-center highlight-on-hover display-task-category">
     <div>
       <%= link_to image_tag('edit-pencil-icon.svg', title: "Click to Edit", class: "task-category-edit-icon"),
-        edit_task_category_path(task_category), remote: true %>
+        edit_task_category_path(task_category) %>
     </div>
 
     <div class="display-task-category-name">
@@ -12,5 +13,6 @@
     </div>
   </div>
 </div>
+<% end %>
 
 <% end %>

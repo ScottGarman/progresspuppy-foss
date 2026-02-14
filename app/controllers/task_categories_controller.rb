@@ -8,14 +8,10 @@ class TaskCategoriesController < ApplicationController
 
   def show
     @task_category = current_user.task_categories.find_by_id(params[:id])
-    if @task_category.nil?
-      flash[:danger] = 'Task Category not found'
-      redirect_to(task_categories_path) && return
-    end
+    return unless @task_category.nil?
 
-    respond_to do |f|
-      f.js
-    end
+    flash[:danger] = 'Task Category not found'
+    redirect_to(task_categories_path) && return
   end
 
   def create
@@ -26,20 +22,16 @@ class TaskCategoriesController < ApplicationController
       redirect_to(task_categories_path)
     else
       @task_categories = current_user.task_categories.reload
-      render('index')
+      render('index', status: :unprocessable_entity)
     end
   end
 
   def edit
     @task_category = current_user.task_categories.find_by_id(params[:id])
-    if @task_category.nil?
-      flash[:danger] = 'Task Category not found'
-      redirect_to(task_categories_path) && return
-    end
+    return unless @task_category.nil?
 
-    respond_to do |f|
-      f.js
-    end
+    flash[:danger] = 'Task Category not found'
+    redirect_to(task_categories_path) && return
   end
 
   def update
@@ -54,9 +46,17 @@ class TaskCategoriesController < ApplicationController
       redirect_to(task_categories_path) && return
     end
 
-    flash[:success] = 'Task Category updated' if
-      @task_category.update(task_category_params)
-    redirect_to(task_categories_path)
+    if @task_category.update(task_category_params)
+      respond_to do |f|
+        f.turbo_stream
+        f.html do
+          flash[:success] = 'Task Category updated'
+          redirect_to(task_categories_path)
+        end
+      end
+    else
+      render('edit', status: :unprocessable_entity)
+    end
   end
 
   def delete_confirmation
@@ -71,7 +71,8 @@ class TaskCategoriesController < ApplicationController
                                                    @task_category.id).count
 
     respond_to do |f|
-      f.js
+      f.turbo_stream
+      f.html
     end
   end
 
@@ -92,8 +93,14 @@ class TaskCategoriesController < ApplicationController
     current_user.tasks.category(@task_category).move_to_category(new_tc.id)
 
     @task_category.destroy
-    flash[:success] = 'Task Category deleted'
-    redirect_to(task_categories_path)
+
+    respond_to do |f|
+      f.turbo_stream
+      f.html do
+        flash[:success] = 'Task Category deleted'
+        redirect_to(task_categories_path)
+      end
+    end
   end
 
   private

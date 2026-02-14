@@ -1,4 +1,4 @@
-FROM ruby:2.6-slim
+FROM ruby:4.0-slim
 
 ENV APP_HOME "/var/opt/progresspuppy-foss"
 ENV APP_USER progresspuppy
@@ -8,10 +8,7 @@ RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
 
 # Install package dependencies
-RUN apt update -y && apt install -y build-essential curl git nodejs libsqlite3-dev sqlite3
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-apt update -y && apt install -y yarn
+RUN apt update -y && apt install -y build-essential curl git libsqlite3-dev sqlite3
 
 # Install bundler and app gems
 COPY Gemfile Gemfile.lock ./

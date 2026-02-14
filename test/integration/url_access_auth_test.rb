@@ -1,8 +1,8 @@
 require 'test_helper'
 
 class UrlAccessAuthTest < ActionDispatch::IntegrationTest
-  test 'account activation controller urls that should be publicly' \
-       ' accessible, not requiring authentication' do
+  test 'account activation controller urls that should be publicly ' \
+       'accessible, not requiring authentication' do
     # edit
     get edit_account_activation_url(1), params: { email: 'user@example.com' }
     assert_redirected_to login_path
@@ -12,8 +12,8 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  test 'password reset controller urls that should be publicly accessible,' \
-       ' not requiring authentication' do
+  test 'password reset controller urls that should be publicly accessible, ' \
+       'not requiring authentication' do
     # new
     get new_password_reset_url
     assert_response :success
@@ -21,12 +21,12 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
 
     # create
     post password_resets_url, params: { email: 'user@example.com' }
-    assert_response :success
+    assert_response :unprocessable_entity
     assert_template 'password_resets/new'
   end
 
-  test 'password reset controller urls that should not be accessible to' \
-       ' unauthenticated users' do
+  test 'password reset controller urls that should not be accessible to ' \
+       'unauthenticated users' do
     # edit using a bogus password reset link
     get edit_password_reset_url(1)
     assert_redirected_to new_password_reset_path
@@ -34,8 +34,9 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_template 'password_resets/new'
-    assert_select 'div.alert-warning', 'That password reset link was' \
-                  ' invalid. Please try again.' \
+    assert_select 'div.alert-warning', 'That password reset link was ' \
+                                       'invalid. Please try again or contact ' \
+                                       'support for help.'
 
     # update using a bogus password reset link
     patch password_reset_url(1)
@@ -44,12 +45,13 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
     assert_template 'password_resets/new'
-    assert_select 'div.alert-warning', 'That password reset link was' \
-                  ' invalid. Please try again.' \
+    assert_select 'div.alert-warning', 'That password reset link was ' \
+                                       'invalid. Please try again or contact ' \
+                                       'support for help.'
   end
 
-  test 'quote controller urls that should not be accessible to' \
-       ' unauthenticated users' do
+  test 'quote controller urls that should not be accessible to ' \
+       'unauthenticated users' do
     # index
     get quotes_url
     assert_redirected_to login_path
@@ -109,8 +111,8 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     assert_template 'sessions/new'
   end
 
-  test 'session controller urls that should be publicly accessible, not' \
-       ' requiring authentication' do
+  test 'session controller urls that should be publicly accessible, not ' \
+       'requiring authentication' do
     # new (via login)
     get login_url
     assert_response :success
@@ -119,11 +121,11 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     # create (via login)
     post login_url, params: { email: 'user@example.com',
                               password: 'foobarbaz123' }
-    assert_response :success
+    assert_response :unprocessable_entity
   end
 
-  test 'session controller urls that should not be accessible to' \
-       ' unauthenticated users' do
+  test 'session controller urls that should not be accessible to ' \
+       'unauthenticated users' do
     # destroy (via logout)
     delete logout_url
     assert_redirected_to login_url
@@ -131,8 +133,8 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     assert_template 'sessions/new'
   end
 
-  test 'task category controller urls that should not be accessible to' \
-       ' unauthenticated users' do
+  test 'task category controller urls that should not be accessible to ' \
+       'unauthenticated users' do
     # index
     get task_categories_url
     assert_redirected_to login_path
@@ -169,8 +171,8 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     assert_template 'sessions/new'
   end
 
-  test 'task controller urls that should not be accessible to unauthenticated' \
-       ' users' do
+  test 'task controller urls that should not be accessible to unauthenticated ' \
+       'users' do
     # index (via root)
     get root_url
     assert_redirected_to login_url
@@ -234,8 +236,8 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     assert_template 'sessions/new'
   end
 
-  test 'user controller urls that should be publicly accessible, not' \
-       ' requiring authentication' do
+  test 'user controller urls that should be publicly accessible, not ' \
+       'requiring authentication' do
     # new
     get new_user_url
     assert_response :success
@@ -260,8 +262,8 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     assert_template 'users/thanks'
   end
 
-  test 'user controller urls that should not be accessible to unauthenticatd' \
-       ' users' do
+  test 'user controller urls that should not be accessible to unauthenticatd ' \
+       'users' do
     # edit
     get user_profile_path
     assert_redirected_to login_path
@@ -275,8 +277,8 @@ class UrlAccessAuthTest < ActionDispatch::IntegrationTest
     assert_redirected_to login_path
   end
 
-  test 'pages controller urls that should be publicly accessible, not' \
-       ' requiring authentication' do
+  test 'pages controller urls that should be publicly accessible, not ' \
+       'requiring authentication' do
     # Terms of Service page
     get terms_of_service_url
     assert_response :success

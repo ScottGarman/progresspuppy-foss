@@ -1,0 +1,12 @@
+// This is the main stylesheet manifest file that imports all other stylesheets
+// With dartsass-rails, we use @import instead of Sprockets directives
+
+// Import bootstrap-datepicker
+@use "bootstrap-datepicker";
+
+// Import all component stylesheets
+@use "pagination";
+@use "sessions";
+
+// Import the main styles file last (contains Bootstrap and custom styles)
+@use "styles";

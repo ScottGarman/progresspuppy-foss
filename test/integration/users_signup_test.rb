@@ -55,28 +55,28 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
     # Try to log in before activation
     log_in_as(user)
-    assert_not is_logged_in?
+    assert_not logged_in?
 
     # Use an invalid activation token
     get edit_account_activation_path('invalid token', email: user.email)
-    assert_not is_logged_in?
+    assert_not logged_in?
 
     # Use a valid activation token, but with a wrong email address
     get edit_account_activation_path(user.activation_token, email: 'wrong')
-    assert_not is_logged_in?
+    assert_not logged_in?
 
     # Valid activation token
     get edit_account_activation_path(user.activation_token, email: user.email)
     assert user.reload.activated?
     follow_redirect!
     assert_template 'tasks/index'
-    assert is_logged_in?
+    assert logged_in?
 
     # Now log out and log back in normally
     delete logout_path
     follow_redirect!
     assert_template 'sessions/new'
-    assert_not is_logged_in?
+    assert_not logged_in?
 
     get login_path
     assert_template 'sessions/new'
@@ -124,7 +124,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_template 'tasks/index'
     assert user.reload.activated?
-    assert is_logged_in?
+    assert logged_in?
   end
 
   test 'resend account activation with invalid data' do

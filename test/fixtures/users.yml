@@ -1,6 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 # These users are people I know in the pdxtech community, for fun I've
-# immortalized them as protagonists if ProgressPuppy's test stories. :)
+# immortalized them as protagonists in ProgressPuppy's test stories. :)
 donpdonp:
   first_name: Don
   last_name: DonLN
@@ -8,6 +8,8 @@ donpdonp:
   password_digest: <%= User.digest('foobarbaz123') %>
   time_zone: 'Pacific Time (US & Canada)'
   accepted_tos_at: <%= Time.zone.now %>
+  quote_history: []
+  awwyiss_history: []
   admin: false
   activated: true
   activated_at: <%= Time.zone.now %>
@@ -19,6 +21,8 @@ leofsiege:
   password_digest: <%= User.digest('foobarbaz123') %>
   time_zone: 'Pacific Time (US & Canada)'
   accepted_tos_at: <%= Time.zone.now %>
+  quote_history: []
+  awwyiss_history: []
   admin: true
   activated: true
   activated_at: <%= Time.zone.now %>
@@ -30,6 +34,8 @@ agj:
   password_digest: <%= User.digest('foobarbaz123') %>
   time_zone: 'Pacific Time (US & Canada)'
   accepted_tos_at: <%= Time.zone.now %>
+  quote_history: []
+  awwyiss_history: []
   admin: false
   activated: true
   activated_at: <%= Time.zone.now %>
@@ -41,6 +47,8 @@ onewheelskyward:
   password_digest: <%= User.digest('foobarbaz123') %>
   time_zone: 'Pacific Time (US & Canada)'
   accepted_tos_at: <%= Time.zone.now %>
+  quote_history: []
+  awwyiss_history: []
   admin: false
   activated: true
   activated_at: <%= Time.zone.now %>
@@ -52,6 +60,8 @@ aaronpk:
   password_digest: <%= User.digest('foobarbaz123') %>
   time_zone: 'Pacific Time (US & Canada)'
   accepted_tos_at: <%= Time.zone.now %>
+  quote_history: []
+  awwyiss_history: []
   admin: false
   activated: true
   activated_at: <%= Time.zone.now %>

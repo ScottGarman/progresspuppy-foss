@@ -10,11 +10,11 @@ See the Adding Memes section below for instructions on how to configure your own
 
 ## Setup Notes
 
-This app is based on the Ruby on Rails 6.1 framework, which requires Ruby 2.5 or later (Ruby 3.0 or later is recommended). Review the Gemfile to see what ruby gems are needed.
+This app is based on the Ruby on Rails 8.1 framework, which requires Ruby 3.2 or later. It uses the Propshaft asset pipeline, Importmap for JavaScript, and Dart Sass for stylesheets. Review the Gemfile to see what ruby gems are needed.
 
-To set up the sqlite3 default databases, run `rails db:migrate`.
+To set up the sqlite3 default databases, run `bin/rails db:setup`. Use `bin/dev` to start the development server (runs the Rails server and Sass watcher via Foreman).
 
-The `db/seeds.rb` file sets up a default user with the login credentials **admin@example.com / foobarbaz123**. That user will get created when you first run the database migrations as described above.
+The `db/seeds.rb` file sets up a default user with the login credentials **admin@example.com / foobarbaz123**. That user will get created when you first run `bin/rails db:setup` as described above.
 
 ## Adding Memes
 
@@ -22,7 +22,7 @@ You can add your own memes by adding a partial template under `app/views/tasks/`
 
 ## Running Tests
 
-A reasonable set of model, integration, and capybara-based system tests are included. You can execute them with `rails test` and `rails test:system`.
+A reasonable set of model, integration, and capybara-based system tests are included. You can execute them with `bin/rails test` and `bin/rails test:system`.
 
 ## Running the Docker Container
 

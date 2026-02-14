@@ -4,18 +4,20 @@
   <div id="tc_modal_container">
   </div>
 
-  <h2 class="text-left">Define a New Task Category</h2>
+  <h2 class="text-start">Define a New Task Category</h2>
 
   <%= form_with model: @new_task_category, local: true do |f| %>
     <%= f.text_field :name, label: "Category:", placeholder: "Category Name", class: "form-control input-quarter-width #{form_validity_class(@new_task_category, 'name')}" %>
-    <%= raw validation_error_html(@new_task_category, 'name', 'Category') %>
+    <%= validation_error_html(@new_task_category, 'name', 'Category') %>
 
     <%= f.submit "Save", class: "btn btn-primary create-task-category-btn" %>
   <% end %>
 
   <div class="flex-header">
-    <h2 class="text-left no-margins heading-with-alert">Your Task Categories</h2>
-    <%= render 'layouts/flash_alerts_inline' %>
+    <h2 class="text-start no-margins heading-with-alert">Your Task Categories</h2>
+    <div id="task_categories_flash_alert" class="alert-flex-container">
+      <%= render 'layouts/flash_alerts_inline' %>
+    </div>
   </div>
 
   <hr />
@@ -23,7 +25,7 @@
   <% if @current_user.task_categories.count < 2 %>
     <p class="italic">You have no task categories to display.</p>
   <% else %>
-    <%= render @current_user.task_categories %>
+    <%= render @current_user.task_categories.order(name: :asc) %>
   <% end %>
 
 </div>

@@ -1,0 +1,7 @@
+<%= turbo_stream.remove dom_id(@task) %>
+
+<%= turbo_stream.update "tasks_flash_alert" do %>
+  <%= content_tag :div, 'Task deleted',
+      class: "alert alert-success alert-compact",
+      data: { controller: "fade" } %>
+<% end %>
