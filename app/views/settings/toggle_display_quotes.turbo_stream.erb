@@ -1,0 +1,5 @@
+<%= turbo_stream.update "settings_saved_alert" do %>
+  <%= content_tag :div, "Settings Saved",
+      class: "alert alert-success alert-compact hide-by-default",
+      data: { controller: "fade" } %>
+<% end %>
