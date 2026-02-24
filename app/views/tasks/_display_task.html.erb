@@ -14,7 +14,7 @@
       <%= link_to image_tag('edit-pencil-icon.svg', title: "Click to Edit", class: "task-edit-icon"),
         edit_task_path(
           display_task,
-          tasks_view: action_name,
+          tasks_view: local_assigns.fetch(:tasks_view, action_name),
           category: params[:category],
           page: params[:page],
           search_terms: params[:search_terms],
