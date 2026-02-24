@@ -63,6 +63,7 @@ class TasksController < ApplicationController
       @future_tasks = current_user.tasks.future(today_db)
                                   .paginate(page: params[:page], per_page: 20)
       @overdue_tasks = current_user.tasks.overdue(today_db).count
+      @search_results = []
       @quote = random_quote
       @awwyiss_modal = random_awwyiss_modal
       render_correct_tasks_tab
