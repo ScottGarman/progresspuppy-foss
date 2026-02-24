@@ -5,7 +5,7 @@
   <%= turbo_stream.remove dom_id(@task) %>
 <% else %>
   <%= turbo_stream.replace dom_id(@task) do %>
-    <%= render 'display_task', display_task: @task, tasks_view: @tasks_view %>
+    <%= render 'display_task', display_task: @task, tasks_view: @tasks_view, just_updated: true %>
   <% end %>
 <% end %>
 
