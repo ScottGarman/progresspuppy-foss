@@ -668,6 +668,10 @@ footer#page_footer {
 .modal-content {
   width: 120%;
 }
+/* Hide the X close button on the awwyiss modal - users should use the footer buttons instead */
+#awwyiss_modal .modal-header .close {
+  display: none;
+}
 .awwyiss-img {
   display: block;
   margin-left: auto;

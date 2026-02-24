@@ -1,12 +1,12 @@
 <ul id="task_nav_tabs" class="nav nav-tabs">
   <li class="nav-item">
-    <%= link_to "Today's Tasks", tasks_path, class: "nav-link #{'active' if current_page?(tasks_path) or current_page?(root_path)}" %>
+    <%= link_to "Today's Tasks", tasks_path, class: "nav-link #{'active' if current_page?(tasks_path) or current_page?(root_path) or params[:tasks_view] == 'index'}" %>
   </li>
   <li class="nav-item">
-    <%= link_to "Upcoming Tasks", upcoming_tasks_path, class: "nav-link #{'active' if current_page?(upcoming_tasks_path)}" %>
+    <%= link_to "Upcoming Tasks", upcoming_tasks_path, class: "nav-link #{'active' if current_page?(upcoming_tasks_path) or params[:tasks_view] == 'upcoming'}" %>
   </li>
   <li class="nav-item">
-    <%= link_to "Search", search_tasks_path, class: "nav-link #{'active' if current_page?(search_tasks_path)}" %>
+    <%= link_to "Search", search_tasks_path, class: "nav-link #{'active' if current_page?(search_tasks_path) or params[:tasks_view] == 'search'}" %>
   </li>
 
   <div id="tasks_flash_alert" class="alert-flex-container ms-2">
