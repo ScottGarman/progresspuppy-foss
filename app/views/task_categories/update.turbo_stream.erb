@@ -1,5 +1,5 @@
 <%= turbo_stream.replace dom_id(@task_category) do %>
-  <%= render @task_category %>
+  <%= render partial: 'task_category', locals: { task_category: @task_category, just_updated: true } %>
 <% end %>
 
 <%= turbo_stream.update "task_categories_flash_alert" do %>

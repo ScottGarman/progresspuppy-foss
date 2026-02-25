@@ -1,5 +1,5 @@
 <%= turbo_stream.replace dom_id(@quote) do %>
-  <%= render @quote %>
+  <%= render partial: 'quote', locals: { quote: @quote, just_updated: true } %>
 <% end %>
 
 <%= turbo_stream.update "quotes_flash_alert" do %>
