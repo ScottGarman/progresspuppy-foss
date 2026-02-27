@@ -52,7 +52,7 @@ class TaskDueDateMoveTest < ApplicationSystemTestCase
     assert_selector "#editable_task_#{task.id}", visible: true
 
     within "#editable_task_#{task.id}" do
-      fill_in "task_summary", with: "#{task.summary} edited"
+      fill_in 'task_summary', with: "#{task.summary} edited"
       click_button 'Update Task'
     end
 
