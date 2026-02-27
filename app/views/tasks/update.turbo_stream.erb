@@ -3,6 +3,22 @@
 
 <% if task_moved_away %>
   <%= turbo_stream.remove dom_id(@task) %>
+<% elsif @priority_changed %>
+  <%# Priority change affects sort order, so replace the full task list rather
+      than just the individual task, so it appears in its new position. %>
+  <% if @tasks_view == 'index' %>
+    <%= turbo_stream.replace "current_task_list_container" do %>
+      <div id="current_task_list_container">
+        <%= render 'display_tasks_paginated', task_list: @current_tasks, task_list_type: 'current' %>
+      </div>
+    <% end %>
+  <% elsif @tasks_view == 'upcoming' %>
+    <%= turbo_stream.replace "upcoming_task_list_container" do %>
+      <div id="upcoming_task_list_container">
+        <%= render 'display_tasks_paginated', task_list: @future_tasks, task_list_type: 'upcoming' %>
+      </div>
+    <% end %>
+  <% end %>
 <% else %>
   <%= turbo_stream.replace dom_id(@task) do %>
     <%= render 'display_task', display_task: @task, tasks_view: @tasks_view, just_updated: true %>
