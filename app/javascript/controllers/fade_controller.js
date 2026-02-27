@@ -6,6 +6,6 @@ export default class extends Controller {
     setTimeout(() => {
       this.element.style.transition = "opacity 2s"
       this.element.style.opacity = "0"
-    }, 800)
+    }, 2000)
   }
 }

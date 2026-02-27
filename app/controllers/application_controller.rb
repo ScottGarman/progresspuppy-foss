@@ -39,14 +39,27 @@ class ApplicationController < ActionController::Base
     DateTime.now.in_time_zone(current_user.time_zone).end_of_day.to_fs(:db)
   end
 
-  # Return the base message with optional references to the view the task change
-  # occurred on (sometimes task changes won't appeaar on the current view)
+  # Return the base message with optional references to the view the task was
+  # updated from (the task remains visible in that view after the update)
   def task_change_flash_msg(task, tasks_view, base_msg)
     msg = base_msg
     if task.current?(today_db) && tasks_view == 'upcoming'
       msg = "#{base_msg} (in Today's Tasks list)"
     elsif task.upcoming?(today_db) && tasks_view == 'index'
       msg = "#{base_msg} (in Upcoming Tasks list)"
+    end
+
+    msg
+  end
+
+  # Return a flash message for a newly created task, noting which view it
+  # can be found in when created from a view that won't show it (e.g. Search)
+  def new_task_flash_msg(task, tasks_view)
+    msg = 'New task created'
+    if task.current?(today_db) && %w[upcoming search].include?(tasks_view)
+      msg = 'New task created (in Today\'s Tasks list)'
+    elsif task.upcoming?(today_db) && %w[index search].include?(tasks_view)
+      msg = 'New task created (in Upcoming Tasks list)'
     end
 
     msg

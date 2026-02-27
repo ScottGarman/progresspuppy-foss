@@ -2,9 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   connect() {
-    this.element.style.backgroundColor = "#ffffcc"
+    this.element.style.backgroundColor = "#d1e7dd"
 
-    // Two animation frames ensure the browser paints the yellow before the
+    // Two animation frames ensure the browser paints the green before the
     // transition begins, so the fade is always visible.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {

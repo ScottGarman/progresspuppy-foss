@@ -847,8 +847,7 @@ class TaskOperationsTest < ActionDispatch::IntegrationTest
     assert_redirected_to search_tasks_path
     get search_tasks_path
     assert_response :success
-    assert_select 'div.alert-flex-container', "Task updated (in Today's " \
-                                              'Tasks list)'
+    assert_select 'div.alert-flex-container', 'Task updated'
 
     task1, task2, task3 = donpdonp.tasks[0..2]
     assert_not task1.nil?
