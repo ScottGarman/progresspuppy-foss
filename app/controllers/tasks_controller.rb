@@ -89,25 +89,14 @@ class TasksController < ApplicationController
       @tasks_view = params[:tasks_view]
       @today_db = today_db
       @flash_msg = task_change_flash_msg(@task, @tasks_view, 'Task updated')
+
       # When priority changes, the task's position in the sorted list changes.
       # We need to reload the full task list so the Turbo Stream response can
       # replace the entire list (with correct ordering) rather than just
       # updating the individual task in-place.
       @priority_changed = @task.priority != priority_was
-      if @priority_changed
-        tc_filter = params[:category]
-        if @tasks_view == 'index'
-          tc_id = current_user.task_categories.find_by(name: tc_filter)
-          @current_tasks = current_user.tasks.then { |t| tc_filter ? t.category(tc_id) : t }
-                                             .current(@today_db)
-                                             .paginate(page: params[:page], per_page: 20)
-        elsif @tasks_view == 'upcoming'
-          tc_id = current_user.task_categories.find_by(name: tc_filter)
-          @future_tasks = current_user.tasks.then { |t| tc_filter ? t.category(tc_id) : t }
-                                            .future(@today_db)
-                                            .paginate(page: params[:page], per_page: 20)
-        end
-      end
+      load_tasks_after_priority_change if @priority_changed
+
       respond_to do |f|
         f.turbo_stream
         f.html do
@@ -203,6 +192,18 @@ class TasksController < ApplicationController
 
   private
 
+  def load_tasks_after_priority_change
+    tc_filter = params[:category]
+    tc_id = current_user.task_categories.find_by(name: tc_filter)
+    tasks = current_user.tasks.then { |t| tc_filter ? t.category(tc_id) : t }
+
+    if @tasks_view == 'index'
+      @current_tasks = tasks.current(@today_db).paginate(page: params[:page], per_page: 20)
+    elsif @tasks_view == 'upcoming'
+      @future_tasks = tasks.future(@today_db).paginate(page: params[:page], per_page: 20)
+    end
+  end
+
   def task_params
     params.require(:task).permit(:summary, :task_category_id, :priority,
                                  :status, :due_at, :completed_at)
@@ -297,6 +298,7 @@ class TasksController < ApplicationController
     end
     current_user.awwyiss_history.shift
     current_user.awwyiss_history << template
+
     # Don't run validations here since we may be reloading the tasks view to
     # show validation errors on tasks:
     current_user.save(validate: false)
