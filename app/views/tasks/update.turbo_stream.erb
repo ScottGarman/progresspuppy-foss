@@ -9,13 +9,13 @@
   <% if @tasks_view == 'index' %>
     <%= turbo_stream.replace "current_task_list_container" do %>
       <div id="current_task_list_container">
-        <%= render 'display_tasks_paginated', task_list: @current_tasks, task_list_type: 'current' %>
+        <%= render 'display_tasks_paginated', task_list: @current_tasks, task_list_type: 'current', highlighted_task_id: @task.id, tasks_view: @tasks_view %>
       </div>
     <% end %>
   <% elsif @tasks_view == 'upcoming' %>
     <%= turbo_stream.replace "upcoming_task_list_container" do %>
       <div id="upcoming_task_list_container">
-        <%= render 'display_tasks_paginated', task_list: @future_tasks, task_list_type: 'upcoming' %>
+        <%= render 'display_tasks_paginated', task_list: @future_tasks, task_list_type: 'upcoming', highlighted_task_id: @task.id, tasks_view: @tasks_view %>
       </div>
     <% end %>
   <% end %>
