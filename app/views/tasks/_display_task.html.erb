@@ -1,7 +1,7 @@
 <%= turbo_frame_tag dom_id(display_task) do %>
 <div id="task_<%= display_task.id %>_container">
   <div id="display_task_<%= display_task.id %>" class="d-flex flex-nowrap align-items-center highlight-on-hover display-task"
-       <% if local_assigns[:just_updated] %>data-controller="highlight"<% end %>>
+       <% if local_assigns[:just_updated] || display_task.id == local_assigns[:highlighted_task_id] %>data-controller="highlight"<% end %>>
 
     <div class="display-task-checkbox">
       <%= form_with url: toggle_task_status_path(display_task.id), method: :post,
@@ -15,7 +15,7 @@
       <%= link_to image_tag('edit-pencil-icon.svg', title: "Click to Edit", class: "task-edit-icon"),
         edit_task_path(
           display_task,
-          tasks_view: local_assigns.fetch(:tasks_view, action_name),
+          tasks_view: local_assigns[:tasks_view] || action_name,
           category: params[:category],
           page: params[:page],
           search_terms: params[:search_terms],

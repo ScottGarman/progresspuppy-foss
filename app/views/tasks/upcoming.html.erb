@@ -23,8 +23,10 @@
       <%= render 'task_category_filter_buttons', current_user: @current_user %>
     </div>
 
-    <%= render 'display_tasks_paginated', task_list: @future_tasks,
-                                          task_list_type: 'upcoming' %>
+    <div id="upcoming_task_list_container">
+      <%= render 'display_tasks_paginated', task_list: @future_tasks,
+                                            task_list_type: 'upcoming' %>
+    </div>
   </div>
 
 </div>
