@@ -50,8 +50,7 @@ class TasksController < ApplicationController
   def create
     @new_task = current_user.tasks.build(task_params)
     if @new_task.save
-      flash[:success] = task_change_flash_msg(@new_task, params[:tasks_view],
-                                              'New task created')
+      flash[:success] = new_task_flash_msg(@new_task, params[:tasks_view])
       redirect_to_correct_tasks_tab
     else
       @new_task.destroy!
