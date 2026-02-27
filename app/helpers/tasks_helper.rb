@@ -10,6 +10,24 @@ module TasksHelper
     cssclass
   end
 
+  # Return the correct path for the Cancel link on the edit task form,
+  # based on which view the user is editing from.
+  def cancel_edit_task_path
+    case params[:tasks_view]
+    when 'search'
+      search_tasks_path(
+        search_terms: params[:search_terms],
+        tasks_filter: params[:tasks_filter],
+        task_category_filter: params[:task_category_filter],
+        page: params[:page]
+      )
+    when 'upcoming'
+      upcoming_tasks_path
+    else
+      tasks_path
+    end
+  end
+
   # Return an options_for_select array with task sorting options
   def task_sort_options
     [['Due Date - Oldest First', 'due-date-asc'],
