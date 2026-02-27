@@ -43,9 +43,9 @@ class ApplicationController < ActionController::Base
   # occurred on (sometimes task changes won't appeaar on the current view)
   def task_change_flash_msg(task, tasks_view, base_msg)
     msg = base_msg
-    if task.current?(today_db) && %w[upcoming search].include?(tasks_view)
+    if task.current?(today_db) && tasks_view == 'upcoming'
       msg = "#{base_msg} (in Today's Tasks list)"
-    elsif task.upcoming?(today_db) && %w[index search].include?(tasks_view)
+    elsif task.upcoming?(today_db) && tasks_view == 'index'
       msg = "#{base_msg} (in Upcoming Tasks list)"
     end
 

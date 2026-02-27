@@ -85,10 +85,30 @@ class TasksController < ApplicationController
       redirect_to_correct_tasks_tab && return
     end
 
+    priority_was = @task.priority
     if @task.update(task_params)
       @tasks_view = params[:tasks_view]
       @today_db = today_db
       @flash_msg = task_change_flash_msg(@task, @tasks_view, 'Task updated')
+      # When priority changes, the task's position in the sorted list changes.
+      # We need to reload the full task list so the Turbo Stream response can
+      # replace the entire list (with correct ordering) rather than just
+      # updating the individual task in-place.
+      @priority_changed = @task.priority != priority_was
+      if @priority_changed
+        tc_filter = params[:category]
+        if @tasks_view == 'index'
+          tc_id = current_user.task_categories.find_by(name: tc_filter)
+          @current_tasks = current_user.tasks.then { |t| tc_filter ? t.category(tc_id) : t }
+                                             .current(@today_db)
+                                             .paginate(page: params[:page], per_page: 20)
+        elsif @tasks_view == 'upcoming'
+          tc_id = current_user.task_categories.find_by(name: tc_filter)
+          @future_tasks = current_user.tasks.then { |t| tc_filter ? t.category(tc_id) : t }
+                                            .future(@today_db)
+                                            .paginate(page: params[:page], per_page: 20)
+        end
+      end
       respond_to do |f|
         f.turbo_stream
         f.html do
