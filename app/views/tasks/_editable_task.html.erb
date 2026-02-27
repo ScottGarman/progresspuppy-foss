@@ -50,7 +50,7 @@
       </div>
 
       <div class="editable-task-cancel">
-        <span>or <%= link_to "Cancel", tasks_path %></span>
+        <span>or <%= link_to "Cancel", params[:tasks_view] == 'upcoming' ? upcoming_tasks_path : tasks_path %></span>
       </div>
     <% end %>
   </div>
