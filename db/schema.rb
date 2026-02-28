@@ -10,68 +10,65 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_23_194229) do
+ActiveRecord::Schema[8.1].define(version: 2023_08_23_194229) do
   create_table "quotes", force: :cascade do |t|
+    t.datetime "created_at", precision: nil, null: false
     t.string "quotation", null: false
     t.string "source", null: false
-    t.integer "user_id", null: false
-    t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "user_id", null: false
     t.index ["user_id"], name: "index_quotes_on_user_id"
   end
 
-  create_table "settings", force: :cascade do |t|
-    t.boolean "display_quotes", default: true
+  create_table "settings", id: :integer, default: nil, force: :cascade do |t|
     t.boolean "burnination", default: false
-    t.integer "user_id"
     t.datetime "created_at", precision: nil, null: false
+    t.boolean "display_quotes", default: true
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "user_id"
     t.index ["user_id"], name: "index_settings_on_user_id"
   end
 
   create_table "task_categories", force: :cascade do |t|
-    t.string "name", null: false
-    t.integer "user_id", null: false
     t.datetime "created_at", precision: nil, null: false
+    t.string "name", null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "user_id", null: false
     t.index ["user_id"], name: "index_task_categories_on_user_id"
   end
 
-  create_table "tasks", force: :cascade do |t|
-    t.string "summary", null: false
-    t.integer "task_category_id"
+  create_table "tasks", id: :integer, default: nil, force: :cascade do |t|
+    t.datetime "completed_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
+    t.date "due_at"
     t.integer "priority", default: 3, null: false
     t.string "status", default: "INCOMPLETE", null: false
-    t.date "due_at"
-    t.datetime "completed_at", precision: nil
-    t.integer "user_id", null: false
-    t.datetime "created_at", precision: nil, null: false
+    t.string "summary", null: false
+    t.integer "task_category_id"
     t.datetime "updated_at", precision: nil, null: false
+    t.integer "user_id", null: false
     t.index ["task_category_id"], name: "index_tasks_on_task_category_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "first_name", limit: 50, null: false
-    t.string "last_name", limit: 50, null: false
-    t.string "email", limit: 80, null: false
-    t.string "password_digest", limit: 80, null: false
-    t.boolean "email_confirmed", default: false
-    t.datetime "last_login_at", precision: nil
-    t.boolean "admin", default: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "remember_digest"
-    t.string "activation_digest"
+    t.datetime "accepted_tos_at", precision: nil
     t.boolean "activated", default: false
     t.datetime "activated_at", precision: nil
+    t.string "activation_digest"
+    t.boolean "admin", default: false
+    t.datetime "created_at", precision: nil, null: false
+    t.string "email", limit: 80, null: false
+    t.boolean "email_confirmed", default: false
+    t.string "first_name", limit: 50, null: false
+    t.datetime "last_login_at", precision: nil
+    t.string "last_name", limit: 50, null: false
+    t.string "password_digest", limit: 80, null: false
+    t.string "remember_digest"
     t.string "reset_digest"
     t.datetime "reset_sent_at", precision: nil
     t.string "time_zone"
-    t.datetime "accepted_tos_at", precision: nil
-    t.string "quote_history", default: "--- []\n"
-    t.string "awwyiss_history", default: "--- []\n"
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
-
 end

@@ -249,23 +249,7 @@ class TasksController < ApplicationController
     quote_ids = current_user.quotes.pluck(:id)
     return nil if quote_ids.empty?
 
-    # Use sample to return a random id from the array:
-    quote = current_user.quotes.find(quote_ids.sample)
-
-    if quote_ids.length < 5 || current_user.quote_history.length < 3
-      current_user.quote_history.shift if current_user.quote_history.length > 2
-      current_user.quote_history << quote.id
-      current_user.save!
-      return quote
-    end
-
-    # Ensure we aren't repeating one of the last 3 quotes the user has seen:
-    quote = current_user.quotes.find(quote_ids.sample) while current_user.quote_history.include?(quote.id)
-
-    current_user.quote_history.shift
-    current_user.quote_history << quote.id
-    current_user.save!
-    quote
+    current_user.quotes.find(quote_ids.sample)
   end
 
   # Returns a list of meme modal template names that can be shown.
@@ -279,29 +263,6 @@ class TasksController < ApplicationController
 
   # Return the name of a random awwyiss modal template
   def random_awwyiss_modal
-    awwyiss_modal_templates = meme_modal_list
-
-    template = awwyiss_modal_templates[rand(awwyiss_modal_templates.length)]
-    if awwyiss_modal_templates.length <= 3 || current_user.awwyiss_history.length < 3
-      current_user.awwyiss_history.shift if current_user.awwyiss_history.length > 2
-      current_user.awwyiss_history << template
-      # Don't run validations here since we may be reloading the tasks view to
-      # show validation errors on tasks:
-      current_user.save(validate: false)
-      return template
-    end
-
-    # Ensure we aren't repeating one of the last 3 awwyiss templates the user
-    # has seen:
-    while current_user.awwyiss_history.include?(template)
-      template = awwyiss_modal_templates[rand(awwyiss_modal_templates.length)]
-    end
-    current_user.awwyiss_history.shift
-    current_user.awwyiss_history << template
-
-    # Don't run validations here since we may be reloading the tasks view to
-    # show validation errors on tasks:
-    current_user.save(validate: false)
-    template
+    meme_modal_list.sample
   end
 end
